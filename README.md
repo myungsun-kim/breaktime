@@ -10,6 +10,8 @@
 - 물리적 하드 드라이브에 저장 동적할당/고정크기 알아서 설정
 - 파일 위치 및 크기 설정
 : 가상 머신 생성 완료
+<br>
+
 
 - 다시 Virtual Box 초기 화면으로 돌아와 설정 눌러줌
 - 저장소-비어있음의 광학 드라이브에 Ubuntu ISO 파일 설정해준 후 확인
@@ -24,6 +26,6 @@
 : docker-compose --version를 통해 도커 컴포저 설치 확인
 : Kurento 설치 시 Got permission denied while trying to connect to the Docker daemon socket~ 라고 오류가 뜰 경우
 	- sudo usermod -a -G docker $USER 입력 후 비밀번호 입력. 우분투 재부팅 후 다시 설치
-
+<br>
 - Coturn 설치 > WebRTC 시그널링을 위한 STUN/TURN 서버로 활용
 ** AWS EC2는 싸피에서 일괄 배포한다고 합니다! 명세서 22페이지 이후로는 나중에 진행..
