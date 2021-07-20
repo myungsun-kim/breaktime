@@ -77,20 +77,25 @@ $ docker run --rm \
 	   두번째 줄을 첫 번째 줄로 옮겨준 후 저장
 ```
 ```
-- Got permission denied while trying to connect to the Docker : 권한 문제. $ sudo usermod -a -G docker $USER 권한 설정 후 재부팅하고 진행
+- Got permission denied while trying to connect to the Docker
+ : 권한 문제 
+ $ sudo usermod -a -G docker $USER 권한 설정 후 재부팅하고 진행
 ```
 ```
 - Error response from deamon: Container ~ is not running : 해당 컨테이너를 실행 시켜줌. $ docker start 컨테이너ID
 ```
 ```
-- 포트 번호가 사용중이라고 할 경우 $ sudo Isof -i :포트번호 ex)sudi Isof -i :8888 입력 시 포트번호 사용 중인지 확인 가능  
+- 포트 번호가 사용중이라고 할 경우 $ sudo Isof -i :포트번호 
+ex)sudi Isof -i :8888 입력 시 해당 포트번호 사용 중인지 확인 가능  
 - $ netstat -anv | grep LISTEN : 사용중인 포트 확인
 ```
 ```
-- Error response from daemon: Conflict. The container name "..." is already in use by container "..." : $ docker ps -a 로 실행중인 컨테이너 확인 후 $ docker rm 컨테이너이름 으로 삭제해 준 후 다시 실행
+- Error response from daemon: Conflict. The container name "..." is already in use by container "..." 
+: $ docker ps -a 로 실행중인 컨테이너 확인 후 $ docker rm 컨테이너이름 으로 삭제해 준 후 다시 실행
 ```
 ```
-- Error response from daemon: driver failed programming external connectivity on endpoint~ : 이전 컨테이너가 실행중이라 새 컨테이너를 시작할 수 없음. 
+- Error response from daemon: driver failed programming external connectivity on endpoint~ 
+: 이전 컨테이너가 실행중이라 새 컨테이너를 시작할 수 없음. 
 $ docker ps 로 컨테이너 이름 확인 
 $ docker stop 컨테이너이름 > 컨테이너 중지
 $ docker rm 컨테이너이름 > 컨테이너 제거
