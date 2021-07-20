@@ -1,15 +1,17 @@
 <template>
-  <h2>로그인</h2>
-  <el-form :model="state.form" :rules="state.rules" ref="loginForm">
-    <el-form-item prop="id" label="아이디" >
-      <el-input v-model="state.form.id" autocomplete="off" placeholder="ID를입력해주세요"></el-input>
-    </el-form-item>
-    <el-form-item prop="password" label="비밀번호" >
-      <el-input v-model="state.form.password" autocomplete="off" show-password placeholder="PW를입력해주세요"></el-input>
-    </el-form-item>
-  </el-form>
-  <el-button type="primary" @click="clickLogin" >로그인</el-button>
-  <el-button type="danger" @click="clickSignUp" >회원가입</el-button>
+  <div>
+    <h2>로그인</h2>
+    <el-form :model="state.form" :rules="state.rules" ref="loginForm" class="form" label-width="120px">
+      <el-form-item prop="id" label="아이디" >
+        <el-input v-model="state.form.id" autocomplete="off" placeholder="ID를입력해주세요"></el-input>
+      </el-form-item>
+      <el-form-item prop="password" label="비밀번호" >
+        <el-input v-model="state.form.password" autocomplete="off" show-password placeholder="PW를입력해주세요"></el-input>
+      </el-form-item>
+      <el-button type="primary" @click="clickLogin" >로그인</el-button>
+      <el-button type="danger" @click="clickSignUp" >회원가입</el-button>
+    </el-form>
+  </div>
 </template>
 
 <script>
@@ -39,6 +41,7 @@ export default {
               if (16 < value.length){
                 errors = ['최대 16자까지 입력 가능합니다.']
               }
+              console.clear()
               return errors;
             },
           }
@@ -91,3 +94,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .form {
+    margin: 0 25%;
+  }
+</style>

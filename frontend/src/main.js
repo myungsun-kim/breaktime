@@ -6,6 +6,9 @@ import store from './common/lib/store'
 import router from './common/lib/vue-router'
 import App from './App.vue'
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap";
+
 import 'element-plus/lib/theme-chalk/index.css';
 
 const app = createApp(App)
