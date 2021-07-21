@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -26,6 +27,7 @@ import javax.persistence.OneToOne;
 @Setter
 public class User{
 	@Id
+	@Column(name = "user_id")
 	private String id; // 아이디
 	private String name; // 이름
 
@@ -39,7 +41,7 @@ public class User{
     private int phone; // 전화번호
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sequence") // 회의방 번호와 조인
+    @JoinColumn(name = "conference_seq") // 회의방 번호와 조인
     private Conference conference;
     
     @OneToMany(mappedBy = "friend") // 친구리스트
