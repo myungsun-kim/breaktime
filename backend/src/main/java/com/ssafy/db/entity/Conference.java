@@ -11,8 +11,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -22,14 +26,18 @@ import javax.persistence.OneToMany;
 @Entity
 @Getter
 @Setter
-public class Conference extends BaseEntity{
+public class Conference{
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "conference_seq")
+	private Long sequence;
+	
 	private String name; // 회의방 이름
 	private String owner; // 호스트
 	private LocalDateTime produceTime; // 생성 시간
 	private int participantLimit; // 참가자 제한 수
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sequence") // 카테고리 sequence 컬럼과 조인
+    @JoinColumn(name = "category_seq") // 카테고리 sequence 컬럼과 조인
     private ConferenceCategory conferenceCategory; // 회의방 카테고리와 다대일 관계
     
     private String description; // 회의방 설명
