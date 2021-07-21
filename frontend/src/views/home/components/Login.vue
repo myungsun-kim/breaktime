@@ -75,7 +75,9 @@ export default {
         if (valid) {
           store.dispatch('root/requestLogin', { id: state.form.id, password: state.form.password })
           .then(function (result) {
-            localStorage.setItem('jwt', result.data.accessToken)
+            const token = result.data.accessToken
+            localStorage.setItem('jwt', token)
+            saveUser
           })
           .catch(function (err) {
             alert(err)
@@ -86,11 +88,25 @@ export default {
       });
     }
 
+    const saveUser = function (token) {
+      store.dispatch('root/requestUserInfo', {
+          headers: {
+            Authorization : "Bearer " + token
+          }
+        })
+        .then(function (result) {
+          console.log(result)
+        })
+        .catch(function (err) {
+          alert(err)
+      })
+    }
+
     const clickSignUp = function () {
       // console.log('회원가입버튼')
       router.push('SignUp')
     }
-    return { state , clickLogin, loginForm, clickSignUp}
+    return { state , clickLogin, loginForm, clickSignUp, saveUser}
   }
 }
 </script>
