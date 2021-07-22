@@ -26,7 +26,7 @@ public class ConferenceService {
 	// 회의방 이름을 이용한 중복 체크
 	private void validDuplicateConference(Conference conference) { 
 		List<Conference> findConferences = conferenceRepository.findByName(conference.getName());
-		if(!findConferences.isEmpty()) throw new IllegalStateException();
+		if(!findConferences.isEmpty()) throw new IllegalStateException("이미 존재하는 방입니다");
 	}
 	// 회의방 전체 조회
 	public List<Conference> findConferences(){ 

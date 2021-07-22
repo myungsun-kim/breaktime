@@ -22,7 +22,7 @@ import javax.persistence.OneToMany;
 @Getter
 @Setter
 public class ConferenceCategory{
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id @GeneratedValue()
 	@Column(name = "category_seq")
 	private int sequence; // 카테고리 번호
 	

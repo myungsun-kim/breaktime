@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,20 +16,37 @@ import com.ssafy.db.repository.ConferenceRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class ConferenceServiceTest {
 	
 	@Autowired ConferenceService conferenceService;
 	@Autowired ConferenceRepository conferenceRepository;
 	
-	@Test
-	public void 회의방생성() throws Exception{
+//	@Test
+//	@Rollback(false)
+//	public void 회의방생성() throws Exception{
+//		Conference conference = new Conference();
+//		conference.setName("4번째");
+//		
+//		Long saveSeq = conferenceService.create(conference);
+//		
+//		assertEquals(conference, conferenceRepository.findOne(saveSeq));
+//
+//	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void 중복회원예외() throws Exception{
+		//given
 		Conference conference = new Conference();
-		conference.setName("들어와");
+		conference.setName("A");
 		
-		Long saveSeq = conferenceService.create(conference);
-		
-		assertEquals(conference, conferenceRepository.findOne(saveSeq));
-
+		Conference conference1 = new Conference();
+		conference1.setName("A");
+		// when
+		conferenceService.create(conference);
+		conferenceService.create(conference1);
+		// then
+		fail("예외 발생 실패");
 	}
 
 }
