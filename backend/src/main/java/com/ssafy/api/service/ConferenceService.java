@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,11 @@ public class ConferenceService {
 	@Transactional(readOnly = false)
 	public Long create(Conference conference) { 
 		validDuplicateConference(conference);
+		conferenceRepository.save(conference);
+		return conference.getSequence();
+	}
+	@Transactional(readOnly = false)
+	public Long save(Conference conference) { 
 		conferenceRepository.save(conference);
 		return conference.getSequence();
 	}
@@ -47,7 +53,10 @@ public class ConferenceService {
 	// 회의방 수정하기
 	
 	// 회의방 삭제하기
-	
+	@Transactional(readOnly = false)
+	public void delete() {
+		conferenceRepository.delete();
+	}
 	// 회의방 카테고리 종류 조회하기
 	
 	// 회의방 강퇴하기

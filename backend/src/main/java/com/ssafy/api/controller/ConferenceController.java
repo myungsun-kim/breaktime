@@ -34,10 +34,10 @@ public class ConferenceController {
 	@PostMapping("/make")
 	public ResponseEntity<? extends BaseResponseBody> make(@RequestBody ConferenceVO confer){
 		
-		Conference conference = new Conference();
-		
 		ConferenceCategory category = new ConferenceCategory(); 
 		category.setSequence(confer.getCategory_seq()); // 회의방의 카테고리 컬럼을 카테고리 테이블 기본키랑 연결하기 위함
+		
+		Conference conference = new Conference();
 		
 		conference.setConferenceCategory(category);
 		conference.setDescription(confer.getDescription());
@@ -58,12 +58,12 @@ public class ConferenceController {
 	}
 	
 	@GetMapping("/search/name/{name}")
-	public List<Conference> search(@PathVariable("name") String name) {
+	public List<Conference> searchName(@PathVariable("name") String name) {
 		return conferenceService.findOne(name);
 	}
 	
-	@GetMapping("/search/num/{num}")
-	public Conference search(@PathVariable("num") Long sequence) {
+	@GetMapping("/search/num/{num}") // 회의방 번호 검색 & 회의방 상세보기
+	public Conference searchNum(@PathVariable("num") Long sequence) {
 		return conferenceService.findOne(sequence);
 	}
 	
@@ -71,4 +71,24 @@ public class ConferenceController {
 	public List<Conference> searchAll(){
 		return conferenceService.findConferences();
 	}
+	
+	@PostMapping("update/{sequence}")
+    public void updateItem(@PathVariable("sequence") Long sequence, @RequestBody ConferenceVO confer){
+		
+		Conference conference = new Conference();
+		
+		ConferenceCategory category = new ConferenceCategory(); 
+		category.setSequence(confer.getCategory_seq());
+		
+		conference.setSequence(sequence);
+		conference.setConferenceCategory(category);
+		conference.setDescription(confer.getDescription());
+		conference.setName(confer.getName());
+		conference.setOwner(confer.getOwner());
+		conference.setParticipantLimit(confer.getParticipantLimit());
+		conference.setPassword(confer.getPassword());
+		
+        conferenceService.save(conference);
+
+    }
 }

@@ -1,4 +1,4 @@
-package com.ssafy.api.service;
+package com.ssafy.db.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -7,10 +7,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.api.service.ConferenceService;
 import com.ssafy.db.entity.Conference;
 import com.ssafy.db.repository.ConferenceRepository;
 
@@ -34,19 +36,30 @@ public class ConferenceServiceTest {
 //
 //	}
 	
-	@Test(expected = IllegalStateException.class)
-	public void 중복회원예외() throws Exception{
-		//given
-		Conference conference = new Conference();
-		conference.setName("A");
-		
-		Conference conference1 = new Conference();
-		conference1.setName("A");
+//	@Test(expected = IllegalStateException.class)
+//	public void 중복회원예외() throws Exception{
+//		//given
+//		Conference conference = new Conference();
+//		conference.setName("A");
+//		
+//		Conference conference1 = new Conference();
+//		conference1.setName("A");
+//		// when
+//		conferenceService.create(conference);
+//		conferenceService.create(conference1);
+//		// then
+//		fail("예외 발생 실패");
+//	}
+	
+	@Test
+	@Rollback(false)
+	public void testDelete() {
+		// given
+		Long sequence = (long) 21;
 		// when
-		conferenceService.create(conference);
-		conferenceService.create(conference1);
+		conferenceService.delete();
 		// then
-		fail("예외 발생 실패");
+//		assertEquals(conferenceRepository.findOne(sequence), null);
 	}
 
 }
