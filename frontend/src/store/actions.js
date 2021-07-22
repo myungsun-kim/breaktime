@@ -31,3 +31,10 @@ export function createRoom({state}, payload) {
   let body = payload
   return $axios.post(url, body)
 }
+
+// 방정보 관련 axios
+export function getRoom({state}) {
+  console.log(state)
+  const url = '/conference/search/all'
+  return $axios.get(url)
+}

@@ -17,6 +17,15 @@ export default {
     }
 
     return { store, createRoom }
+  },
+  created() {
+    this.store.dispatch('root/getRoom')
+    .then(function (result) {
+      console.log(result)
+    })
+    .catch(function (err) {
+      console.log(err)
+    })
   }
 }
 </script>
