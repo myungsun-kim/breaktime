@@ -77,7 +77,7 @@ export default {
           .then(function (result) {
             const token = result.data.accessToken
             localStorage.setItem('jwt', token)
-            saveUser
+            saveUser()
           })
           .catch(function (err) {
             alert(err)
