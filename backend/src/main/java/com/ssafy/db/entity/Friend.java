@@ -25,7 +25,7 @@ import javax.persistence.OneToMany;
 @Getter
 @Setter
 public class Friend{
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id @GeneratedValue()
 	@Column(name = "sequence")
 	private Long sequence;
 	

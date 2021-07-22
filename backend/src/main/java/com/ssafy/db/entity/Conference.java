@@ -27,7 +27,8 @@ import javax.persistence.OneToMany;
 @Getter
 @Setter
 public class Conference{
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	
+	@Id @GeneratedValue()
 	@Column(name = "conference_seq")
 	private Long sequence;
 	
@@ -48,4 +49,13 @@ public class Conference{
     
     @OneToMany(mappedBy = "conference") // 회의방별 사용자 리스트
     private List<User> users = new ArrayList<User>();
+
+	@Override
+	public String toString() {
+		return "Conference [sequence=" + sequence + ", name=" + name + ", owner=" + owner + ", produceTime="
+				+ produceTime + ", participantLimit=" + participantLimit + ", conferenceCategory=" + conferenceCategory
+				+ ", description=" + description + ", password=" + password + ", users=" + users + "]";
+	}
+    
+    
 }
