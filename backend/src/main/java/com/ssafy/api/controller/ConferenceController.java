@@ -19,6 +19,7 @@ import com.ssafy.api.service.ConferenceService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Conference;
 import com.ssafy.db.entity.ConferenceCategory;
+import com.ssafy.db.repository.ConferenceRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +31,8 @@ public class ConferenceController {
 	
 	@Autowired
 	ConferenceService conferenceService;
+	@Autowired
+	ConferenceRepository conferenceRepository;
 	
 	@PostMapping("/make")
 	public ResponseEntity<? extends BaseResponseBody> make(@RequestBody ConferenceVO confer){
@@ -73,7 +76,7 @@ public class ConferenceController {
 	}
 	
 	@PostMapping("update/{sequence}")
-    public void updateItem(@PathVariable("sequence") Long sequence, @RequestBody ConferenceVO confer){
+    public void updateConference(@PathVariable("sequence") Long sequence, @RequestBody ConferenceVO confer){
 		
 		Conference conference = new Conference();
 		
@@ -91,4 +94,9 @@ public class ConferenceController {
         conferenceService.save(conference);
 
     }
+	
+	@GetMapping("delete/{sequence}")
+	public void deleteConference(@PathVariable("sequence") Long sequence) {
+		conferenceRepository.delete(sequence);
+	}
 }

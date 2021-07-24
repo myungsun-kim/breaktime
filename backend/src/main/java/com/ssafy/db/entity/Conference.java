@@ -50,28 +50,5 @@ public class Conference{
     @OneToMany(mappedBy = "conference") // 회의방별 사용자 리스트
     private List<User> users = new ArrayList<User>();
     
-    
-    
-	@Override
-	public String toString() {
-		return "Conference [sequence=" + sequence + ", name=" + name + ", owner=" + owner + ", produceTime="
-				+ produceTime + ", participantLimit=" + participantLimit + ", conferenceCategory=" + conferenceCategory
-				+ ", description=" + description + ", password=" + password + ", users=" + users + "]";
-	}
-
-
-
-//	public Conference(String name, String owner, LocalDateTime produceTime, int participantLimit,
-//			ConferenceCategory conferenceCategory, String description, String password) {
-//		super();
-//		this.name = name;
-//		this.owner = owner;
-//		this.produceTime = produceTime;
-//		this.participantLimit = participantLimit;
-//		this.conferenceCategory = conferenceCategory;
-//		this.description = description;
-//		this.password = password;
-//	}
-    
-    
+       
 }
