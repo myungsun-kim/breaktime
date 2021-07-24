@@ -47,7 +47,7 @@ public class AuthController {
 	public ResponseEntity<UserLoginPostRes> login(@RequestBody @ApiParam(value="로그인 정보", required = true) UserLoginPostReq loginInfo) {
 		String userId = loginInfo.getId();
 		String password = loginInfo.getPassword();
-		User user = userService.getUserByUserId(userId);
+		User user = userService.findOne(userId);
 		
 		if(user == null) {
 			return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "존재하지 않는 계정입니다.", null));

@@ -43,17 +43,9 @@ public class ConferenceRepository{
 	
   
 	// 회의방 삭제하기
-//	@Modifying
-//	@Transactional(readOnly = false)
-//	public void delete(Long sequence) {
-//		em.createQuery("delete from Conference c where c.sequence = :sequence", Conference.class).setParameter("sequence", sequence).executeUpdate();
-//		em.createQuery("delete from Conference c", Conference.class);
-//	}
-	
-	@Modifying
-	@Query("delete from Conference c")
-	public void delete() {
-		
+	@Transactional
+	public void delete(Long sequence) {
+		em.remove(findOne(sequence));
 	}
 	
 	// 회의방 강퇴하기

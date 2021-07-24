@@ -30,6 +30,6 @@ public class ConferenceCategory{
     private String background; // 배경
     private String atmosphere; // 분위기
     
-    @OneToMany(mappedBy = "conferenceCategory") // 카테고리별 회의 리스트
-    private List<Conference> conferences = new ArrayList<>();
+//    @OneToMany(mappedBy = "conferenceCategory") // 카테고리별 회의 리스트
+//    private List<Conference> conferences = new ArrayList<>();
 }

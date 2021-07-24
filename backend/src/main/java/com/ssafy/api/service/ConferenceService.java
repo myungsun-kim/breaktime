@@ -46,17 +46,10 @@ public class ConferenceService {
 	public List<Conference> findOne(String name) {
 		return conferenceRepository.findByName(name);
 	}
-	// 회의방 상세보기
-	
 	// 회의방 초대하기
 	
 	// 회의방 수정하기
 	
-	// 회의방 삭제하기
-	@Transactional(readOnly = false)
-	public void delete() {
-		conferenceRepository.delete();
-	}
 	// 회의방 카테고리 종류 조회하기
 	
 	// 회의방 강퇴하기
