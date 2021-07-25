@@ -46,4 +46,18 @@ public class User{
     
     @OneToMany(mappedBy = "friend") // 친구리스트
     private List<Friend> friends = new ArrayList<>();
+    
+    public User() {}
+    
+	public User(String id, String name, String password, String nickname, String emailS, String emailE, int phone) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.password = password;
+		this.nickname = nickname;
+		this.emailS = emailS;
+		this.emailE = emailE;
+		this.phone = phone;
+	}
+    
 }

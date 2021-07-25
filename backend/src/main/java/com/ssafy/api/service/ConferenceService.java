@@ -24,11 +24,13 @@ public class ConferenceService {
 		conferenceRepository.save(conference);
 		return conference.getSequence();
 	}
+	
 	@Transactional(readOnly = false)
 	public Long save(Conference conference) { 
 		conferenceRepository.save(conference);
 		return conference.getSequence();
 	}
+	
 	// 회의방 이름을 이용한 중복 체크
 	private void validDuplicateConference(Conference conference) { 
 		List<Conference> findConferences = conferenceRepository.findByName(conference.getName());
