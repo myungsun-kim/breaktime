@@ -3,21 +3,27 @@ package com.ssafy.db.repository;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.db.entity.User;
 
+import lombok.RequiredArgsConstructor;
+
 @Repository
+@RequiredArgsConstructor
 public class UserRepository {
 	
-	@PersistenceContext
-	private EntityManager em;
+	private final EntityManager em;
 	// 스프링이 엔티티메니저를 만들어서 주입(injection) 해줌
 	
-	public void save(User User) {
-		em.persist(User);
+	public void save(User user) {
+		if(user.getId() == null) {
+			em.persist(user);
+		}else {
+			em.merge(user);
+		}
 		// JPA 가 이 User 를 저장하는 로직
 	}
 	
@@ -34,10 +40,9 @@ public class UserRepository {
 		// 번역 : User 에 대한 Entity 객체 엘리어스를 m으로 주고 이 엔티티인 User 를 조회해
 				.getResultList();
 	}
-	
-	public List<User> findByName(String name) {
-		return em.createQuery("select m from User m where m.name = :name", User.class)
-				.setParameter("name", name)
-				.getResultList();
+	// 회원 탈퇴
+	@Transactional
+	public void delete(String id) {
+		em.remove(findOne(id));
 	}
 }

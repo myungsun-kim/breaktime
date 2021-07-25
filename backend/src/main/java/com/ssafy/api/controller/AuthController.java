@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.api.request.UserLoginPostReq;
+import com.ssafy.api.request.UserLoginVO;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
@@ -26,10 +26,10 @@ import io.swagger.annotations.ApiResponse;
 /**
  * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
-@Api(value = "인증 API", tags = {"Auth."})
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 public class AuthController {
+	
 	@Autowired
 	UserService userService;
 	
@@ -37,16 +37,11 @@ public class AuthController {
 	PasswordEncoder passwordEncoder;
 	
 	@PostMapping("/login")
-	@ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.") 
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
-        @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
-        @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
-        @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
-    })
-	public ResponseEntity<UserLoginPostRes> login(@RequestBody @ApiParam(value="로그인 정보", required = true) UserLoginPostReq loginInfo) {
+	public ResponseEntity<UserLoginPostRes> login(@RequestBody UserLoginVO loginInfo) {
+		
 		String userId = loginInfo.getId();
 		String password = loginInfo.getPassword();
+		
 		User user = userService.findOne(userId);
 		
 		if(user == null) {

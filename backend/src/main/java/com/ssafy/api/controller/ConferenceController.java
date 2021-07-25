@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.api.request.ConferenceVO;
 import com.ssafy.api.service.ConferenceService;
+import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Conference;
 import com.ssafy.db.entity.ConferenceCategory;
@@ -35,7 +37,10 @@ public class ConferenceController {
 	ConferenceRepository conferenceRepository;
 	
 	@PostMapping("/make")
-	public ResponseEntity<? extends BaseResponseBody> make(@RequestBody ConferenceVO confer){
+	public ResponseEntity<? extends BaseResponseBody> make(Authentication authentication, @RequestBody ConferenceVO confer){
+		
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		String userId = userDetails.getUsername();
 		
 		ConferenceCategory category = new ConferenceCategory(); 
 		category.setSequence(confer.getCategory_seq()); // 회의방의 카테고리 컬럼을 카테고리 테이블 기본키랑 연결하기 위함
@@ -76,7 +81,10 @@ public class ConferenceController {
 	}
 	
 	@PostMapping("update/{sequence}")
-    public void updateConference(@PathVariable("sequence") Long sequence, @RequestBody ConferenceVO confer){
+    public void updateConference(Authentication authentication, @PathVariable("sequence") Long sequence, @RequestBody ConferenceVO confer){
+		
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		String userId = userDetails.getUsername();
 		
 		Conference conference = new Conference();
 		
@@ -96,7 +104,11 @@ public class ConferenceController {
     }
 	
 	@GetMapping("delete/{sequence}")
-	public void deleteConference(@PathVariable("sequence") Long sequence) {
+	public void deleteConference(Authentication authentication, @PathVariable("sequence") Long sequence) {
+		
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		String userId = userDetails.getUsername();
+		
 		conferenceRepository.delete(sequence);
 	}
 }
