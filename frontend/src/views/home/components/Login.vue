@@ -34,7 +34,7 @@ export default {
       rules: {
         // 콘솔창 waring을 어떻게 제거할까..
         id:[
-          { required: true, message: '필수 입력 항목입니다', trigger: 'blur' },
+          { required: true, message: 'ID를 입력해주세요', trigger: 'blur' },
           {
             validator(rule, value) {
               var errors = []
@@ -47,8 +47,8 @@ export default {
           }
         ],
         password: [
-          { required: true, message: '필수 입력 항목입니다.', trigger: 'blur' },
-                    {
+          { required: true, message: '비밀번호를 입력해주세요', trigger: 'blur' },
+          {
             validator(rule, value) {
               var errors = []
               var num = value.search(/[0-9]/g);
@@ -77,7 +77,7 @@ export default {
           .then(function (result) {
             const token = result.data.accessToken
             localStorage.setItem('jwt', token)
-            saveUser()
+            saveUser(token)
           })
           .catch(function (err) {
             alert(err)
@@ -95,7 +95,10 @@ export default {
           }
         })
         .then(function (result) {
-          console.log(result)
+          store.commit('root/setUser', {
+            user: result.data
+          })
+          router.push({name: 'Main'})
         })
         .catch(function (err) {
           alert(err)
