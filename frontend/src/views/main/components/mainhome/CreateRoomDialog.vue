@@ -50,8 +50,9 @@ export default {
       form: {
         name: '',
         owner: '',
-        participant_limit: 0,
-        option: '',
+        description: '',
+        category_seq: 0,
+        option: 0,
         password: '',
       },
       rules: {
@@ -67,13 +68,13 @@ export default {
         ]
       },
       options: [{
-          value: '1.공부방',
+          value: 1,
           label: '1.공부방'
         }, {
-          value: '2.노래방',
+          value: 2,
           label: '2.노래방'
         }, {
-          value: '3.이야기',
+          value: 3,
           label: '3.이야기'
       }],
       value: false,
@@ -86,9 +87,10 @@ export default {
           store.dispatch('root/createRoom', { 
             name: state.form.name,
             owner: '',
-            participant_limit: state.form.participant_limit,
-            option: state.form.option,
-            password: state.form.password 
+            participantLimit: state.form.participant_limit,
+            category_seq: state.form.option,
+            password: state.form.password,
+            description: state.form.description
           })
           .then(function (result) {
             console.log(result)

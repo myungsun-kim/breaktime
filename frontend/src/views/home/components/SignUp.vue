@@ -44,9 +44,9 @@ import { useRouter } from 'vue-router'
 export default {
   name: 'SignUp',
   setup() {
-    const signUpForm = ref(null)
     const store = useStore()
     const router = useRouter()
+    const signUpForm = ref(null)
 
     var validatePass = (rule, value, callback) => {
       var num = value.search(/[0-9]/g);
@@ -59,9 +59,6 @@ export default {
       } else if (num < 0 || eng < 0 || spe < 0) {
         return callback(new Error('비밀번호는 영문, 숫자, 특수문자가 조합되어야합니다.'))
       } else {
-        if (state.form.passwordCheck !== '') {
-          this.$refs.state.form.validateField('passwordCheck');
-        }
         callback()
       }
     }
@@ -90,12 +87,10 @@ export default {
           { max: 16, message: 'ID는 최대 16자까지 가능합니다.', trigger: 'blur' },
         ],
         password: [
-          { required: true, message: 'PW를 입력해주세요',trigger: 'blur' },
-          { validator: validatePass, trigger: 'blur'}
+          { required: true, validator: validatePass, trigger: 'blur'}
         ],
         passwordCheck: [
-          { required: true, message: 'PW확인을 입력해주세요',trigger: 'blur' },
-          { validator: validatePass2, trigger: 'blur'}
+          { required: true, validator: validatePass2, trigger: 'change'}
         ],
         name: [
           { required: true, message: '이름을 입력해주세요',trigger: 'blur' }
@@ -122,9 +117,8 @@ export default {
               name: state.form.name
             }
           )
-          .then(function () {
-            // 홈화면(로그인화면)으로 이동
-            router.push("Home")
+          .then(function (result) {
+            router.push({name: 'Home'})
           })
           .catch(function (err) {
             alert(err)

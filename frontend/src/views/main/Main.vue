@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header>
+    <el-header height="100px"> 
       <main-header-bar/>
     </el-header>
     <el-container>
@@ -44,6 +44,6 @@ export default {
     onCloseCreateRoomDialog () {
       this.createRoomDialogOpen = false
     }
-  }
+  },
 }
 </script>
