@@ -57,7 +57,7 @@ public class ConferenceServiceTest {
 		// given
 		Long sequence = (long) 21;
 		// when
-		conferenceService.delete();
+		//conferenceService.delete();
 		// then
 //		assertEquals(conferenceRepository.findOne(sequence), null);
 	}
