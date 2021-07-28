@@ -22,7 +22,6 @@ export default {
       router.push({name: 'Home'})
     }
 
-    console.log(user)
 
     return { store, user, clickLogOut, router}
   }

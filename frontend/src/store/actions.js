@@ -24,8 +24,14 @@ export function requestSignUp ({ /*state*/ }, payload) {
 // 방생성 관련 axios
 export function createRoom({ /*state*/ }, payload) {
   const url = '/conference/make'
+  const token = localStorage.getItem('jwt')
+  const instance = $axios.create({
+    headers: {
+      Authorization : "Bearer " + token
+    }
+  })
   let body = payload
-  return $axios.post(url, body)
+  return instance.post(url, body)
 }
 
 // 방정보 관련 axios
