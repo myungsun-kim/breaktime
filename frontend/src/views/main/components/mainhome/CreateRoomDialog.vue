@@ -45,23 +45,20 @@ export default {
   setup(props, { emit }) {
     const createRoomForm = ref(null)
     const store = useStore()
+    const user = store.getters['root/getUserInfo']
 
     const state = reactive({
       form: {
         name: '',
-        owner: '',
         description: '',
-        category_seq: 0,
-        option: 0,
+        participant_limit: 1,
+        option: 1,
         password: '',
       },
       rules: {
         name: [
           { required: true, message: '방제를입력해주세요', trigger: 'blur'},
           { min: 2, max: 20, message: '2 ~ 20글자까지 가능합니다', trigger: 'blur'}
-        ],
-        option: [
-          { required: true, message: '방종류를 선택해주세요', trigger: 'change' },
         ],
         password: [
           { required: true, message: '비밀번호를 입력해주세요', trigger: 'blur'},
@@ -84,13 +81,16 @@ export default {
     const createRoom = function () {
       createRoomForm.value.validate((valid) => {
         if (valid) {
-          store.dispatch('root/createRoom', { 
-            name: state.form.name,
-            owner: '',
-            participantLimit: state.form.participant_limit,
+          if (!state.value) {
+            state.form.password = ''
+          }
+          store.dispatch('root/createRoom', {
             category_seq: state.form.option,
+            description: state.form.description,
+            name: state.form.name,
+            owner: user.userId,
             password: state.form.password,
-            description: state.form.description
+            participantLimit: state.form.participant_limit,
           })
           .then(function (result) {
             console.log(result)
@@ -113,7 +113,7 @@ export default {
       emit('closeCreateRoomDialog')
     } 
 
-    return { state, handleClose, createRoomForm, createRoom, store }
+    return { state, handleClose, createRoomForm, createRoom, store, user}
   },
 }
 </script>

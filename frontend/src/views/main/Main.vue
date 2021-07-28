@@ -24,6 +24,7 @@ import MainHeaderBar from './components/MainHeaderBar.vue'
 import MainHome from './components/MainHome.vue'
 import CreateRoomDialog from './components/mainhome/CreateRoomDialog.vue'
 
+
 export default {
   name: 'Main',
   components: {
