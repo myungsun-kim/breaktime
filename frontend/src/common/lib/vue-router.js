@@ -3,17 +3,32 @@ import Home from '@/views/home/Home.vue'
 import SignUp from '@/views/home/components/SignUp.vue'
 import Main from '@/views/main/Main.vue'
 import Comference from '@/views/conference/Conference.vue'
+import Test from '@/views/Test.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
+    beforeEnter: function (to, from, next) {
+      if (localStorage.getItem('jwt')) {
+        next({name:'Main'})
+      } else {
+        next();
+      }
+    }
   },
   {
     path: '/signup',
     name: 'Signup',
     component: SignUp,
+    beforeEnter: function (to, from, next) {
+      if (localStorage.getItem('jwt')) {
+        next({name:'Main'})
+      } else {
+        next();
+      }
+    }
   },
   {
     path: '/main',
@@ -39,6 +54,12 @@ const routes = [
         next({name:'Home'});
       }
     }
+  },
+  // 채팅방 테스트용 
+  {
+    path: '/test',
+    name: 'Test',
+    component: Test
   }
 ]
 

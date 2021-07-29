@@ -61,7 +61,7 @@ export default {
       rules: {
         name: [
           { required: true, message: '방제를입력해주세요', trigger: 'blur'},
-          { min: 2, max: 20, message: '2 ~ 20글자까지 가능합니다', trigger: 'blur'}
+          { min: 2, max: 10, message: '2 ~ 10글자까지 가능합니다', trigger: 'blur'}
         ],
         password: [
           { required: true, message: '비밀번호를 입력해주세요', trigger: 'blur'},
