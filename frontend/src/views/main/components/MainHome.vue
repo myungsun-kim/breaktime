@@ -4,7 +4,7 @@
     <el-button @click="createRoom">방만들기</el-button>
     <div class="container">
       <div class="row room">
-        <div v-for="item in state.room" :key="item" class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div v-for="item in state.room" :key="item" class="col-12 col-sm-6 col-md-4 col-lg-3 roomcard">
           <room-card :item="item"/>
         </div>
       </div>
@@ -29,6 +29,7 @@ export default {
     const store = useStore()
     const state = reactive({
       room: [],
+
     })
 
     const getRoom = function () {
@@ -43,8 +44,12 @@ export default {
 
     getRoom()
 
-    const searchRoom = function (value) {
-      console.log(value)
+    const searchRoom = function (searchInfo) {
+      const value = searchInfo.value
+      const input = searchInfo.input
+      if (value === 1) {
+        
+      }
     }
 
     const createRoom = () => {
@@ -58,6 +63,10 @@ export default {
 
 <style scoped>
   .room {
-    margin-bottom: 10px;
+    margin: 10px;
+  }
+  .roomcard {
+    width: 300px;
+    height: 200px;
   }
 </style>
