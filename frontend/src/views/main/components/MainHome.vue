@@ -1,14 +1,12 @@
 <template>
-  <div>
+  <div class="container">
     <search-bar @searchRoom="searchRoom"/>
     <el-button @click="createRoom">방만들기</el-button>
-    <div class="container">
       <div class="row room">
         <div v-for="item in state.room" :key="item" class="col-12 col-sm-6 col-md-4 col-lg-3 roomcard">
           <room-card :item="item"/>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -47,8 +45,19 @@ export default {
     const searchRoom = function (searchInfo) {
       const value = searchInfo.value
       const input = searchInfo.input
-      if (value === 1) {
-        
+      if (input) {
+        store.dispatch('root/searchRoom', {
+          value: value,
+          input: input
+        })
+        .then(function (result) {
+          state.room = result.data
+        })
+        .catch(function (err) {
+          console.log(err)
+        })
+      } else {
+        getRoom()
       }
     }
 
@@ -63,10 +72,10 @@ export default {
 
 <style scoped>
   .room {
-    margin: 10px;
+    margin: 5px;
   }
   .roomcard {
-    width: 300px;
+    width: 320px;
     height: 200px;
   }
 </style>
