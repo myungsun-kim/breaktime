@@ -12,7 +12,7 @@
       </el-select>
     </template>
     <template #append>
-      <el-button icon="el-icon-search"></el-button>
+      <el-button icon="el-icon-search" @click="searchRoom"></el-button>
     </template>
   </el-input>
 </div>
@@ -23,7 +23,7 @@ import { reactive } from 'vue'
 
 export default ({
   name: 'SearchBar',
-  setup() {
+  setup(props, { emit }) {
     const state = reactive({
       options: [{
           value: '1',
@@ -35,7 +35,10 @@ export default ({
       value: '',
       input: ''
     })
-    return { state }
+    const searchRoom = function () {
+      emit('searchRoom', state)
+    }
+    return { state, searchRoom }
   }
 })
 </script>
