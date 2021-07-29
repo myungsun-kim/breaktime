@@ -2,9 +2,9 @@
   <el-dialog title="비밀방" v-model="state.dialogVisible" @close="handleClose" width="400px">
     <el-form ref="passwordForm" :model="state.form" :rules="state.rules" label-width="80px">
       <el-form-item prop="password" label="비밀번호:" >
-        <el-input v-model="state.form.password" autocomplete="off" show-password></el-input>
+        <el-input v-model="state.form.password" autocomplete="off" show-password @keyup.enter="goRoomEmit"></el-input>
       </el-form-item>
-      <el-button>입장하기</el-button>
+      <el-button @click="goRoomEmit">입장하기</el-button>
     </el-form>
   </el-dialog>
 </template>
@@ -50,10 +50,20 @@ export default {
     })
 
     const handleClose = function () {
+      state.form.password = ''
       emit('closeroomPasswordDialog')
     }
 
-    return {state, handleClose, passwordForm, validatePass}
+    const goRoomEmit = function () {
+      passwordForm.value.validate((valid) => {
+        if (valid) {
+          emit('goRoomEmit')
+          handleClose()
+        }
+      })
+    }
+
+    return {state, handleClose, passwordForm, validatePass, goRoomEmit}
   }
 }
 </script>

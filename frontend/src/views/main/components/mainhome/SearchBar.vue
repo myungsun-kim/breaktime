@@ -26,13 +26,13 @@ export default ({
   setup(props, { emit }) {
     const state = reactive({
       options: [{
-          value: '1',
+          value: 1,
           label: '방번호'
         }, {
-          value: '2',
+          value: 2,
           label: '방제목'
       }],
-      value: '',
+      value: 1,
       input: ''
     })
     const searchRoom = function () {

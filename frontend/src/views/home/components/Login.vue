@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
@@ -81,6 +81,7 @@ export default {
             saveUser(token)
           })
           .catch(function (err) {
+            console.log(err)
             alert(err)
           })
         } else {

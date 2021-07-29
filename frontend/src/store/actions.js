@@ -39,3 +39,17 @@ export function getRoom({/*state*/}) {
   const url = '/conference/search/all'
   return $axios.get(url)
 }
+
+// 방검색 관련 axios
+export function searchRoom({/*state*/}, payload) {
+  const value = payload.value
+  let input = payload.input
+  let url = ''
+  if (value === 1) {
+    input = Number(input)
+    url = `/conference/search/num/${input}`
+  } else {
+    url = `/conference/search/name/${input}`
+  }
+  return $axios.get(url)
+}
