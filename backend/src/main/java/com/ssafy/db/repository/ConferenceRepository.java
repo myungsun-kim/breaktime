@@ -1,6 +1,8 @@
 package com.ssafy.db.repository;
 
 import java.util.List;
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 
 import org.springframework.data.jpa.repository.Modifying;

@@ -2,7 +2,6 @@ package com.ssafy.api.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.api.request.ConferenceVO;
@@ -36,7 +34,7 @@ public class ConferenceController {
 	@Autowired
 	ConferenceRepository conferenceRepository;
 	
-	@PostMapping("/make")
+	@PostMapping("/make") // 회의방 생성
 	public ResponseEntity<? extends BaseResponseBody> make(Authentication authentication, @RequestBody ConferenceVO confer){
 		
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
@@ -65,7 +63,7 @@ public class ConferenceController {
 		}
 	}
 	
-	@GetMapping("/search/name/{name}")
+	@GetMapping("/search/name/{name}") // 이름으로 검색
 	public List<Conference> searchName(@PathVariable("name") String name) {
 		return conferenceService.findOne(name);
 	}
@@ -75,12 +73,12 @@ public class ConferenceController {
 		return conferenceService.findOne(sequence);
 	}
 	
-	@GetMapping("/search/all")
+	@GetMapping("/search/all") // 회의방 전체 검색
 	public List<Conference> searchAll(){
 		return conferenceService.findConferences();
 	}
 	
-	@PostMapping("update/{sequence}")
+	@PostMapping("/update/{sequence}") // 회의방 수정
     public void updateConference(Authentication authentication, @PathVariable("sequence") Long sequence, @RequestBody ConferenceVO confer){
 		
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
@@ -103,7 +101,7 @@ public class ConferenceController {
 
     }
 	
-	@GetMapping("delete/{sequence}")
+	@GetMapping("/delete/{sequence}") // 회의방 삭제
 	public void deleteConference(Authentication authentication, @PathVariable("sequence") Long sequence) {
 		
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
@@ -111,4 +109,5 @@ public class ConferenceController {
 		
 		conferenceRepository.delete(sequence);
 	}
+	
 }
