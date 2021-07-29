@@ -4,6 +4,9 @@
       <el-form-item label="방제목" prop="name">
         <el-input v-model="state.form.name" autocomplete="off"></el-input>
       </el-form-item>
+      <el-form-item label="방설명" prop="description">
+        <el-input type="textarea" show-word-limit maxlength="30" v-model="state.form.description" autocomplete="off"></el-input>
+      </el-form-item>
       <el-form-item label="제한인원" prop="participant_limit">
         <el-input-number v-model="state.form.participant_limit" :min="1" :max="10"></el-input-number>
       </el-form-item>
@@ -62,7 +65,7 @@ export default {
         ],
         password: [
           { required: true, message: '비밀번호를 입력해주세요', trigger: 'blur'},
-        ]
+        ],
       },
       options: [{
           value: 1,
