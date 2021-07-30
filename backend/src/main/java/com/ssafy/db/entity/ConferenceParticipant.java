@@ -21,12 +21,11 @@ public class ConferenceParticipant {
 	@Column(name="participant_seq")
 	private int sequence; //참가자 번호
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "conference_seq")
-	private long conferenceSequence; // 회의방과 다대일 관계
-	
-	@OneToOne
-	@JoinColumn(name="user_id")
-	@Column(name="participant_id")
-	private String participantId; // 회원과 일대일 관계
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "conference_seq")
+//	private Long conferenceSequence; // 회의방과 다대일 관계
+//	
+//	@OneToOne
+//	@JoinColumn(name="user_id")
+//	private String participantId; // 회원과 일대일 관계
 }
