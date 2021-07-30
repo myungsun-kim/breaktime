@@ -47,6 +47,10 @@ public class User{
     @OneToMany(mappedBy = "friend") // 친구리스트
     private List<Friend> friends = new ArrayList<>();
     
+    @OneToOne
+    @JoinColumn(name="participant_id") // 회의방 참가자 테이블과 일대일 관계
+    private ConferenceParticipant conferenceParticipant;
+    
     public User() {}
     
 	public User(String id, String name, String password, String nickname, String emailS, String emailE, int phone) {
