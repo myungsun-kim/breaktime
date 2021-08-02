@@ -6,7 +6,8 @@
         <el-input v-model="state.form.id" autocomplete="off" placeholder="ID를입력해주세요"></el-input>
       </el-form-item>
       <el-form-item prop="password" label="비밀번호" >
-        <el-input v-model="state.form.password" autocomplete="off" show-password placeholder="PW를입력해주세요"></el-input>
+        <el-input v-model="state.form.password" autocomplete="off" show-password placeholder="PW를입력해주세요"
+        @keyup.enter="clickLogin"></el-input>
       </el-form-item>
       <el-button type="primary" @click="clickLogin" >로그인</el-button>
       <el-button type="danger" @click="clickSignUp" >회원가입</el-button>
@@ -15,7 +16,7 @@
 </template>
 
 <script>
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
@@ -80,7 +81,7 @@ export default {
             saveUser(token)
           })
           .catch(function (err) {
-            alert(err)
+            alert(err.response.data.message)
           })
         } else {
           alert('조건에 맞게 넣으세요ㅡㅡ')

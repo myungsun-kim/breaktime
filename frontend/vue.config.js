@@ -1,12 +1,18 @@
 module.exports = {
   devServer: {
-    https: false,
+    https: true,
     port: 8083,
     open: true,
     proxy: {
-      '/api/v1': {
-        target: 'http://localhost:8080/'
-      }
+      '/conference': {
+        target: 'http://localhost:8443/'
+      },
+      '/auth': {
+        target: 'http://localhost:8443/'
+      },
+      '/user': {
+        target: 'http://localhost:8443/'
+      },
     },
     historyApiFallback: true,
     hot: true

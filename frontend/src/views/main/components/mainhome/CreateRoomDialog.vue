@@ -4,6 +4,9 @@
       <el-form-item label="방제목" prop="name">
         <el-input v-model="state.form.name" autocomplete="off"></el-input>
       </el-form-item>
+      <el-form-item label="방설명" prop="description">
+        <el-input type="textarea" show-word-limit maxlength="30" v-model="state.form.description" autocomplete="off"></el-input>
+      </el-form-item>
       <el-form-item label="제한인원" prop="participant_limit">
         <el-input-number v-model="state.form.participant_limit" :min="1" :max="10"></el-input-number>
       </el-form-item>
@@ -45,27 +48,24 @@ export default {
   setup(props, { emit }) {
     const createRoomForm = ref(null)
     const store = useStore()
+    const user = store.getters['root/getUserInfo']
 
     const state = reactive({
       form: {
         name: '',
-        owner: '',
         description: '',
-        category_seq: 0,
-        option: 0,
+        participant_limit: 1,
+        option: 1,
         password: '',
       },
       rules: {
         name: [
           { required: true, message: '방제를입력해주세요', trigger: 'blur'},
-          { min: 2, max: 20, message: '2 ~ 20글자까지 가능합니다', trigger: 'blur'}
-        ],
-        option: [
-          { required: true, message: '방종류를 선택해주세요', trigger: 'change' },
+          { min: 2, max: 10, message: '2 ~ 10글자까지 가능합니다', trigger: 'blur'}
         ],
         password: [
           { required: true, message: '비밀번호를 입력해주세요', trigger: 'blur'},
-        ]
+        ],
       },
       options: [{
           value: 1,
@@ -84,20 +84,23 @@ export default {
     const createRoom = function () {
       createRoomForm.value.validate((valid) => {
         if (valid) {
-          store.dispatch('root/createRoom', { 
-            name: state.form.name,
-            owner: '',
-            participantLimit: state.form.participant_limit,
+          if (!state.value) {
+            state.form.password = ''
+          }
+          store.dispatch('root/createRoom', {
             category_seq: state.form.option,
+            description: state.form.description,
+            name: state.form.name,
+            owner: user.userId,
             password: state.form.password,
-            description: state.form.description
+            participantLimit: state.form.participant_limit,
           })
-          .then(function (result) {
-            console.log(result)
+          .then(function () {
+            // console.log(result)
             handleClose()
           })
           .catch(function (err) {
-            alert(err)
+            alert(err.response.data.message)
           })
         } else {
           alert('조건에 맞게 넣으세요ㅡㅡ')
@@ -113,7 +116,7 @@ export default {
       emit('closeCreateRoomDialog')
     } 
 
-    return { state, handleClose, createRoomForm, createRoom, store }
+    return { state, handleClose, createRoomForm, createRoom, store, user}
   },
 }
 </script>
