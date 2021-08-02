@@ -47,9 +47,9 @@ public class User{
     @OneToMany(mappedBy = "friend") // 친구리스트
     private List<Friend> friends = new ArrayList<>();
     
-    @OneToOne
-    @JoinColumn(name="participantId") // 회의방 참가자 테이블과 일대일 관계
-    private ConferenceParticipant conferenceParticipant;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name="participantId") // 회의방 참가자 테이블과 일대일 관계
+//    private ConferenceParticipant conferenceParticipant;
     
     public User() {}
     
