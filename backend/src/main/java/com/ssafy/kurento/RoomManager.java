@@ -14,26 +14,26 @@ public class RoomManager {
 	@Autowired
 	private KurentoClient kurento;
 	
-	private final ConcurrentMap<String, Room> rooms = new ConcurrentHashMap<>();
+	private final ConcurrentMap<Integer, Room> rooms = new ConcurrentHashMap<>();
 	
-	// 해당 이름의 룸 찾기
-	public Room getRoom(String roomName) {
-		log.debug("Searching for room {}", roomName);
-		Room room = rooms.get(roomName);
+	// 해당 번호의 룸 찾기
+	public Room getRoom(int sequence) {
+		log.debug("Searching for room {}", sequence);
+		Room room = rooms.get(sequence);
 		
 		if(room == null) {
-			log.debug("Room {} not existent. Will create now!", roomName);
-			room = new Room(roomName, kurento.createMediaPipeline());
-			rooms.put(roomName, room); //룸 생성
+			log.debug("Room {} not existent. Will create now!", sequence);
+			room = new Room(sequence, kurento.createMediaPipeline());
+			rooms.put(sequence, room); //룸 생성
 		}
-		log.debug("Room {} found!", roomName);
+		log.debug("Room {} found!", sequence);
 		return room;
 	}
 	
 	// 해당 룸 제거
 	public void removeRoom(Room room) {
-		this.rooms.remove(room.getName());
+		this.rooms.remove(room.getSequence());
 		room.close();
-		log.info("Room {} removed and closed", room.getName());
+		log.info("Room {} removed and closed", room.getSequence());
 	}
 }

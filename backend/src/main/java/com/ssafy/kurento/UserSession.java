@@ -29,16 +29,16 @@ public class UserSession implements Closeable{
 	
 	private final MediaPipeline pipeline;
 	
-	private final String roomName;
+	private final int roomSequence;
 	private final WebRtcEndpoint outgoingMedia;//PeerToPeer로 통신하는 WebRTC의 한쪽
 	private ConcurrentMap<String, WebRtcEndpoint> incomingMedia = new ConcurrentHashMap<>();
 
 	
-	public UserSession(final String name, String roomName, final WebSocketSession session, MediaPipeline pipeline) {
+	public UserSession(final String name, int room_sequence, final WebSocketSession session, MediaPipeline pipeline) {
 		this.name = name;
 		this.session = session;
 		this.pipeline = pipeline;
-		this.roomName = roomName;
+		this.roomSequence = room_sequence;
 		this.outgoingMedia = new WebRtcEndpoint.Builder(pipeline).build();
 		
 		this.outgoingMedia.addIceCandidateFoundListener(new EventListener<IceCandidateFoundEvent>() {
@@ -73,14 +73,14 @@ public class UserSession implements Closeable{
 		return session;
 	}
 
-	public String getRoomName() {
-	    return this.roomName;
+	public int getRoomSeqeuence() {
+	    return this.roomSequence;
   	}
 	  
 	public void receiveVideoFrom(UserSession sender, String sdpOffer) throws IOException{
 		//SDP Session Description Protocol 멀티미티어 세션 파라미터를 협상하는 프로토콜
 		//sdpOffer: 어떤 방식으로 연결될지 확인
-		log.info("USER {}: connection with {} in room {}", this.name, sender.getName(), this.roomName);
+		log.info("USER {}: connection with {} in room {}", this.name, sender.getName(), this.roomSequence);
 		// 로그에 유저 정보 / 연결된 유저 정보 / 연결된 방의 정보 표시
 		
 		log.trace("USER {}: SpdOffer for {} is {}", this.name, sender.getName(), sdpOffer);
@@ -229,7 +229,7 @@ public class UserSession implements Closeable{
 		if(obj==null || !(obj instanceof UserSession)) return false;
 		UserSession other = (UserSession) obj;
 		boolean eq = name.contentEquals(other.name);
-		eq &= roomName.contentEquals(other.roomName);
+		eq &= Integer.toString(roomSequence).contentEquals(Integer.toString(other.roomSequence));
 		return eq;
 	}
 	
@@ -237,7 +237,7 @@ public class UserSession implements Closeable{
 	public int hashCode() {
 		int result = 1;
 		result = 31*result + name.hashCode();
-		result = 31*result + roomName.hashCode();
+		result = 31*result + Integer.toString(roomSequence).hashCode();
 		return result;
 	}
 }
