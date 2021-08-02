@@ -121,7 +121,7 @@ export default {
             router.push({name: 'Home'})
           })
           .catch(function (err) {
-            alert(err)
+            alert(err.response.data.message)
           })
         } else {
           alert('조건에 맞게 넣으세요ㅡㅡ')

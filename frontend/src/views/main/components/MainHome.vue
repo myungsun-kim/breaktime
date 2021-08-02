@@ -45,13 +45,20 @@ export default {
     const searchRoom = function (searchInfo) {
       const value = searchInfo.value
       const input = searchInfo.input
-      if (input) {
+      if (value === 1 && !Number(input)) {
+        alert('숫자를 입력해주세요')
+      } else if (input) {
         store.dispatch('root/searchRoom', {
           value: value,
           input: input
         })
         .then(function (result) {
-          state.room = result.data
+          if (value === 1) {
+            state.room = []
+            state.room.push(result.data)
+          } else {
+            state.room = result.data
+          }
         })
         .catch(function (err) {
           console.log(err)
