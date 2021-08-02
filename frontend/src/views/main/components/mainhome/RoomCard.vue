@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card">
+  <el-card v-if="props.item" class="box-card">
     <template #header>
       <div class="d-flex justify-content-between">
         <span>{{state.room.number}}. {{state.room.name}}</span>
@@ -21,6 +21,7 @@
       @closeroomPasswordDialog="onCloseroomPasswordDialog"
       @goRoomEmit="goSecretRoom"/>
   </el-card>
+  <h2 v-else>방이없습니다!!!</h2>
 </template>
 
 <script>
@@ -69,7 +70,7 @@ export default {
       state.roomPasswordDialogOpen = false
     }
 
-    return {state, router, goRoom, onCloseroomPasswordDialog, goSecretRoom}
+    return {props, state, router, goRoom, onCloseroomPasswordDialog, goSecretRoom}
   }
 }
 </script>
