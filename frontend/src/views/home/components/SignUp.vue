@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="home-bg">
     <h1>회원가입</h1>
-    <el-form :model="state.form" :rules="state.rules" ref="signUpForm" label-width="120px" class="form">
+    <el-form :model="state.form" :rules="state.rules" ref="signUpForm" label-width="7.5rem" class="form">
       <el-form-item prop="id" label="아이디">
         <el-input v-model="state.form.id" autocomplete="off">
           <template #append>
-            <el-button>ID중복확인</el-button>
+            <el-button @click='checkId'>ID중복확인</el-button>
           </template>
         </el-input>
       </el-form-item>
@@ -24,7 +24,7 @@
       <el-form-item prop="phone" label="휴대폰" >
         <el-input v-model="state.form.phone" autocomplete="off" placeholder="-없이 입력해주세요">
           <template #append>
-            <el-button>인증번호전송</el-button>
+            <el-button >인증번호전송</el-button>
           </template>
         </el-input>
       </el-form-item>
@@ -71,6 +71,18 @@ export default {
       }
     }
 
+    var validateId = (rule, value, callback) => {
+      if (value === '') {
+        return callback(new Error('ID를 입력해주세요.'))
+      } else if (16 < value.length) {
+        return callback(new Error('ID는 최대 16자까지 가능합니다.'))
+      } else if (value !== state.checkId) {
+        return callback(new Error('ID중복검사를 실시해주세요'))
+      } else {
+        callback()
+      }
+    }
+
     const state = reactive({
       form: {
         id: '',
@@ -81,10 +93,10 @@ export default {
         name: '',
         CNumber: '',
       },
+      checkId: '',
       rules: {
         id: [
-          {required: true, message: 'ID를 입력해주세요', trigger: 'blur'},
-          { max: 16, message: 'ID는 최대 16자까지 가능합니다.', trigger: 'blur' },
+          { required: true, validator: validateId, trigger: 'blur'}
         ],
         password: [
           { required: true, validator: validatePass, trigger: 'blur'}
@@ -101,9 +113,20 @@ export default {
         CNumber: [
           { required: true, message: '인증번호를 입력해주세요',trigger: 'blur'}
         ]
-
-      }
+      },
     })
+
+    const checkId = function () {
+      store.dispatch('root/requestCheckId', {id: state.form.id})
+      .then(function (result) {
+        state.checkId = state.form.id
+        alert('사용가능한 ID 입니다')
+      })
+      .catch(function (err) {
+        alert(err.response.data.message)
+      })
+    }
+
     const clickSignUp = function () {
       // 회원가입 유효성검사후 axios 요청(store - actions으로)
       signUpForm.value.validate((valid) => {
@@ -128,13 +151,29 @@ export default {
         }
       });
     }
-    return { state, signUpForm, clickSignUp, store, router}
+    return { state, signUpForm, clickSignUp, store, router, checkId}
   }
 }
 </script>
 
 <style scoped>
   .form {
-    margin: 0 25% ; /* 세로 | 가로 */
+    width: 50%;
+    margin: 0 25%;
+    background-color: whitesmoke;
+    padding: 1rem;
+    border-radius: 1rem;
   }
+  @media (max-width: 800px) {
+    .form {
+      width: 80%;
+      margin: 0 10%;
+    }
+  }
+  
+  .home-bg {
+    height: 80vh;
+    background: url('../../../assets/coffee.jpg');
+  }
+
 </style>
