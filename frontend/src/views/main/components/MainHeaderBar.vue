@@ -1,7 +1,9 @@
 <template>
 <div>
-  <h1>Hello {{user.name}} </h1>
-  <el-button type="danger" @click="clickLogOut" >로그아웃</el-button>
+  <h1>
+    Hello {{user.name}} 
+    <el-button type="danger" @click="clickLogOut" >로그아웃</el-button>
+  </h1>
 </div>
 </template>
 

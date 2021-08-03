@@ -1427,7 +1427,7 @@
     "@vue/compiler-core" "3.1.5"
     "@vue/shared" "3.1.5"
 
-"@vue/compiler-sfc@^3.0.0", "@vue/compiler-sfc@^3.0.0-beta.14":
+"@vue/compiler-sfc@^3.0.0", "@vue/compiler-sfc@^3.0.0-beta.14", "@vue/compiler-sfc@^3.0.8":
   "integrity" "sha1-5h5U86ljsPSo5SP7uGMjkNxSsNY="
   "resolved" "https://registry.nlark.com/@vue/compiler-sfc/download/@vue/compiler-sfc-3.1.5.tgz"
   "version" "3.1.5"
@@ -2526,9 +2526,7 @@
     "supports-color" "^7.1.0"
 
 "chalk@^4.1.0":
-  "integrity" "sha512-diHzdDKxcU+bAsUboHLPEDQiw0qEe0qd7SYUn3HgcFlWgbDcfLGswOHYeGrHKzG9z6UYf01d9VFMfZxPM1xZSg=="
-  "resolved" "https://registry.npmjs.org/chalk/-/chalk-4.1.1.tgz"
-  "version" "4.1.1"
+  "version" "4.1.2"
   dependencies:
     "ansi-styles" "^4.1.0"
     "supports-color" "^7.1.0"
@@ -8959,9 +8957,7 @@
   "version" "2.3.4"
 
 "vue-loader-v16@npm:vue-loader@^16.1.0":
-  "integrity" "sha512-/1GzCuQ6MRORbC+leKTKoTGtpQt60bYe0gDGEextSteA2OM+v201FPha5jzmjQzVhRcwieZeUvezAtG5a/e5cw=="
-  "resolved" "https://registry.npmjs.org/vue-loader/-/vue-loader-16.3.3.tgz"
-  "version" "16.3.3"
+  "version" "16.4.1"
   dependencies:
     "chalk" "^4.1.0"
     "hash-sum" "^2.0.0"
@@ -9154,7 +9150,7 @@
     "source-list-map" "^2.0.0"
     "source-map" "~0.6.1"
 
-"webpack@^1.0.0 || ^2.0.0 || ^3.0.0 || ^4.0.0", "webpack@^2.0.0 || ^3.0.0 || ^4.0.0", "webpack@^3.0.0 || ^4.1.0 || ^5.0.0-0", "webpack@^4.0.0", "webpack@^4.0.0 || ^5.0.0", "webpack@^4.4.0", "webpack@>=2", "webpack@>=2.0.0 <5.0.0", "webpack@>=4.0.0":
+"webpack@^1.0.0 || ^2.0.0 || ^3.0.0 || ^4.0.0", "webpack@^2.0.0 || ^3.0.0 || ^4.0.0", "webpack@^3.0.0 || ^4.1.0 || ^5.0.0-0", "webpack@^4.0.0", "webpack@^4.0.0 || ^5.0.0", "webpack@^4.1.0 || ^5.0.0-0", "webpack@^4.4.0", "webpack@>=2", "webpack@>=2.0.0 <5.0.0", "webpack@>=4.0.0":
   "integrity" "sha1-v5tEBOogoHNgXgoBHRiNd8tq1UI="
   "resolved" "https://registry.nlark.com/webpack/download/webpack-4.46.0.tgz"
   "version" "4.46.0"
@@ -9198,8 +9194,6 @@
   "version" "0.1.4"
 
 "websocket@latest":
-  "integrity" "sha512-PRDso2sGwF6kM75QykIesBijKSVceR6jL2G8NGYyq2XrItNC2P5/qL5XeR056GhA+Ly7JMFvJb9I312mJfmqnQ=="
-  "resolved" "https://registry.npmjs.org/websocket/-/websocket-1.0.34.tgz"
   "version" "1.0.34"
   dependencies:
     "bufferutil" "^4.0.1"

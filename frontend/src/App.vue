@@ -1,6 +1,12 @@
 <template>
+  <div>
+    <router-view />
+    <footer>
+      <span>footer</span>
+    </footer>
+  </div>
   <!-- <Home /> -->
-  <router-view />
+
 </template>
 
 <script>
@@ -39,11 +45,12 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Georgia, Serif;
+  font-weight: bold;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color:#333333;
   margin-top: 60px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="form">
     <h2>로그인</h2>
-    <el-form :model="state.form" :rules="state.rules" ref="loginForm" class="form" label-width="120px">
+    <el-form :model="state.form" :rules="state.rules" ref="loginForm" label-width="5.5rem">
       <el-form-item prop="id" label="아이디" >
         <el-input v-model="state.form.id" autocomplete="off" placeholder="ID를입력해주세요"></el-input>
       </el-form-item>
@@ -117,6 +117,14 @@ export default {
 
 <style scoped>
   .form {
-    margin: 0 25%;
+    width: 50%;
+    margin: 10% 0 10% 25%;
+    background-color: whitesmoke;
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+
+  .el-input {
+    width: 100%;
   }
 </style>

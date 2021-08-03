@@ -21,6 +21,13 @@ export function requestSignUp ({ /*state*/ }, payload) {
   return $axios.post(url, body)
 }
 
+// ID체크 관련 axios
+export function requestCheckId({ /*state*/ }, payload) {
+  const id = payload.id
+  const url = `/user/${id}`
+  return $axios.get(url)
+}
+
 // 방생성 관련 axios
 export function createRoom({ /*state*/ }, payload) {
   const url = '/conference/make'
