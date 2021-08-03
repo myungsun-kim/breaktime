@@ -66,10 +66,10 @@ public class ConferenceController {
 		conference.setProduceTime(LocalDateTime.now()); // 현재 시간
 		
 		Long seq = conferenceService.create(conference);
-		Long seq_participant = conferenceParticipantService.create(conferenceParticipant);
+		Long seqParticipant = conferenceParticipantService.create(conferenceParticipant);
 
 		
-		if(seq != null && seq_participant != null) {
+		if(seq != null && seqParticipant != null) {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		}else {
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail"));
