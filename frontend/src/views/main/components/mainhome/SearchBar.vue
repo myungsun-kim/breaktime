@@ -1,6 +1,6 @@
 <template>
 <div>
-  <el-input placeholder="Please input" v-model="state.input">
+  <el-input placeholder="Please input" v-model="state.input" @keypress.enter="searchRoom">
     <template #prepend>
       <el-select v-model="state.value" placeholder="Select">
         <el-option

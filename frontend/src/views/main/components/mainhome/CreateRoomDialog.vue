@@ -95,12 +95,12 @@ export default {
             password: state.form.password,
             participantLimit: state.form.participant_limit,
           })
-          .then(function (result) {
-            console.log(result)
+          .then(function () {
+            // console.log(result)
             handleClose()
           })
           .catch(function (err) {
-            alert(err)
+            alert(err.response.data.message)
           })
         } else {
           alert('조건에 맞게 넣으세요ㅡㅡ')
