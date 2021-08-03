@@ -18,7 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ConferenceParticipant {
-	@Id @GeneratedValue()
+	@Id @GeneratedValue(strategy = GenerationType.TABLE)//식별자
 	@Column(name="participant_seq")
 	private Long sequence; //참가자 번호
 	
