@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.api.request.ConferenceVO;
+import com.ssafy.api.service.ConferenceParticipantService;
 import com.ssafy.api.service.ConferenceService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Conference;
 import com.ssafy.db.entity.ConferenceCategory;
+import com.ssafy.db.entity.ConferenceParticipant;
+import com.ssafy.db.repository.ConferenceParticipantRepository;
 import com.ssafy.db.repository.ConferenceRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,10 @@ public class ConferenceController {
 	ConferenceService conferenceService;
 	@Autowired
 	ConferenceRepository conferenceRepository;
+	@Autowired
+	ConferenceParticipantService conferenceParticipantService;
+	@Autowired
+	ConferenceParticipantRepository conferenceParticipantRepository;
 	
 	@PostMapping("/make") // 회의방 생성
 	public ResponseEntity<? extends BaseResponseBody> make(Authentication authentication, @RequestBody ConferenceVO confer){
@@ -44,6 +51,7 @@ public class ConferenceController {
 		category.setSequence(confer.getCategory_seq()); // 회의방의 카테고리 컬럼을 카테고리 테이블 기본키랑 연결하기 위함
 		
 		Conference conference = new Conference();
+		ConferenceParticipant conferenceParticipant = new ConferenceParticipant(); //회의방 참가자 테이블
 		
 		conference.setConferenceCategory(category);
 		conference.setDescription(confer.getDescription());
@@ -52,11 +60,16 @@ public class ConferenceController {
 		conference.setParticipantLimit(confer.getParticipantLimit());
 		conference.setPassword(confer.getPassword());
 		
+		conferenceParticipant.setConference(conference);
+		conferenceParticipant.setUser(userDetails.getUser());
+		
 		conference.setProduceTime(LocalDateTime.now()); // 현재 시간
 		
 		Long seq = conferenceService.create(conference);
+		Long seq_participant = conferenceParticipantService.create(conferenceParticipant);
+
 		
-		if(seq != null) {
+		if(seq != null && seq_participant != null) {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		}else {
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail"));
