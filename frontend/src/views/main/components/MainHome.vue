@@ -2,11 +2,13 @@
   <div class="container">
     <search-bar @searchRoom="searchRoom"/>
     <el-button @click="createRoom">방만들기</el-button>
-      <div class="row room">
-        <div v-for="item in state.room" :key="item" class="col-12 col-sm-6 col-md-4 col-lg-3 roomcard">
+    <el-scrollbar height="70vh">
+      <ul class="row room">
+        <li v-for="item in state.room" :key="item" class="col-12 col-sm-6 col-md-4 col-lg-3 roomcard">
           <room-card :item="item"/>
-        </div>
-      </div>
+        </li>
+      </ul>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -82,7 +84,10 @@ export default {
     margin: 5px;
   }
   .roomcard {
-    width: 320px;
+    width: 300px;
     height: 200px;
+  }
+  ul{
+    list-style:none;
   }
 </style>
