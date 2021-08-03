@@ -14,10 +14,10 @@ public class RoomManager {
 	@Autowired
 	private KurentoClient kurento;
 	
-	private final ConcurrentMap<Integer, Room> rooms = new ConcurrentHashMap<>();
+	private final ConcurrentMap<Long, Room> rooms = new ConcurrentHashMap<>();
 	
 	// 해당 번호의 룸 찾기
-	public Room getRoom(int sequence) {
+	public Room getRoom(long sequence) {
 		log.debug("Searching for room {}", sequence);
 		Room room = rooms.get(sequence);
 		

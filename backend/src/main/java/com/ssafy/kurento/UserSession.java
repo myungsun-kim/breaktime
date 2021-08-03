@@ -29,12 +29,12 @@ public class UserSession implements Closeable{
 	
 	private final MediaPipeline pipeline;
 	
-	private final int roomSequence;
+	private final long roomSequence;
 	private final WebRtcEndpoint outgoingMedia;//PeerToPeer로 통신하는 WebRTC의 한쪽
 	private ConcurrentMap<String, WebRtcEndpoint> incomingMedia = new ConcurrentHashMap<>();
 
 	
-	public UserSession(final String name, int room_sequence, final WebSocketSession session, MediaPipeline pipeline) {
+	public UserSession(final String name, long room_sequence, final WebSocketSession session, MediaPipeline pipeline) {
 		this.name = name;
 		this.session = session;
 		this.pipeline = pipeline;
@@ -73,7 +73,7 @@ public class UserSession implements Closeable{
 		return session;
 	}
 
-	public int getRoomSeqeuence() {
+	public long getRoomSeqeuence() {
 	    return this.roomSequence;
   	}
 	  
@@ -229,7 +229,7 @@ public class UserSession implements Closeable{
 		if(obj==null || !(obj instanceof UserSession)) return false;
 		UserSession other = (UserSession) obj;
 		boolean eq = name.contentEquals(other.name);
-		eq &= Integer.toString(roomSequence).contentEquals(Integer.toString(other.roomSequence));
+		eq &= Long.toString(roomSequence).contentEquals(Long.toString(other.roomSequence));
 		return eq;
 	}
 	
@@ -237,7 +237,7 @@ public class UserSession implements Closeable{
 	public int hashCode() {
 		int result = 1;
 		result = 31*result + name.hashCode();
-		result = 31*result + Integer.toString(roomSequence).hashCode();
+		result = 31*result + Long.toString(roomSequence).hashCode();
 		return result;
 	}
 }

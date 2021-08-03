@@ -27,13 +27,13 @@ public class Room implements Closeable{
 	
 	private final ConcurrentMap<String, UserSession> participants = new ConcurrentHashMap<>();
 	private final MediaPipeline pipeline;
-	private final int sequence;
+	private final long sequence;
 	
-	public int getSequence() {
+	public long getSequence() {
 		return sequence;
 	}
 	
-	public Room(int sequence, MediaPipeline pipeline) {
+	public Room(long sequence, MediaPipeline pipeline) {
 		this.sequence = sequence;
 		this.pipeline = pipeline;
 		log.info("ROOM created"+sequence);
