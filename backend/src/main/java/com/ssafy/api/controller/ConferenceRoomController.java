@@ -3,11 +3,10 @@ package com.ssafy.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.api.request.ConferenceVO;
 import com.ssafy.api.service.ConferenceParticipantService;
 import com.ssafy.api.service.ConferenceService;
 import com.ssafy.common.auth.SsafyUserDetails;
@@ -33,9 +32,10 @@ public class ConferenceRoomController {
 //	@Autowired
 //	ConferenceParticipantRepository conferenceParticipantRepository;
 	
-	public ResponseEntity<? extends BaseResponseBody> enterRoom(Authentication authentication, long roomSequenece){
+	@PostMapping("/enter")
+	public ResponseEntity<? extends BaseResponseBody> enterRoom(Authentication authentication, long roomSequence){
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-		Conference conference = conferenceService.findOne(roomSequenece);//해당 시퀀스로 회의방 찾기
+		Conference conference = conferenceService.findOne(roomSequence);//해당 시퀀스로 회의방 찾기
 		
 		ConferenceParticipant conferenceParticipant = new ConferenceParticipant(); //회의방 참가자 테이블
 		
