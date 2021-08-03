@@ -7,8 +7,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import com.ssafy.kurento.GroupCallApp;
-
 import java.nio.charset.Charset;
 
 
