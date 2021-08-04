@@ -3,6 +3,7 @@ package com.ssafy.db.repository;
 import javax.persistence.EntityManager;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.db.entity.ConferenceParticipant;
 
@@ -19,5 +20,14 @@ public class ConferenceParticipantRepository {
 		}else {
 			em.merge(conferenceParticipant);			
 		}
+	}
+	
+	@Transactional
+	public void delete(Long sequence) {
+		em.remove(findOne(sequence));
+	}
+	
+	public ConferenceParticipant findOne(Long sequence) {//해당 시퀀스에 해당하는 참가자 찾기
+		return em.find(ConferenceParticipant.class, sequence);
 	}
 }

@@ -20,4 +20,9 @@ public class ConferenceParticipantService {
 		conferenceParticipantRepository.save(conferenceParticipant);
 		return conferenceParticipant.getSequence();
 	}
+	
+	// 회의방 나가기
+	public void leaveRoom(Long sequence) {
+		conferenceParticipantRepository.delete(sequence);
+	}
 }

@@ -3,6 +3,8 @@ package com.ssafy.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,8 +31,8 @@ public class ConferenceRoomController {
 //	ConferenceRepository conferenceRepository;
 	@Autowired
 	ConferenceParticipantService conferenceParticipantService;
-//	@Autowired
-//	ConferenceParticipantRepository conferenceParticipantRepository;
+	@Autowired
+	ConferenceParticipantRepository conferenceParticipantRepository;
 	
 	@PostMapping("/enter")
 	public ResponseEntity<? extends BaseResponseBody> enterRoom(Authentication authentication, long roomSequence){
@@ -49,5 +51,9 @@ public class ConferenceRoomController {
 		}else {
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail"));
 		}
+	}
+	@DeleteMapping("/leave")
+	public void leaveRoom(Long sequence) {//회원 테이블의 시퀀스
+		conferenceParticipantRepository.delete(sequence);
 	}
 }
