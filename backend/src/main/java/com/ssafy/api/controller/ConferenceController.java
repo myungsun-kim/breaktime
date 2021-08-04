@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,10 +67,10 @@ public class ConferenceController {
 		conference.setProduceTime(LocalDateTime.now()); // 현재 시간
 		
 		Long seq = conferenceService.create(conference);
-		Long seqParticipant = conferenceParticipantService.create(conferenceParticipant);
+//		Long seqParticipant = conferenceParticipantService.create(conferenceParticipant);
 
 		
-		if(seq != null && seqParticipant != null) {
+		if(seq != null) {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		}else {
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail"));
@@ -123,4 +124,28 @@ public class ConferenceController {
 		conferenceRepository.delete(sequence);
 	}
 	
+	@PostMapping("/{sequence}") //회의방 입장
+	public ResponseEntity<? extends BaseResponseBody> enterRoom(Authentication authentication, @PathVariable("sequence") Long sequence){
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		Conference conference = conferenceService.findOne(sequence);//해당 시퀀스로 회의방 찾기
+		
+		ConferenceParticipant conferenceParticipant = new ConferenceParticipant(); //회의방 참가자 테이블
+		
+		conferenceParticipant.setConference(conference);
+		conferenceParticipant.setUser(userDetails.getUser());
+		
+//		Long seq = conferenceParticipantService.create(conferenceParticipant);
+		
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+//		if(seq != null) {
+//			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+//		}else {
+//			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail"));
+//		}
+	}
+	
+	@DeleteMapping("/leave") //회의방 나가기
+	public void leaveRoom(String userId) {//회원 테이블의 시퀀스
+		conferenceParticipantRepository.delete(userId);
+	}
 }

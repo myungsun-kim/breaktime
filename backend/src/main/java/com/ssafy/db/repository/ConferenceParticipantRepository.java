@@ -15,7 +15,7 @@ public class ConferenceParticipantRepository {
 	private final EntityManager em; //엔티티 관리
 	
 	public void save(ConferenceParticipant conferenceParticipant) { //트랜잭션 종료되는 시점에 DB 반영
-		if(conferenceParticipant.getSequence()==null) {
+		if(conferenceParticipant.getUser()==null) {
 			em.persist(conferenceParticipant);
 		}else {
 			em.merge(conferenceParticipant);			
@@ -23,11 +23,11 @@ public class ConferenceParticipantRepository {
 	}
 	
 	@Transactional
-	public void delete(Long sequence) {
-		em.remove(findOne(sequence));
+	public void delete(String userId) {
+		em.remove(findOne(userId));
 	}
 	
-	public ConferenceParticipant findOne(Long sequence) {//해당 시퀀스에 해당하는 참가자 찾기
-		return em.find(ConferenceParticipant.class, sequence);
+	public ConferenceParticipant findOne(String userId) {//해당 시퀀스에 해당하는 참가자 찾기
+		return em.find(ConferenceParticipant.class, userId);
 	}
 }
