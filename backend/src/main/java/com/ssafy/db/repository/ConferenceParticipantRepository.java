@@ -15,10 +15,10 @@ public class ConferenceParticipantRepository {
 	private final EntityManager em; //엔티티 관리
 	
 	public void save(ConferenceParticipant conferenceParticipant) { //트랜잭션 종료되는 시점에 DB 반영
-		if(conferenceParticipant.getUser()==null) {
+		if(findOne(conferenceParticipant.getUser().getId())==null) {//해당 아이디로 저장된 값이 없다면
 			em.persist(conferenceParticipant);
-		}else {
-			em.merge(conferenceParticipant);			
+		}else {			
+			em.merge(conferenceParticipant);
 		}
 	}
 	

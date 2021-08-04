@@ -67,8 +67,6 @@ public class ConferenceController {
 		conference.setProduceTime(LocalDateTime.now()); // 현재 시간
 		
 		Long seq = conferenceService.create(conference);
-//		Long seqParticipant = conferenceParticipantService.create(conferenceParticipant);
-
 		
 		if(seq != null) {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -125,7 +123,7 @@ public class ConferenceController {
 	}
 	
 	@PostMapping("/{sequence}") //회의방 입장
-	public ResponseEntity<? extends BaseResponseBody> enterRoom(Authentication authentication, @PathVariable("sequence") Long sequence){
+	public void enterRoom(Authentication authentication, @PathVariable("sequence") Long sequence){
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		Conference conference = conferenceService.findOne(sequence);//해당 시퀀스로 회의방 찾기
 		
@@ -133,19 +131,12 @@ public class ConferenceController {
 		
 		conferenceParticipant.setConference(conference);
 		conferenceParticipant.setUser(userDetails.getUser());
-		
-//		Long seq = conferenceParticipantService.create(conferenceParticipant);
-		
-		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-//		if(seq != null) {
-//			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-//		}else {
-//			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail"));
-//		}
+
+		conferenceParticipantService.save(conferenceParticipant);
 	}
 	
 	@DeleteMapping("/leave") //회의방 나가기
-	public void leaveRoom(String userId) {//회원 테이블의 시퀀스
+	public void leaveRoom(String userId) {//해당 아이디 DB에서 제거
 		conferenceParticipantRepository.delete(userId);
 	}
 }
