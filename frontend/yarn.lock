@@ -1824,6 +1824,13 @@
   dependencies:
     "color-convert" "^2.0.1"
 
+"ansi-styles@^4.1.0":
+  "integrity" "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="
+  "resolved" "https://registry.npmjs.org/ansi-styles/-/ansi-styles-4.3.0.tgz"
+  "version" "4.3.0"
+  dependencies:
+    "color-convert" "^2.0.1"
+
 "any-promise@^1.0.0":
   "integrity" "sha1-q8av7tzqUugJzcA3au0845Y10X8="
   "resolved" "https://registry.nlark.com/any-promise/download/any-promise-1.3.0.tgz"
@@ -2526,7 +2533,9 @@
     "supports-color" "^7.1.0"
 
 "chalk@^4.1.0":
-  "version" "4.1.2"
+  "integrity" "sha512-diHzdDKxcU+bAsUboHLPEDQiw0qEe0qd7SYUn3HgcFlWgbDcfLGswOHYeGrHKzG9z6UYf01d9VFMfZxPM1xZSg=="
+  "resolved" "https://registry.npmjs.org/chalk/-/chalk-4.1.1.tgz"
+  "version" "4.1.1"
   dependencies:
     "ansi-styles" "^4.1.0"
     "supports-color" "^7.1.0"
@@ -3048,8 +3057,8 @@
     "timsort" "^0.3.0"
 
 "css-loader@*", "css-loader@^3.5.3":
-  "integrity" "sha1-Lkssfm4tJ/jI8o9hv/zS5ske9kU="
-  "resolved" "https://registry.nlark.com/css-loader/download/css-loader-3.6.0.tgz"
+  "integrity" "sha512-M5lSukoWi1If8dhQAUCvj4H8vUt3vOnwbQBH9DdTm/s4Ym2B/3dPMtYZeJmq7Q3S3Pa+I94DcZ7pc9bP14cWIQ=="
+  "resolved" "https://registry.npmjs.org/css-loader/-/css-loader-3.6.0.tgz"
   "version" "3.6.0"
   dependencies:
     "camelcase" "^5.3.1"
@@ -3228,6 +3237,11 @@
   "resolved" "https://registry.npmjs.org/dayjs/-/dayjs-1.10.6.tgz"
   "version" "1.10.6"
 
+"de-indent@^1.0.2":
+  "integrity" "sha1-sgOOhG3DO6pXlhKNCAS0VbjB4h0="
+  "resolved" "https://registry.npmjs.org/de-indent/-/de-indent-1.0.2.tgz"
+  "version" "1.0.2"
+
 "debug@^2.2.0":
   "integrity" "sha1-XRKFFd8TT/Mn6QpMk/Tgd6U2NB8="
   "resolved" "https://registry.nlark.com/debug/download/debug-2.6.9.tgz?cache=0&sync_timestamp=1625374632845&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdebug%2Fdownload%2Fdebug-2.6.9.tgz"
@@ -3257,8 +3271,8 @@
     "ms" "^2.1.1"
 
 "debug@^3.2.6":
-  "integrity" "sha1-clgLfpFF+zm2Z2+cXl+xALk0F5o="
-  "resolved" "https://registry.nlark.com/debug/download/debug-3.2.7.tgz?cache=0&sync_timestamp=1625374632845&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fdebug%2Fdownload%2Fdebug-3.2.7.tgz"
+  "integrity" "sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ=="
+  "resolved" "https://registry.npmjs.org/debug/-/debug-3.2.7.tgz"
   "version" "3.2.7"
   dependencies:
     "ms" "^2.1.1"
@@ -3985,8 +3999,8 @@
   "version" "3.3.0"
 
 "eventsource@^1.0.7":
-  "integrity" "sha1-AOjKfJIQnpSw3fMtrGd9hBAoz68="
-  "resolved" "https://registry.nlark.com/eventsource/download/eventsource-1.1.0.tgz"
+  "integrity" "sha512-VSJjT5oCNrFvCS6igjzPAt5hBzQ2qPBFIbJ03zLI9SE0mxwZpMw6BfJrbFHm1a141AavMEB8JHmBhWAd66PfCg=="
+  "resolved" "https://registry.npmjs.org/eventsource/-/eventsource-1.1.0.tgz"
   "version" "1.1.0"
   dependencies:
     "original" "^1.0.0"
@@ -4397,6 +4411,13 @@
   dependencies:
     "map-cache" "^0.2.2"
 
+"freeice@^2.1.0":
+  "integrity" "sha512-XNoIxDHufqPIBSLpp4IrFPnoc+hv/0RwdOGhIoggIDC2ZKf5r6OoixbeoFJSmZOAq2aYiEUArhuQ8zVVrM5C4w=="
+  "resolved" "https://registry.npmjs.org/freeice/-/freeice-2.2.2.tgz"
+  "version" "2.2.2"
+  dependencies:
+    "normalice" "^1.0.0"
+
 "fresh@0.5.2":
   "integrity" "sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac="
   "resolved" "https://registry.nlark.com/fresh/download/fresh-0.5.2.tgz?cache=0&sync_timestamp=1618847035017&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ffresh%2Fdownload%2Ffresh-0.5.2.tgz"
@@ -4691,7 +4712,7 @@
 
 "hash-sum@^1.0.2":
   "integrity" "sha1-M7QHd3VMZDJXPBIMw4CLvRDUfwQ="
-  "resolved" "https://registry.nlark.com/hash-sum/download/hash-sum-1.0.2.tgz"
+  "resolved" "https://registry.npmjs.org/hash-sum/-/hash-sum-1.0.2.tgz"
   "version" "1.0.2"
 
 "hash-sum@^2.0.0":
@@ -4707,7 +4728,7 @@
     "inherits" "^2.0.3"
     "minimalistic-assert" "^1.0.1"
 
-"he@1.2.x":
+"he@^1.1.0", "he@1.2.x":
   "integrity" "sha1-hK5l+n6vsWX922FWauFLrwVmTw8="
   "resolved" "https://registry.npm.taobao.org/he/download/he-1.2.0.tgz"
   "version" "1.2.0"
@@ -4916,8 +4937,8 @@
   "version" "1.1.0"
 
 "icss-utils@^4.0.0", "icss-utils@^4.1.1":
-  "integrity" "sha1-IRcLU3ie4nRHwvR91oMIFAP5pGc="
-  "resolved" "https://registry.nlark.com/icss-utils/download/icss-utils-4.1.1.tgz"
+  "integrity" "sha512-4aFq7wvWyMHKgxsH8QQtGpvbASCf+eM3wPRLI6R+MgAnTCZ6STYsRvttLvRWK0Nfif5piF394St3HeJDaljGPA=="
+  "resolved" "https://registry.npmjs.org/icss-utils/-/icss-utils-4.1.1.tgz"
   "version" "4.1.1"
   dependencies:
     "postcss" "^7.0.14"
@@ -5507,8 +5528,8 @@
   "version" "5.0.1"
 
 "json3@^3.3.3":
-  "integrity" "sha1-f8EON1/FrkLEcFpcwKpvYr4wW4E="
-  "resolved" "https://registry.nlark.com/json3/download/json3-3.3.3.tgz"
+  "integrity" "sha512-c7/8mbUsKigAbLkD5B010BK4D9LZm7A1pNItkEwiUZRpIN66exu/e7YQWysGun+TRKaJp8MhemM+VkfWv42aCA=="
+  "resolved" "https://registry.npmjs.org/json3/-/json3-3.3.3.tgz"
   "version" "3.3.3"
 
 "json5@^0.5.0":
@@ -5580,6 +5601,13 @@
   "integrity" "sha1-B8BQNKbDSfoG4k+jWqdttFgM5N0="
   "resolved" "https://registry.nlark.com/kind-of/download/kind-of-6.0.3.tgz"
   "version" "6.0.3"
+
+"kurento-utils@^5.1.0":
+  "integrity" "sha1-bk+OXnc5Jhjj30X5lz3tMP3jn8A="
+  "resolved" "https://registry.npmjs.org/kurento-utils/-/kurento-utils-5.1.0.tgz"
+  "version" "5.1.0"
+  dependencies:
+    "freeice" "^2.1.0"
 
 "launch-editor-middleware@^2.2.1":
   "integrity" "sha1-4UsH5scVSwpLhqD9NFeE5FgEwVc="
@@ -6159,6 +6187,11 @@
   "resolved" "https://registry.nlark.com/node-releases/download/node-releases-1.1.73.tgz"
   "version" "1.1.73"
 
+"normalice@^1.0.0":
+  "integrity" "sha1-A0NcLuzVYxprygLaOTDsPjRagPc="
+  "resolved" "https://registry.npmjs.org/normalice/-/normalice-1.0.1.tgz"
+  "version" "1.0.1"
+
 "normalize-package-data@^2.5.0":
   "integrity" "sha1-5m2xg4sgDB38IzIl0SyzZSDiNKg="
   "resolved" "https://registry.npm.taobao.org/normalize-package-data/download/normalize-package-data-2.5.0.tgz?cache=0&sync_timestamp=1616087026739&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnormalize-package-data%2Fdownload%2Fnormalize-package-data-2.5.0.tgz"
@@ -6405,8 +6438,8 @@
     "wcwidth" "^1.0.1"
 
 "original@^1.0.0":
-  "integrity" "sha1-5EKmHP/hxf0gpl8yYcJmY7MD8l8="
-  "resolved" "https://registry.nlark.com/original/download/original-1.0.2.tgz"
+  "integrity" "sha512-hyBVl6iqqUOJ8FqRe+l/gS8H+kKYjrEndd5Pm1MfBtsEKA038HkkdbAl/72EAXGyonD/PFsvmVG+EvcIpliMBg=="
+  "resolved" "https://registry.npmjs.org/original/-/original-1.0.2.tgz"
   "version" "1.0.2"
   dependencies:
     "url-parse" "^1.4.3"
@@ -6692,9 +6725,9 @@
   "version" "7.0.0"
 
 "pnp-webpack-plugin@^1.6.4":
-  "integrity" "sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg=="
-  "resolved" "https://registry.npmjs.org/pnp-webpack-plugin/-/pnp-webpack-plugin-1.6.4.tgz"
-  "version" "1.6.4"
+  "integrity" "sha512-2Rb3vm+EXble/sMXNSu6eoBx8e79gKqhNq9F5ZWW6ERNCTE/Q0wQNne5541tE5vKjfM8hpNCYL+LGc1YTfI0dg=="
+  "resolved" "https://registry.npmjs.org/pnp-webpack-plugin/-/pnp-webpack-plugin-1.7.0.tgz"
+  "version" "1.7.0"
   dependencies:
     "ts-pnp" "^1.1.6"
 
@@ -6849,8 +6882,8 @@
     "postcss-selector-parser" "^3.0.0"
 
 "postcss-modules-extract-imports@^2.0.0":
-  "integrity" "sha1-gYcZoa4doyX5gyRGsBE27rSTzX4="
-  "resolved" "https://registry.npm.taobao.org/postcss-modules-extract-imports/download/postcss-modules-extract-imports-2.0.0.tgz"
+  "integrity" "sha512-LaYLDNS4SG8Q5WAWqIJgdHPJrDDr/Lv775rMBFUbgjTz6j34lUznACHcdRWroPvXANP2Vj7yNK57vp9eFqzLWQ=="
+  "resolved" "https://registry.npmjs.org/postcss-modules-extract-imports/-/postcss-modules-extract-imports-2.0.0.tgz"
   "version" "2.0.0"
   dependencies:
     "postcss" "^7.0.5"
@@ -6861,8 +6894,8 @@
   "version" "3.0.0"
 
 "postcss-modules-local-by-default@^3.0.2":
-  "integrity" "sha1-uxTgzHgnnVBNvcv9fgyiiZP/u7A="
-  "resolved" "https://registry.nlark.com/postcss-modules-local-by-default/download/postcss-modules-local-by-default-3.0.3.tgz"
+  "integrity" "sha512-e3xDq+LotiGesympRlKNgaJ0PCzoUIdpH0dj47iWAui/kyTgh3CiAr1qP54uodmJhl6p9rN6BoNcdEDVJx9RDw=="
+  "resolved" "https://registry.npmjs.org/postcss-modules-local-by-default/-/postcss-modules-local-by-default-3.0.3.tgz"
   "version" "3.0.3"
   dependencies:
     "icss-utils" "^4.1.1"
@@ -6880,8 +6913,8 @@
     "postcss-value-parser" "^4.1.0"
 
 "postcss-modules-scope@^2.2.0":
-  "integrity" "sha1-OFyuATzHdD9afXYC0Qc6iequYu4="
-  "resolved" "https://registry.npm.taobao.org/postcss-modules-scope/download/postcss-modules-scope-2.2.0.tgz"
+  "integrity" "sha512-YyEgsTMRpNd+HmyC7H/mh3y+MeFWevy7V1evVhJWewmMbjDHIbZbOXICC2y+m1xI1UVfIT1HMW/O04Hxyu9oXQ=="
+  "resolved" "https://registry.npmjs.org/postcss-modules-scope/-/postcss-modules-scope-2.2.0.tgz"
   "version" "2.2.0"
   dependencies:
     "postcss" "^7.0.6"
@@ -6895,8 +6928,8 @@
     "postcss-selector-parser" "^6.0.4"
 
 "postcss-modules-values@^3.0.0":
-  "integrity" "sha1-W1AA1uuuKbQlUwG0o6VFdEI+fxA="
-  "resolved" "https://registry.nlark.com/postcss-modules-values/download/postcss-modules-values-3.0.0.tgz"
+  "integrity" "sha512-1//E5jCBrZ9DmRX+zCtmQtRSV6PV42Ix7Bzj9GbwJceduuf7IqP8MgeTXuRDHOWj2m0VzZD5+roFWDuU8RQjcg=="
+  "resolved" "https://registry.npmjs.org/postcss-modules-values/-/postcss-modules-values-3.0.0.tgz"
   "version" "3.0.0"
   dependencies:
     "icss-utils" "^4.0.0"
@@ -7253,8 +7286,8 @@
   "version" "0.2.0"
 
 "querystringify@^2.1.1":
-  "integrity" "sha1-M0WUG0FTy50ILY7uTNogFqmu9/Y="
-  "resolved" "https://registry.nlark.com/querystringify/download/querystringify-2.2.0.tgz"
+  "integrity" "sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ=="
+  "resolved" "https://registry.npmjs.org/querystringify/-/querystringify-2.2.0.tgz"
   "version" "2.2.0"
 
 "randombytes@^2.0.0", "randombytes@^2.0.1", "randombytes@^2.0.5", "randombytes@^2.1.0":
@@ -7719,8 +7752,8 @@
     "ajv-keywords" "^3.5.2"
 
 "schema-utils@^2.7.0":
-  "integrity" "sha1-HKTzLRskxZDCA7jnpQvw6kzTlNc="
-  "resolved" "https://registry.nlark.com/schema-utils/download/schema-utils-2.7.1.tgz?cache=0&sync_timestamp=1625484933876&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fschema-utils%2Fdownload%2Fschema-utils-2.7.1.tgz"
+  "integrity" "sha512-SHiNtMOUGWBQJwzISiVYKu82GiV4QYGePp3odlY1tuKO7gPtphAT5R/py0fA6xtbgLL/RvtJZnU9b8s0F1q0Xg=="
+  "resolved" "https://registry.npmjs.org/schema-utils/-/schema-utils-2.7.1.tgz"
   "version" "2.7.1"
   dependencies:
     "@types/json-schema" "^7.0.5"
@@ -7958,9 +7991,9 @@
     "source-map-resolve" "^0.5.0"
     "use" "^3.1.0"
 
-"sockjs-client@^1.5.0":
-  "integrity" "sha1-JWkI9tWt+5Tau9vQLGY2LMoPnqY="
-  "resolved" "https://registry.nlark.com/sockjs-client/download/sockjs-client-1.5.1.tgz"
+"sockjs-client@^1.5.0", "sockjs-client@^1.5.1":
+  "integrity" "sha512-VnVAb663fosipI/m6pqRXakEOw7nvd7TUgdr3PlR/8V2I95QIdwT8L4nMxhyU8SmDBHYXU1TOElaKOmKLfYzeQ=="
+  "resolved" "https://registry.npmjs.org/sockjs-client/-/sockjs-client-1.5.1.tgz"
   "version" "1.5.1"
   dependencies:
     "debug" "^3.2.6"
@@ -8805,9 +8838,9 @@
     "schema-utils" "^2.5.0"
 
 "url-parse@^1.4.3", "url-parse@^1.5.1":
-  "integrity" "sha1-1fqYkK+KXh8nSiyYN2UQ9kJfbjs="
-  "resolved" "https://registry.npm.taobao.org/url-parse/download/url-parse-1.5.1.tgz?cache=0&sync_timestamp=1613659813484&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Furl-parse%2Fdownload%2Furl-parse-1.5.1.tgz"
-  "version" "1.5.1"
+  "integrity" "sha512-IIORyIQD9rvj0A4CLWsHkBBJuNqWpFQe224b6j9t/ABmquIS0qDU2pY6kl6AuOrL5OkCXHMCFNe1jBcuAggjvQ=="
+  "resolved" "https://registry.npmjs.org/url-parse/-/url-parse-1.5.3.tgz"
+  "version" "1.5.3"
   dependencies:
     "querystringify" "^2.1.1"
     "requires-port" "^1.0.0"
@@ -8957,6 +8990,8 @@
   "version" "2.3.4"
 
 "vue-loader-v16@npm:vue-loader@^16.1.0":
+  "integrity" "sha512-nL1bDhfMAZgTVmVkOXQaK/WJa9zFDLM9vKHbh5uGv6HeH1TmZrXMWUEVhUrACT38XPhXM4Awtjj25EvhChEgXw=="
+  "resolved" "https://registry.npmjs.org/vue-loader/-/vue-loader-16.4.1.tgz"
   "version" "16.4.1"
   dependencies:
     "chalk" "^4.1.0"
@@ -8964,9 +8999,9 @@
     "loader-utils" "^2.0.0"
 
 "vue-loader@^15.9.2":
-  "integrity" "sha1-FbBXdcPgw4QHZ5OTws5t9nOwEEQ="
-  "resolved" "https://registry.nlark.com/vue-loader/download/vue-loader-15.9.7.tgz"
-  "version" "15.9.7"
+  "integrity" "sha512-GwSkxPrihfLR69/dSV3+5CdMQ0D+jXg8Ma1S4nQXKJAznYFX14vHdc/NetQc34Dw+rBbIJyP7JOuVb9Fhprvog=="
+  "resolved" "https://registry.npmjs.org/vue-loader/-/vue-loader-15.9.8.tgz"
+  "version" "15.9.8"
   dependencies:
     "@vue/component-compiler-utils" "^3.1.0"
     "hash-sum" "^1.0.2"
@@ -8988,6 +9023,14 @@
   dependencies:
     "hash-sum" "^1.0.2"
     "loader-utils" "^1.0.2"
+
+"vue-template-compiler@^2.0.0":
+  "integrity" "sha512-ODQS1SyMbjKoO1JBJZojSw6FE4qnh9rIpUZn2EUT86FKizx9uH5z6uXiIrm4/Nb/gwxTi/o17ZDEGWAXHvtC7g=="
+  "resolved" "https://registry.npmjs.org/vue-template-compiler/-/vue-template-compiler-2.6.14.tgz"
+  "version" "2.6.14"
+  dependencies:
+    "de-indent" "^1.0.2"
+    "he" "^1.1.0"
 
 "vue-template-es2015-compiler@^1.9.0":
   "integrity" "sha1-HuO8mhbsv1EYvjNLsV+cRvgvWCU="
@@ -9194,6 +9237,8 @@
   "version" "0.1.4"
 
 "websocket@latest":
+  "integrity" "sha512-PRDso2sGwF6kM75QykIesBijKSVceR6jL2G8NGYyq2XrItNC2P5/qL5XeR056GhA+Ly7JMFvJb9I312mJfmqnQ=="
+  "resolved" "https://registry.npmjs.org/websocket/-/websocket-1.0.34.tgz"
   "version" "1.0.34"
   dependencies:
     "bufferutil" "^4.0.1"

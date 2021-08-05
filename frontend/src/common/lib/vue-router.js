@@ -43,9 +43,10 @@ const routes = [
     }
   },
   {
-    path: '/conferences/:conferemceId',
+    path: '/conferences/:conferenceId',
     name: 'Conference',
     component: Comference,
+    props: true,
     beforeEnter: function (to, from, next) {
       if (localStorage.getItem('jwt')) {
         next()

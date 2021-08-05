@@ -96,7 +96,6 @@ export default {
             participantLimit: state.form.participant_limit,
           })
           .then(function () {
-            // console.log(result)
             handleClose()
           })
           .catch(function (err) {
