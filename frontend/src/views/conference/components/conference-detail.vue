@@ -1,5 +1,4 @@
 <template>
-<div>
   <h1>순현</h1>
   <div id="socket">
     유저이름:
@@ -24,7 +23,6 @@
       내용 : {{ state.form.message}}
     </div> -->
   </div>
-</div>
 </template>
 <style>
   #socket {
@@ -37,16 +35,16 @@
   }
 </style>
 <script>
-import { onMounted, reactive } from 'vue'
+import { reactive } from 'vue'
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 
 export default {
-  name: 'ChatSide',
+  name: 'conferencedetail',
   components: {
   },
   props: {
-    conferenceId: Number
+    conferemceId: Number
   },
   setup (props) {
     const state = reactive({
@@ -59,11 +57,7 @@ export default {
         stompClient: "",
       },
     })
-
-    onMounted(() => {
-      connect()
-    })
-
+    
     const sendMessage = function (e) {
       console.log('eeeeee', e.keyCode, 'username', state.form.userName, 'msg', state.form.message, 'recvList', state.form.recvList )
       if(e.keyCode === 13 && state.form.userName !== '' && state.form.message !== ''){
@@ -77,7 +71,7 @@ export default {
       if (state.form.stompClient && state.form.stompClient.connected) {
         const msg = {
           type: "CHAT",
-          roomId: props.conferenceId,
+          roomId: props.conferemceId,
           userName: state.form.userName,
           message: state.form.message,
           // recvList: state.form.recvList,
@@ -88,8 +82,8 @@ export default {
     }
 
     const connect = function() {
-      // "https://3.35.171.221:8443/ws-stomp"
-      const serverURL = "https://localhost:8443/ws-stomp"
+      // "http://3.35.171.221:8443/ws-stomp"
+      const serverURL = "http://localhost:8443/ws-stomp"
       let socket = new SockJS(serverURL);
       state.form.stompClient = Stomp.over(socket);
       console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
@@ -98,10 +92,10 @@ export default {
         frame => {
           // 소켓 연결 성공
           state.form.stompClient.connected = true;
-          console.log('소켓 연결 성공', frame, 'id', props.conferenceId);
+          console.log('소켓 연결 성공', frame, 'id', props.conferemceId);
           // 서버의 메시지 전송 endpoint를 구독합니다.
           // 이런형태를 pub sub 구조라고 합니다.
-          state.form.stompClient.subscribe('/sub/chat/room/' + props.conferenceId,
+          state.form.stompClient.subscribe('/sub/chat/room/' + props.conferemceId,
           res => {
             console.log('구독으로 받은 메시지 입니다.', res.body);
 
@@ -117,7 +111,7 @@ export default {
       );
     }
 
-    return { state, sendMessage, send, connect}
+    return { state, clickRoomEdit, closeRoomEdit, roomDelete, goBackHome, sendMessage, send, connect}
   }
 }
 </script>
