@@ -31,6 +31,6 @@
 
 export default {
   name: 'ConferenceMain',
-
+  
 }
 </script>

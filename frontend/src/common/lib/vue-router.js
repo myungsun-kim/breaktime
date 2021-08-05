@@ -2,7 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router';
 import Home from '@/views/home/Home.vue'
 import SignUp from '@/views/home/components/SignUp.vue'
 import Main from '@/views/main/Main.vue'
-import Comference from '@/views/conference/Conference.vue'
+import Conference from '@/views/conference/Conference.vue'
 
 const routes = [
   {
@@ -45,7 +45,8 @@ const routes = [
   {
     path: '/conferences/:conferemceId',
     name: 'Conference',
-    component: Comference,
+    component: Conference,
+    props: true,
     beforeEnter: function (to, from, next) {
       if (localStorage.getItem('jwt')) {
         next()

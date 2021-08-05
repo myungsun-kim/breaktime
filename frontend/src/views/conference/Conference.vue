@@ -6,21 +6,31 @@
         <conference-main/>
       </el-main>
       <el-aside width="300px" class="chat">
-        <chat-side/>
+        <!-- <chat-side/> -->
+        <conference-detail :conferemceId="props.conferemceId"/> 
       </el-aside>
     </el-container>
   </el-container>
 </template>
 
 <script>
-import ChatSide from './components/ChatSide.vue'
+// import ChatSide from './components/ChatSide.vue'
 import ConferenceMain from './components/ConferenceMain.vue'
+import conferencedetail from './components/conference-detail.vue'
 
 export default {
   name: 'Conference',
   components: {
-    ChatSide,
+    // ChatSide,
     ConferenceMain,
+    conferencedetail,
+  },
+  props: {
+    conferemceId: Number
+  },
+  setup(props) {
+    console.log(props.conferemceId)
+    return {props}
   }
 }
 </script>

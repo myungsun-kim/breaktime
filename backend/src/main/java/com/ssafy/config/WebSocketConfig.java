@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-stomp").setAllowedOriginPatterns("*")
+        registry.addEndpoint("/ws-stomp").setAllowedOriginPatterns("*") //  WebSocket을 사용할 수 없는 경우 대체 전송을 사용할 수 있도록 SockJS 폴백 옵션을 활성화 하여 끝점을 등록
                 .withSockJS();
     }
 }
