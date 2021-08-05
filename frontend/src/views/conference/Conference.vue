@@ -6,7 +6,7 @@
         <conference-main/>
       </el-main>
       <el-aside width="300px" class="chat">
-        <chat-side/>
+        <chat-side :conferenceId="props.conferenceId"/>
       </el-aside>
     </el-container>
   </el-container>
@@ -21,6 +21,13 @@ export default {
   components: {
     ChatSide,
     ConferenceMain,
+  },
+  props: {
+    conferenceId: Number
+  },
+  setup(props) {
+    console.log(props.conferenceId)
+    return {props}
   }
 }
 </script>

@@ -58,12 +58,12 @@ export default {
       if (state.room.password) {
         state.roomPasswordDialogOpen = true
       } else {
-        router.push({name: 'Conference', params: { conferemceId : state.room.number }})
+        router.push({name: 'Conference', params: { conferenceId : state.room.number }})
       }
     }
 
     const goSecretRoom = function () {
-      router.push({name: 'Conference', params: { conferemceId : state.room.number }})
+      router.push({name: 'Conference', params: { conferenceId : state.room.number }})
     }
 
     const onCloseroomPasswordDialog = function () {
