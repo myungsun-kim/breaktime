@@ -14,15 +14,13 @@ import lombok.RequiredArgsConstructor;
 public class ConferenceParticipantService {
 	private final ConferenceParticipantRepository conferenceParticipantRepository;
 	
-//	// 회의방 참가 후 참가자 번호 리턴
-//	@Transactional(readOnly = false)
-//	public Long create(ConferenceParticipant conferenceParticipant) {
-//		conferenceParticipantRepository.save(conferenceParticipant);
-//		return conferenceParticipant.getSequence();
-//	}
+	public void save(ConferenceParticipant conferenceParticipant) {
+		conferenceParticipantRepository.save(conferenceParticipant);
+	}
 	
 	// 회의방 나가기
 	public void leaveRoom(String userId) {
 		conferenceParticipantRepository.delete(userId);
 	}
+
 }

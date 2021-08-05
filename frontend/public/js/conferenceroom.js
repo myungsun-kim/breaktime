@@ -24,6 +24,12 @@ var name;
 window.onbeforeunload = function() {
 	ws.close();
 };
+
+ws.onopen = function(event) {
+	console.log(event)
+	console.log("Successfully connected to the echo websocket server...")
+}
+
 // 4번 실행 
 ws.onmessage = function(message) {
 	var parsedMessage = JSON.parse(message.data);
@@ -57,17 +63,7 @@ ws.onmessage = function(message) {
 }
 
 // 1. 회의방 참가 
-export function register() {
-	var message = {
-		id : 'joinRoom',
-		name : 'name',
-		room : '3',
-	}
-	// 2. 메세지전송
-	sendMessage(message);
-}
-
-export function register() {
+function register() {
 	name = document.getElementById('name').value;
 	var room = document.getElementById('roomName').value;
 

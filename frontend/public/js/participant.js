@@ -29,7 +29,7 @@ const PARTICIPANT_CLASS = 'participant';
  * @return
  */
 // 8번 참가자만들기
-export function Participant(name) {
+function Participant(name) {
 	this.name = name;
 	var container = document.createElement('div');
 	container.className = isPresentMainParticipant() ? PARTICIPANT_CLASS : PARTICIPANT_MAIN_CLASS;
