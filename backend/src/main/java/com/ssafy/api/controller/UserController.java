@@ -44,10 +44,6 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
 
-import org.json.simple.JSONObject;
-import net.nurigo.java_sdk.api.Message;
-import net.nurigo.java_sdk.exceptions.CoolsmsException;
-
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
