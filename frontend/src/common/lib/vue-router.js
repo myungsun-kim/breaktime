@@ -6,7 +6,7 @@ import Comference from '@/views/conference/Conference.vue'
 
 const routes = [
   {
-    path: '/Home',
+    path: '/',
     name: 'Home',
     component: Home,
     beforeEnter: function (to, from, next) {

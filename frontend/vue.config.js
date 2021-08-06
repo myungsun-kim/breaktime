@@ -5,13 +5,13 @@ module.exports = {
     open: true,
     proxy: {
       '/conference': {
-        target: 'https://localhost:8443/'
+        target: 'http://localhost:8443/'
       },
       '/auth': {
-        target: 'https://localhost:8443/'
+        target: 'http://localhost:8443/'
       },
       '/user': {
-        target: 'https://localhost:8443/'
+        target: 'http://localhost:8443/'
       },
     },
     historyApiFallback: true,

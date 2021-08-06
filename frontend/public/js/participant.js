@@ -15,6 +15,8 @@
  *
  */
 
+console.log('시작par')
+
 const PARTICIPANT_MAIN_CLASS = 'participant main';
 const PARTICIPANT_CLASS = 'participant';
 
@@ -27,14 +29,14 @@ const PARTICIPANT_CLASS = 'participant';
  * @return
  */
 // 8번 참가자만들기
-function Participant(name, sendMessage) {
+function Participant(name) {
 	this.name = name;
-	let container = document.createElement('div');
+	var container = document.createElement('div');
 	container.className = isPresentMainParticipant() ? PARTICIPANT_CLASS : PARTICIPANT_MAIN_CLASS;
 	container.id = name;
-	let span = document.createElement('span');
-	let video = document.createElement('video');
-	let rtcPeer;
+	var span = document.createElement('span');
+	var video = document.createElement('video');
+	var rtcPeer;
 
 	container.appendChild(video);
 	container.appendChild(span);
@@ -58,7 +60,7 @@ function Participant(name, sendMessage) {
 
 	function switchContainerClass() {
 		if (container.className === PARTICIPANT_CLASS) {
-			let elements = Array.prototype.slice.call(document.getElementsByClassName(PARTICIPANT_MAIN_CLASS));
+			var elements = Array.prototype.slice.call(document.getElementsByClassName(PARTICIPANT_MAIN_CLASS));
 			elements.forEach(function(item) {
 					item.className = PARTICIPANT_CLASS;
 				});
@@ -76,7 +78,7 @@ function Participant(name, sendMessage) {
 	this.offerToReceiveVideo = function(error, offerSdp, wp){
 		if (error) return console.error ("sdp offer error")
 		console.log('Invoking SDP offer callback function');
-		let msg =  { id : "receiveVideoFrom",
+		var msg =  { id : "receiveVideoFrom",
 				sender : name,
 				sdpOffer : offerSdp
 			};
@@ -86,7 +88,7 @@ function Participant(name, sendMessage) {
 	this.onIceCandidate = function (candidate, wp) {
 			console.log("Local candidate" + JSON.stringify(candidate));
 
-			let message = {
+			var message = {
 				id: 'onIceCandidate',
 				candidate: candidate,
 				name: name
@@ -104,4 +106,3 @@ function Participant(name, sendMessage) {
 	};
 }
 
-export default Participant
