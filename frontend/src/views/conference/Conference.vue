@@ -5,7 +5,7 @@
       <el-main>
         <conference-main :conferenceId="props.conferenceId"/>
       </el-main>
-      <el-aside width="300px" class="chat">
+      <el-aside width="25%" class="chat">
         <chat-side :conferenceId="props.conferenceId"/>
       </el-aside>
     </el-container>
@@ -38,5 +38,6 @@ export default {
   }
   .chat {
     border: 1px solid gray;
+    margin: 40px;
   }
 </style>

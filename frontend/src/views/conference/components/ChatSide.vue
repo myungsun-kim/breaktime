@@ -1,59 +1,91 @@
 <template>
-<div>
-  <h1>순현</h1>
-  <div id="socket">
-    유저이름:
-    <input
-      v-model="state.form.userName"
-      type="text"
-    >
-    내용: <input
-      v-model="state.form.message"
-      type="text"
-      @keyup="sendMessage"
-    >
-    <div
-      v-for="(item, idx) in state.form.recvList"
-      :key="idx"
-    >
-      <span> 유저이름: {{ item.userName }}</span>
-      <span>내용: {{ item.message }}</span>
+<div margin="20px">
+  <h1>chat</h1>
+    <div id="socket">
+      <div id="chatMain">
+      <div
+        v-for="(item, idx) in state.form.recvList"
+        :key="idx" 
+      >
+        <div style="float:left;"> {{ item.userName }} :</div>
+        <div>{{ item.message }}</div>
+      </div>
+      </div>
+      <!-- 유저이름:
+      <input
+        v-model="state.form.userName"
+        type="text"
+      > -->
+      <div id="chatInput">
+      Message: <input
+        v-model="state.form.message"
+        type="text"
+        @keyup="sendMessage"
+        id="input"
+      ></div>
+      <!-- <div>
+        유저 이름: {{ state.form.userName}}
+        내용 : {{ state.form.message}}
+      </div> -->
     </div>
-    <!-- <div>
-      유저 이름: {{ state.form.userName}}
-      내용 : {{ state.form.message}}
-    </div> -->
-  </div>
 </div>
 </template>
-<style>
+
+<style scoped>
   #socket {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
+    text-align: left;
     color: #2c3e50;
-    margin-top: 60px;
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+    /* width: 400px; */
+    height: 1000px;
+    /* height: 100%; */
+  }
+  #chatMain{
+    height: 90%;
+    width:100%;
+    overflow: auto;
+  }
+  #chatInput{
+    height: 5%;
+    width: 100%;
+    margin-top: 5%;
+  }
+  #input {
+    width: 80%;
+  }
+  span{
+    width: 100%;
   }
 </style>
+
 <script>
 import { onMounted, reactive } from 'vue'
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
+import { useStore } from 'vuex'
 
 export default {
   name: 'ChatSide',
   components: {
-  },
+    },
   props: {
     conferenceId: Number
   },
   setup (props) {
+    const store = useStore()
+
+    const user = store.getters['root/getUserInfo']
+
     const state = reactive({
       conferenceId: '',
       form: {
         // token: localStorage.getItem('jwt'),
-        userName: "",
+        userName: user.name,
         message: "",
         recvList: [],
         stompClient: "",
@@ -69,7 +101,13 @@ export default {
       if(e.keyCode === 13 && state.form.userName !== '' && state.form.message !== ''){
         send()
         state.form.message = ''
+        scrollToEnd()
       }
+    }
+
+    const scrollToEnd = function() { //스크롤 맨 아래로 내리게
+      const container = document.getElementById("chatMain");
+      container.scrollTop = container.scrollHeight;
     }
 
     const send = function() {
@@ -117,7 +155,7 @@ export default {
       );
     }
 
-    return { state, sendMessage, send, connect}
+    return { store, user, state, sendMessage, send, connect}
   }
 }
 </script>
