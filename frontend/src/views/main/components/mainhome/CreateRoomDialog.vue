@@ -95,8 +95,7 @@ export default {
             password: state.form.password,
             participantLimit: state.form.participant_limit,
           })
-          .then(function (result) {
-            console.log(result)
+          .then(function () {
             handleClose()
           })
           .catch(function (err) {

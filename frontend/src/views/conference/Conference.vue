@@ -3,7 +3,7 @@
     <el-header>Header</el-header>
     <el-container class="conference-box">
       <el-main>
-        <conference-main :conferenceId="props.conferenceId"/>
+        <conference-main/>
       </el-main>
       <el-aside width="300px" class="chat">
         <chat-side :conferenceId="props.conferenceId"/>

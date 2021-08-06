@@ -1,108 +1,66 @@
 <template>
-	<div id="container">
-			<h1>main</h1>
-			<div id="participants"></div>
-	</div>
+<div id="container">
+		<div id="wrapper">
+			<div id="join" class="animate join">
+				<h1>Join a Room</h1>
+				<form @submit="register()" accept-charset="UTF-8">
+					<p>
+						<input type="text" name="name" value="" id="name"
+							placeholder="Username" required>
+					</p>
+					<p>
+						<input type="text" name="room" value="" id="roomName"
+							placeholder="Room" required>
+					</p>
+					<p class="submit">
+						<input type="submit" name="commit" value="Join!">
+					</p>
+				</form>
+			</div>
+			<div id="room" style="display: none;">
+				<h2 id="room-header"></h2>
+				<div id="participants"></div>
+				<input type="button" id="button-leave" onmouseup="leaveRoom();"
+					value="Leave room">
+			</div>
+		</div>
+</div>
 </template>
 
 <script>
-import { onMounted, reactive, ref } from 'vue'
-import {useStore} from 'vuex'
-// import kurentoUtils from 'kurento-utils'
-// import Participant from '@/assets/participant.js'
-
-// var kurentoUtils = require('kurento-utils');
+// import {register} from '@/common/conference/conferenceroom.js'
+// import '@/common/conference/participant.js'
 
 export default {
   name: 'ConferenceMain',
-	props: {
-    conferenceId: Number
-	},
-	setup(props) {
-		// const ws = new WebSocket('wss://' + 'location:8443' + '/groupcall');
-		const store = useStore()
-		const user = store.getters['root/getUserInfo']
-		const PARTICIPANT_MAIN_CLASS = 'participant main';
-		const PARTICIPANT_CLASS = 'participant';
-		// const kurentoUtils = require('kurento-utils');
+	setup() {
+		const register = function () {
+			name = document.getElementById('name').value;
+			var room = document.getElementById('roomName').value;
 
-		let participants = {};
+			document.getElementById('room-header').innerText = 'ROOM ' + room;
+			document.getElementById('join').style.display = 'none';
+			document.getElementById('room').style.display = 'block';
 
-		const state = reactive({
-			ws: null,
-			name: user.name,
-			room: props.conferenceId
-		})
-
-		const connect = function() {
-			state.ws = new WebSocket('wss://' + location.host + '/groupcall');
-			state.ws.onopen = function(event) {
-				console.log(event)
-				console.log("Successfully connected to the echo websocket server...")
-				register()
-			}
-			state.ws.onmessage = function(message) {
-				let parsedMessage = JSON.parse(message.data);
-				console.info('Received message: ' + message.data);
-	
-				switch (parsedMessage.id) {
-				// 5번 회의방을 만듬
-				case 'existingParticipants':
-					onExistingParticipants(parsedMessage);
-					break;
-				case 'newParticipantArrived':
-					onNewParticipant(parsedMessage);
-					break;
-				case 'participantLeft':
-					onParticipantLeft(parsedMessage);
-					break;
-				case 'receiveVideoAnswer':
-					receiveVideoResponse(parsedMessage);
-					break;
-				case 'iceCandidate':
-					participants[parsedMessage.name].rtcPeer.addIceCandidate(parsedMessage.candidate, function (error) {
-								if (error) {
-								console.error("Error adding candidate: " + error);
-								return;
-								}
-						});
-						break;
-				default:
-					console.error('Unrecognized message', parsedMessage);
-				}
-			}
-		}
-		onMounted(() => {
-			console.log('onMounted')
-			connect()
-		})
-
-		window.onbeforeunload = function() {
-			state.ws.close();
-		};
-		// 4번 실행 
-		// 1. 회의방 참가 
-		const register = function() {
-			let message = {
+			var message = {
 				id : 'joinRoom',
-				name : state.name,
-				room : state.room,
+				name : name,
+				room : room,
 			}
 			// 2. 메세지전송
 			sendMessage(message);
 		}
-		
-		const onNewParticipant = function(request) {
+		const onNewParticipant = function (request) {
 			receiveVideo(request.name);
 		}
 
-		const receiveVideoResponse = function(result) {
+		const receiveVideoResponse = function (result) {
 			participants[result.name].rtcPeer.processAnswer (result.sdpAnswer, function (error) {
 				if (error) return console.error (error);
 			});
 		}
 
-		const callResponse = function(message) {
+		const callResponse = function (message) {
 			if (message.response != 'accepted') {
 				console.info('Call not accepted by peer. Closing call');
 				stop();
@@ -112,9 +70,8 @@ export default {
 				});
 			}
 		}
-		// 6번 회의방 만들기 시작
-		const onExistingParticipants = function(msg) {
-			let constraints = {
+		const onExistingParticipants = function (msg) {
+			var constraints = {
 				audio : true,
 				video : {
 					mandatory : {
@@ -124,68 +81,78 @@ export default {
 					}
 				}
 			};
-			// console.log(name + " registered in room " + room);
+			console.log(name + " registered in room " + room);
 			// 7번 participant.js에서 참가자 만들기
-			let participant = new Participant(state.name);
-			console.log(state.name)
-			participants[state.name] = participant;
-			console.log(participant)
-			let video = participant.getVideoElement();
+			var participant = new Participant(name);
+			participants[name] = participant;
+			var video = participant.getVideoElement();
 
-			let options = {
+			var options = {
 						localVideo: video,
 						mediaConstraints: constraints,
 						onicecandidate: participant.onIceCandidate.bind(participant)
 					}
-			participant.rtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function (error) {
-					if(error) return console.error(error);
+			participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
+				function (error) {
+					if(error) {
+						return console.error(error);
+					}
 					this.generateOffer (participant.offerToReceiveVideo.bind(participant));
 			});
 
 			msg.data.forEach(receiveVideo);
 		}
-		const receiveVideo = function(sender) {
-			let participant = new Participant(sender);
-			participants[sender] = participant;
-			let video = participant.getVideoElement();
+		const leaveRoom = function () {
+			sendMessage({
+				id : 'leaveRoom'
+			});
 
-			let options = {
+			for ( var key in participants) {
+				participants[key].dispose();
+			}
+
+			document.getElementById('join').style.display = 'block';
+			document.getElementById('room').style.display = 'none';
+
+			ws.close();
+		}	
+		const receiveVideo = function (sender) {
+			var participant = new Participant(sender);
+			participants[sender] = participant;
+			var video = participant.getVideoElement();
+
+			var options = {
 					remoteVideo: video,
 					onicecandidate: participant.onIceCandidate.bind(participant)
 				}
 
-			participant.rtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options,
+			participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options,
 					function (error) {
 						if(error) {
 							return console.error(error);
 						}
 						this.generateOffer (participant.offerToReceiveVideo.bind(participant));
 			});;
-		}
-
-		const onParticipantLeft = function(request) {
+		}	
+		const onParticipantLeft = function (request) {
 			console.log('Participant ' + request.name + ' left');
-			let participant = participants[request.name];
+			var participant = participants[request.name];
 			participant.dispose();
 			delete participants[request.name];
 		}
-
-		// 3번  메세지를받음 -> onmessage로
-		const sendMessage = function(message) {
-			let jsonMessage = JSON.stringify(message);
+		const sendMessage = function (message) {
+			var jsonMessage = JSON.stringify(message);
 			console.log('Sending message: ' + jsonMessage);
-			state.ws.send(jsonMessage);
+			ws.send(jsonMessage);
 		}
-
-		Participant = function(name) {
+		const Participant = function (name) {
 			this.name = name;
-			console.log('participatn',this)
-			let container = document.createElement('div');
+			var container = document.createElement('div');
 			container.className = isPresentMainParticipant() ? PARTICIPANT_CLASS : PARTICIPANT_MAIN_CLASS;
 			container.id = name;
-			let span = document.createElement('span');
-			let video = document.createElement('video');
-			let rtcPeer;
+			var span = document.createElement('span');
+			var video = document.createElement('video');
+			var rtcPeer;
 
 			container.appendChild(video);
 			container.appendChild(span);
@@ -209,7 +176,7 @@ export default {
 
 			function switchContainerClass() {
 				if (container.className === PARTICIPANT_CLASS) {
-					let elements = Array.prototype.slice.call(document.getElementsByClassName(PARTICIPANT_MAIN_CLASS));
+					var elements = Array.prototype.slice.call(document.getElementsByClassName(PARTICIPANT_MAIN_CLASS));
 					elements.forEach(function(item) {
 							item.className = PARTICIPANT_CLASS;
 						});
@@ -227,7 +194,7 @@ export default {
 			this.offerToReceiveVideo = function(error, offerSdp, wp){
 				if (error) return console.error ("sdp offer error")
 				console.log('Invoking SDP offer callback function');
-				let msg =  { id : "receiveVideoFrom",
+				var msg =  { id : "receiveVideoFrom",
 						sender : name,
 						sdpOffer : offerSdp
 					};
@@ -237,7 +204,7 @@ export default {
 			this.onIceCandidate = function (candidate, wp) {
 					console.log("Local candidate" + JSON.stringify(candidate));
 
-					let message = {
+					var message = {
 						id: 'onIceCandidate',
 						candidate: candidate,
 						name: name
@@ -254,7 +221,50 @@ export default {
 				container.parentNode.removeChild(container);
 			};
 		}
-		return {participants, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant}
-		},
+
+		return {register, onNewParticipant, receiveVideoResponse, callResponse, onExistingParticipants, leaveRoom, onParticipantLeft}
+	},
+	created() {
+		var ws = new WebSocket('wss://' + location.host + '/groupcall');
+		var participants = {};
+		var name;
+		const PARTICIPANT_MAIN_CLASS = 'participant main';
+		const PARTICIPANT_CLASS = 'participant';
+
+		window.onbeforeunload = function() {
+			ws.close();
+		};
+		// 4번 실행 
+		ws.onmessage = function(message) {
+			var parsedMessage = JSON.parse(message.data);
+			console.info('Received message: ' + message.data);
+
+			switch (parsedMessage.id) {
+			// 5번 회의방을 만듬
+			case 'existingParticipants':
+				onExistingParticipants(parsedMessage);
+				break;
+			case 'newParticipantArrived':
+				onNewParticipant(parsedMessage);
+				break;
+			case 'participantLeft':
+				onParticipantLeft(parsedMessage);
+				break;
+			case 'receiveVideoAnswer':
+				receiveVideoResponse(parsedMessage);
+				break;
+			case 'iceCandidate':
+				participants[parsedMessage.name].rtcPeer.addIceCandidate(parsedMessage.candidate, function (error) {
+							if (error) {
+							console.error("Error adding candidate: " + error);
+							return;
+							}
+					});
+					break;
+			default:
+				console.error('Unrecognized message', parsedMessage);
+			}
+		}
 	}
+}
 </script>

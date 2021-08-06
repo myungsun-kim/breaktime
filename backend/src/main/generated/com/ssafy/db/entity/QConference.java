@@ -38,6 +38,8 @@ public class QConference extends EntityPathBase<Conference> {
 
     public final NumberPath<Long> sequence = createNumber("sequence", Long.class);
 
+    public final ListPath<User, QUser> users = this.<User, QUser>createList("users", User.class, QUser.class, PathInits.DIRECT2);
+
     public QConference(String variable) {
         this(Conference.class, forVariable(variable), INITS);
     }
