@@ -35,6 +35,8 @@
 <script>
 import { reactive, computed, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+
 export default {
   name: 'CreateRoomDialog',
 
@@ -48,6 +50,7 @@ export default {
   setup(props, { emit }) {
     const createRoomForm = ref(null)
     const store = useStore()
+    const router = useRouter()
     const user = store.getters['root/getUserInfo']
 
     const state = reactive({
@@ -95,7 +98,9 @@ export default {
             password: state.form.password,
             participantLimit: state.form.participant_limit,
           })
-          .then(function () {
+          .then(function (result) {
+            // console.log(result.data.sequence)
+            router.push({name: 'Conference', params: { conferenceId : result.data.sequence }})
             handleClose()
           })
           .catch(function (err) {
@@ -115,7 +120,7 @@ export default {
       emit('closeCreateRoomDialog')
     } 
 
-    return { state, handleClose, createRoomForm, createRoom, store, user}
+    return { state, router, handleClose, createRoomForm, createRoom, store, user}
   },
 }
 </script>
