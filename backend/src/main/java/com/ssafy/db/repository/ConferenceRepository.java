@@ -29,6 +29,7 @@ public class ConferenceRepository{
 	}
 	
 	public Conference findOne(Long sequence) { // 회의방 번호로 찾기
+		System.out.println("회의방찾기");
 		return em.find(Conference.class, sequence);
 	}
 	
