@@ -15,8 +15,6 @@
  *
  */
 
-console.log('시작par')
-
 const PARTICIPANT_MAIN_CLASS = 'participant main';
 const PARTICIPANT_CLASS = 'participant';
 
