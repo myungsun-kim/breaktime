@@ -20,6 +20,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+
+import java.util.*;
+
+
+
+
 // 회의방 모델
 @Entity
 @Getter

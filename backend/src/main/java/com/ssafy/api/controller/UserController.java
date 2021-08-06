@@ -3,6 +3,15 @@ package com.ssafy.api.controller;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
+import java.util.HashMap;
+import org.json.simple.JSONObject;
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
+
+import java.util.NoSuchElementException;
+import java.util.Random;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
