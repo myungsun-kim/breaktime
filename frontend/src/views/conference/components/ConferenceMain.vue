@@ -26,6 +26,8 @@ export default {
 		const PARTICIPANT_CLASS = 'participant';
 		// const kurentoUtils = require('kurento-utils');
 
+		console.log('kurentoUtils', kurentoUtils)
+		console.log('kurentoUtils.WebRtcPeer',kurentoUtils.WebRtcPeer)
 		let participants = {};
 		const state = reactive({
 			ws: null,
@@ -94,11 +96,15 @@ export default {
 			receiveVideo(request.name);
 		}
 		const receiveVideoResponse = function(result) {
-			participants[result.name].rtcPeer.processAnswer (result.sdpAnswer, function (error) {
+			console.log(participants[result.name])
+			console.log('result', result)
+			participants[result.name].rtcPeer.processAnswer(result.sdpAnswer, function (error) {
+				console.log('error', error)
 				if (error) return console.error (error);
 			});
 		}
 		const callResponse = function(message) {
+			console.log('callResponse', message.response)
 			if (message.response != 'accepted') {
 				console.info('Call not accepted by peer. Closing call');
 				stop();
@@ -136,7 +142,11 @@ export default {
 						mediaConstraints: constraints,
 						onicecandidate: participant.onIceCandidate.bind(participant)
 					}
-			participant.rtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function (error) {
+			// participant.rtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function (error) {
+			// 		if(error) return console.error(error);
+			// 		this.generateOffer (participant.offerToReceiveVideo.bind(participant));
+			// });
+			participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function (error) {
 					if(error) return console.error(error);
 					this.generateOffer (participant.offerToReceiveVideo.bind(participant));
 			});
@@ -155,7 +165,7 @@ export default {
 					onicecandidate: participant.onIceCandidate.bind(participant)
 				}
 
-			participant.rtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options,
+			participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options,
 					function (error) {
 						if(error) {
 							return console.error(error);
