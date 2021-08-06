@@ -187,6 +187,9 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.20")
 	testImplementation('junit:junit:4.13')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    implementation("net.nurigo:javaSDK:2.2")
+    compile files("libs/sdk/javaSDK-2.2.jar")
+    compile files("libs/sdk/json-simple-1.1.1.jar")
 }
 
 test {
