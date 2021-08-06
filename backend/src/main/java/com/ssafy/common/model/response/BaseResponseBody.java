@@ -44,5 +44,12 @@ public class BaseResponseBody {
 		body.sequence = sequence;
 		return body;
 	}
+	
+	public static BaseResponseBody of(Integer statusCode, String message) {
+		BaseResponseBody body = new BaseResponseBody();
+		body.message = message;
+		body.statusCode = statusCode;
+		return body;
+	}
 
 }
