@@ -69,9 +69,9 @@ public class ConferenceController {
 		Long seq = conferenceService.create(conference);
 		
 		if(seq != null) {
-			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", seq));
 		}else {
-			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail"));
+			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail", null));
 		}
 	}
 	

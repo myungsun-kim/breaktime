@@ -18,6 +18,7 @@ public class BaseResponseBody {
 	String message = null;
 	@ApiModelProperty(name="응답 코드", example = "200")
 	Integer statusCode = null;
+	Long sequence = null;
 	
 	public BaseResponseBody() {}
 	
@@ -30,10 +31,18 @@ public class BaseResponseBody {
 		this.message = message;
 	}
 	
-	public static BaseResponseBody of(Integer statusCode, String message) {
+	public BaseResponseBody(Integer statusCode, String message, Long sequence){
+		this.statusCode = statusCode;
+		this.message = message;
+		this.sequence = sequence;
+	}
+	
+	public static BaseResponseBody of(Integer statusCode, String message, Long sequence) {
 		BaseResponseBody body = new BaseResponseBody();
 		body.message = message;
 		body.statusCode = statusCode;
+		body.sequence = sequence;
 		return body;
 	}
+
 }
