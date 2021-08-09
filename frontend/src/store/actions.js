@@ -28,6 +28,13 @@ export function requestCheckId({ /*state*/ }, payload) {
   return $axios.get(url)
 }
 
+// 핸드폰 번호 체크 관련 axios
+export function requestCheckCnumber({ /*state*/}, payload) {
+  const phone = payload.phone
+  const url = `/user/${phone}`
+  return $axios.get(url)
+}
+
 // 방생성 관련 axios
 export function createRoom({ /*state*/ }, payload) {
   const url = '/conference/make'

@@ -82,6 +82,22 @@ export default {
         callback()
       }
     }
+  // 인증번호 유효성검사
+    // 검증하기
+    // 
+    // rule , value callback 기본값 (있어야 함수 정의 가능)
+    // 사용 프레임워크 엘리먼트 플러스
+    var validateCnumber = (rule, value, callback) => {
+      if (value === '') {
+        return callback(new Error('인증번호를 입력해주세요.'))
+      }
+      else if (value !==  state.form.CNumber) {
+        return callback(new Error('잘못된 인증번호 입니다.'))
+      } else{
+        callback()
+      }
+    }
+
 
     const state = reactive({
       form: {
@@ -111,7 +127,7 @@ export default {
           { required: true, message: '핸드폰번호를 입력해주세요',trigger: 'blur'}
         ],
         CNumber: [
-          { required: true, message: '인증번호를 입력해주세요',trigger: 'blur'}
+          { required: true, validator: validateCnumber ,trigger: 'blur'}
         ]
       },
     })
@@ -126,6 +142,36 @@ export default {
         alert(err.response.data.message)
       })
     }
+
+    // 변경사항
+    // 목표기능
+    // Backend 에서 return 받은 random 값이, 사용자가 입력한 값과 같은지 검증 후
+    // 맞으면 -> 휴대폰 인증 완료
+    // 틀리면 -> " 인증번호가 올바르지 않습니다. " 출력
+
+
+    
+    
+    const checkCnumber = function () {
+      store.dispatch('root/requestCheckCNumber', {phone: state.form.phone})
+      .then(function (result) {
+        // state.checkCNumber = state.form.CNumber
+        console.log(result) 
+        alert('인증이 완료되었습니다.')
+      })
+      .catch(function (err) {
+       alert(' 잘못된 인증번호 입니다. 다시 확인하세요.')})
+    }
+
+
+
+
+    // 변경사항 끝
+    // 물어볼 것
+    // 유효성검사에 CNumber 추가해야하는지?
+    // Back 에서 return 받은 random 값을 CNumber 로 받아오고, 인식하려면?
+
+
 
     const clickSignUp = function () {
       // 회원가입 유효성검사후 axios 요청(store - actions으로)
@@ -151,7 +197,7 @@ export default {
         }
       });
     }
-    return { state, signUpForm, clickSignUp, store, router, checkId}
+    return { state, signUpForm, clickSignUp, store, router, checkId, checkCnumber} 
   }
 }
 </script>
