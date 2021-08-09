@@ -37,10 +37,10 @@ public class ConferenceController {
 	ConferenceService conferenceService;
 	@Autowired
 	ConferenceRepository conferenceRepository;
-	@Autowired
-	ConferenceParticipantService conferenceParticipantService;
-	@Autowired
-	ConferenceParticipantRepository conferenceParticipantRepository;
+//	@Autowired
+//	ConferenceParticipantService conferenceParticipantService;
+//	@Autowired
+//	ConferenceParticipantRepository conferenceParticipantRepository;
 	
 	@PostMapping("/make") // 회의방 생성
 	public ResponseEntity<? extends BaseResponseBody> make(Authentication authentication, @RequestBody ConferenceVO confer){
@@ -52,7 +52,7 @@ public class ConferenceController {
 		category.setSequence(confer.getCategory_seq()); // 회의방의 카테고리 컬럼을 카테고리 테이블 기본키랑 연결하기 위함
 		
 		Conference conference = new Conference();
-		ConferenceParticipant conferenceParticipant = new ConferenceParticipant(); //회의방 참가자 테이블
+//		ConferenceParticipant conferenceParticipant = new ConferenceParticipant(); //회의방 참가자 테이블
 		
 		conference.setConferenceCategory(category);
 		conference.setDescription(confer.getDescription());
@@ -61,17 +61,14 @@ public class ConferenceController {
 		conference.setParticipantLimit(confer.getParticipantLimit());
 		conference.setPassword(confer.getPassword());
 		
-		conferenceParticipant.setConference(conference);
-		conferenceParticipant.setUser(userDetails.getUser());
-		
 		conference.setProduceTime(LocalDateTime.now()); // 현재 시간
 		
 		Long seq = conferenceService.create(conference);
 		
 		if(seq != null) {
-			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", seq));
 		}else {
-			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail"));
+			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail", null));
 		}
 	}
 	
@@ -115,28 +112,27 @@ public class ConferenceController {
 	
 	@GetMapping("/delete/{sequence}") // 회의방 삭제
 	public void deleteConference(Authentication authentication, @PathVariable("sequence") Long sequence) {
-		
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		String userId = userDetails.getUsername();
-		
+
 		conferenceRepository.delete(sequence);
 	}
 	
-	@PostMapping("/{sequence}") //회의방 입장
-	public void enterRoom(Authentication authentication, @PathVariable("sequence") Long sequence){
-		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-		Conference conference = conferenceService.findOne(sequence);//해당 시퀀스로 회의방 찾기
-		
-		ConferenceParticipant conferenceParticipant = new ConferenceParticipant(); //회의방 참가자 테이블
-		
-		conferenceParticipant.setConference(conference);
-		conferenceParticipant.setUser(userDetails.getUser());
-
-		conferenceParticipantService.save(conferenceParticipant);
-	}
-	
-	@DeleteMapping("/leave") //회의방 나가기
-	public void leaveRoom(String userId) {//해당 아이디 DB에서 제거
-		conferenceParticipantRepository.delete(userId);
-	}
+//	@PostMapping("/{sequence}") //회의방 입장
+//	public void enterRoom(Authentication authentication, @PathVariable("sequence") Long sequence){
+//		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+//		Conference conference = conferenceService.findOne(sequence);//해당 시퀀스로 회의방 찾기
+//		
+//		ConferenceParticipant conferenceParticipant = new ConferenceParticipant(); //회의방 참가자 테이블
+//		
+//		conferenceParticipant.setConference(conference);
+//		conferenceParticipant.setUser(userDetails.getUser());
+//
+//		conferenceParticipantService.save(conferenceParticipant);
+//	}
+//	
+//	@DeleteMapping("/leave") //회의방 나가기
+//	public void leaveRoom(String userId) {//해당 아이디 DB에서 제거
+//		conferenceParticipantRepository.delete(userId);
+//	}
 }

@@ -15,8 +15,6 @@
  *
  */
 
-console.log('시작con')
-
 var ws = new WebSocket('wss://' + location.host + '/groupcall');
 var participants = {};
 var name;
