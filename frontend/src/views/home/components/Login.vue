@@ -9,8 +9,8 @@
         <el-input v-model="state.form.password" autocomplete="off" show-password placeholder="PW를입력해주세요"
         @keyup.enter="clickLogin"></el-input>
       </el-form-item>
-      <el-button type="primary" @click="clickLogin" >로그인</el-button>
-      <el-button type="danger" @click="clickSignUp" >회원가입</el-button>
+      <el-button type="success" @click="clickLogin" >로그인</el-button>
+      <el-button type="info" @click="clickSignUp" >회원가입</el-button>
     </el-form>
   </div>
 </template>
@@ -116,12 +116,16 @@ export default {
 </script>
 
 <style scoped>
+
+
   .form {
-    width: 50%;
-    margin: 10% 0 10% 25%;
-    background-color: whitesmoke;
+    width: 300px;
+    margin: 100px auto;
+    background-color: #F6F6F6;
+    background-size: 100vh;
     padding: 1rem;
     border-radius: 1rem;
+    font-family: 'Sumflower', sans-serify;
   }
 
   .el-input {

@@ -44,6 +44,7 @@ export default {
 </script>
 
 <style>
+
 #app {
   font-family: Georgia, Serif;
   font-weight: bold;
