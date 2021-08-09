@@ -24,7 +24,7 @@
       <el-form-item prop="phone" label="휴대폰" >
         <el-input v-model="state.form.phone" autocomplete="off" placeholder="-없이 입력해주세요">
           <template #append>
-            <el-button >인증번호전송</el-button>
+            <el-button @click="checkCnumber">인증번호전송</el-button>
           </template>
         </el-input>
       </el-form-item>
@@ -91,7 +91,7 @@ export default {
       if (value === '') {
         return callback(new Error('인증번호를 입력해주세요.'))
       }
-      else if (value !==  state.form.CNumber) {
+      else if (value !==  state.checkCnumber) {
         return callback(new Error('잘못된 인증번호 입니다.'))
       } else{
         callback()
@@ -110,6 +110,7 @@ export default {
         CNumber: '',
       },
       checkId: '',
+      checkCnumber: '',
       rules: {
         id: [
           { required: true, validator: validateId, trigger: 'blur'}
@@ -157,10 +158,11 @@ export default {
       .then(function (result) {
         // state.checkCNumber = state.form.CNumber
         console.log(result) 
-        alert('인증이 완료되었습니다.')
+        alert('인증번호가 전송되었습니다')
       })
       .catch(function (err) {
-       alert(' 잘못된 인증번호 입니다. 다시 확인하세요.')})
+        console.log(err.response)
+      })
     }
 
 
