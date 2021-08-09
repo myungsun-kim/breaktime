@@ -1,6 +1,6 @@
 <template>
   <div class="home-bg">
-    <h1 class="signUp">회원가입</h1>
+    <img src="../../../assets/logo.png" alt="" class="logo">
     <el-form :model="state.form" :rules="state.rules" ref="signUpForm" label-width="7.5rem" class="form">
       <el-form-item prop="id" label="아이디" class="formIn">
         <el-input v-model="state.form.id" autocomplete="off">
@@ -203,12 +203,8 @@ export default {
 </script>
 
 <style scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Crete+Round&display=swap');
+  
 
-
-  .signUp {
-    font-family: 'Crete Round', serif;
-  }
 
   .form {
     /* width: 50%;
@@ -217,7 +213,7 @@ export default {
     padding: 1rem;
     border-radius: 1rem; */
     
-    margin: 100px auto;
+    margin: 20px auto;
     width: 450px;
     padding: 50px;
     border-radius: 30px;
@@ -229,16 +225,25 @@ export default {
     text-align:center;  
   }
 
-  @media (max-width: 800px) {
+  @media screen and (max-width: 800px) {
     .form {
       width: 80%;
-      margin: 0 10%;
+      margin: 10%;
     }
   }
+
+  .logo {
+    width: 200px;
+    height: 200px;
+    margin-top: 20px;
+  }
   
+
   .home-bg {
-    height: 100vh;
-    background: url('../../../assets/background-cafe-coffee.jpg');
+
+    background-color: #FFEEE4;
+    height: 100%;
+    
   }
 
   .phone_certify {

@@ -1,10 +1,10 @@
 <template>
   <div class="home-bg">
     
-    <h1>
-      <img src="../../assets/latte.png" alt="" class="logo">
-      BreakTime
-    </h1>
+  
+    <img src="../../assets/logo.png" alt="" class="logo">
+  
+  
     <Login />
     <router-view></router-view>
   </div>
@@ -26,12 +26,14 @@ export default {
 
 <style scoped>
   .home-bg {
-    height: 90vh;
-    background: url('../../assets/coffee.jpg');
+    height: 100vh;
+    background-color: #FFEEE4;
+    
   }
 
   .logo {
-    width: 50px;
-    height: 50px;
+    width: 200px;
+    height: 200px;
+    margin-top: 20px;
   }
 </style>
