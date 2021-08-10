@@ -99,15 +99,14 @@ export default {
             participantLimit: state.form.participant_limit,
           })
           .then(function (result) {
-            // console.log(result.data.sequence)
             router.replace({name: 'Conference', params: { 
               conferenceId : result.data.sequence,
-              owner: state.room.owner
+              owner: user.userId
             }})
             handleClose()
           })
           .catch(function (err) {
-            alert(err.response.data.message)
+            alert(err)
           })
         } else {
           alert('조건에 맞게 넣으세요ㅡㅡ')
