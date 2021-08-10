@@ -1,37 +1,37 @@
 <template>
   <div class="home-bg">
-    <h1>회원가입</h1>
+    <img src="../../../assets/logo.png" alt="" class="logo">
     <el-form :model="state.form" :rules="state.rules" ref="signUpForm" label-width="7.5rem" class="form">
-      <el-form-item prop="id" label="아이디">
+      <el-form-item prop="id" label="아이디" class="formIn">
         <el-input v-model="state.form.id" autocomplete="off">
           <template #append>
             <el-button @click='checkId'>ID중복확인</el-button>
           </template>
         </el-input>
       </el-form-item>
-      <el-form-item prop="password" label="비밀번호" >
+      <el-form-item prop="password" label="비밀번호" class="formIn" >
         <el-input v-model="state.form.password" autocomplete="off" show-password></el-input>
       </el-form-item>
-      <el-form-item prop="passwordCheck" label="비밀번호확인" >
+      <el-form-item prop="passwordCheck" label="비밀번호확인" class="formIn">
         <el-input v-model="state.form.passwordCheck" autocomplete="off" show-password></el-input>
       </el-form-item>
-      <el-form-item prop="name" label="이름" >
+      <el-form-item prop="name" label="이름" class="formIn">
         <el-input v-model="state.form.name" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item prop="email" label="이메일(선택)" >
+      <el-form-item prop="email" label="이메일(선택)" class="formIn">
         <el-input v-model="state.form.email" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item prop="phone" label="휴대폰" >
-        <el-input v-model="state.form.phone" autocomplete="off" placeholder="-없이 입력해주세요">
+      <el-form-item prop="phone" label="휴대폰" class="formIn">
+        <el-input v-model="state.form.phone" autocomplete="off" placeholder="-없이 입력">
           <template #append>
-            <el-button @click="checkCnumber">인증번호전송</el-button>
+            <el-button class="phone_certify">인증번호전송</el-button>
           </template>
         </el-input>
       </el-form-item>
-      <el-form-item prop="CNumber" label="인증번호" >
+      <el-form-item prop="CNumber" label="인증번호" class="formIn">
         <el-input v-model="state.form.CNumber" autocomplete="off"></el-input>
       </el-form-item>
-      <el-button type="danger" @click="clickSignUp">회원가입</el-button>
+      <el-button type="info" @click="clickSignUp">회원가입</el-button>
     </el-form>  
   </div>
 </template>
@@ -205,23 +205,53 @@ export default {
 </script>
 
 <style scoped>
+  
+
+
   .form {
-    width: 50%;
-    margin: 0 25%;
+    /* width: 50%;
+    margin: 100px;
     background-color: whitesmoke;
     padding: 1rem;
-    border-radius: 1rem;
+    border-radius: 1rem; */
+    
+    margin: 20px auto;
+    width: 450px;
+    padding: 50px;
+    border-radius: 30px;
+    background-color: #F6F6F6;
+    font-family: 'Noto Sans KR', sans-serif;
   }
-  @media (max-width: 800px) {
+
+  .formIn {
+    text-align:center;  
+  }
+
+  @media screen and (max-width: 600px) {
     .form {
       width: 80%;
-      margin: 0 10%;
+      margin: 10%;
     }
   }
-  
-  .home-bg {
-    height: 80vh;
-    background: url('../../../assets/coffee.jpg');
+
+  .logo {
+    width: 200px;
+    height: 200px;
+    margin-top: 20px;
   }
+  
+
+  .home-bg {
+
+    background-color: #FFEEE4;
+    height: 100%;
+    
+  }
+
+  .phone_certify {
+    width: 110px;
+    text-align: center;
+  }
+
 
 </style>
