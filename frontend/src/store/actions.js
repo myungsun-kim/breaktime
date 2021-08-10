@@ -10,8 +10,14 @@ export function requestLogin ({ /*state*/ }, payload) {
 // 토큰으로 회원정보 받기 
 export function requestUserInfo ({ /*state*/ }, payload) {
   const url = '/user/me'
+  const token = localStorage.getItem('jwt')
+  const instance = $axios.create({
+    headers: {
+      Authorization : "Bearer " + token
+    }
+  })
   let body = payload
-  return $axios.get(url, body)
+  return instance.get(url, body)
 }
 
 // 회원가입 관련 axios
