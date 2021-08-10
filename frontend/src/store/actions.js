@@ -67,3 +67,16 @@ export function searchRoom({/*state*/}, payload) {
   }
   return $axios.get(url)
 }
+
+// 방삭제 관련 axios
+export function deleteRoom({/*state*/}, payload) {
+  const sequence = payload.sequence
+  const url = `/conference/delete/${sequence}`
+  const token = localStorage.getItem('jwt')
+  const instance = $axios.create({
+    headers: {
+      Authorization : "Bearer " + token
+    }
+  })
+  return instance.get(url)
+}
