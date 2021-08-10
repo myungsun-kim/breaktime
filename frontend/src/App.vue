@@ -44,6 +44,7 @@ export default {
 </script>
 
 <style>
+
 #app {
   font-family: Georgia, Serif;
   font-weight: bold;
@@ -51,7 +52,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color:#333333;
-  margin-top: 60px;
+  /* margin-top: 60px; */
 }
 </style>
 
