@@ -2,36 +2,39 @@
 	<div id="container">
 			<h1>main</h1>
 			<div id="participants"></div>
+			<el-button type="danger" round @click="goMain">방나가기</el-button>
 	</div>
 </template>
 
 <script>
 import { onMounted, reactive, ref } from 'vue'
 import {useStore} from 'vuex'
+import {useRouter} from 'vue-router'
 import kurentoUtils from 'kurento-utils'
-// import Participant from '@/assets/participant.js'
-
-// var kurentoUtils = require('kurento-utils');
 
 export default {
   name: 'ConferenceMain',
-	props: {
-    conferenceId: Number
-	},
+  props: {
+    conferenceId: {
+      type: Number,
+      default: 0
+    },
+    owner: {
+      type: String,
+      default: ''
+    },
+  },
 	setup(props) {
 		// const ws = new WebSocket('wss://' + 'location:8443' + '/groupcall');
 		const store = useStore()
+		const router = useRouter()
 		const user = store.getters['root/getUserInfo']
 		const PARTICIPANT_MAIN_CLASS = 'participant main';
 		const PARTICIPANT_CLASS = 'participant';
-		// const kurentoUtils = require('kurento-utils');
-
-		console.log('kurentoUtils', kurentoUtils)
-		console.log('kurentoUtils.WebRtcPeer',kurentoUtils.WebRtcPeer)
 		let participants = {};
 		const state = reactive({
 			ws: null,
-			name: user.name,
+			name: user.userId,
 			room: props.conferenceId
 		})
 
@@ -42,12 +45,16 @@ export default {
 				console.log("Successfully connected to the echo websocket server...")
 				register()
 			}
+			// 웹 rtc 종료시
+			// state.ws.onclose = function(event) {
+			// 	console.log(event)
+			// 	console.log('webRTC꺼짐')
+			// }
 			state.ws.onmessage = function(message) {
 				let parsedMessage = JSON.parse(message.data);
 				console.info('Received message: ' + message.data);
 	
 				switch (parsedMessage.id) {
-				// 5번 회의방을 만듬
 				case 'existingParticipants':
 					onExistingParticipants(parsedMessage);
 					break;
@@ -74,13 +81,9 @@ export default {
 			}
 		}
 		onMounted(() => {
-			console.log('onMounted')
 			connect()
 		})
 		
-		window.onbeforeunload = function() {
-			state.ws.close();
-		};
 		// 4번 실행 
 		// 1. 회의방 참가 
 		const register = function() {
@@ -96,10 +99,7 @@ export default {
 			receiveVideo(request.name);
 		}
 		const receiveVideoResponse = function(result) {
-			console.log(participants[result.name])
-			console.log('result', result)
-			participants[result.name].rtcPeer.processAnswer(result.sdpAnswer, function (error) {
-				console.log('error', error)
+			participants[result.name].rtcPeer.processAnswer(result.spdAnswer, function (error) {
 				if (error) return console.error (error);
 			});
 		}
@@ -109,14 +109,17 @@ export default {
 				console.info('Call not accepted by peer. Closing call');
 				stop();
 			} else {
-				webRtcPeer.processAnswer(message.sdpAnswer, function (error) {
+				webRtcPeer.processAnswer(message.spdAnswer, function (error) {
 					if (error) return console.error (error);
 				});
 			}
 		}
-		
-		// 6번 회의방 만들기 시작
+		window.onbeforeunload = function() {
+			console.log('나감')
+			ws.close();
+		};
 		const onExistingParticipants = function(msg) {
+			console.log(msg)
 			let constraints = {
 				audio : true,
 				video : {
@@ -132,9 +135,7 @@ export default {
 			// 7번 participant.js에서 참가자 만들기
 			
 			let participant = new Participant(state.name);
-			console.log(state.name)
 			participants[state.name] = participant;
-			console.log(participant)
 			let video = participant.getVideoElement();
 
 			let options = {
@@ -153,7 +154,38 @@ export default {
 
 			msg.data.forEach(receiveVideo);
 		}
-		
+		const leaveRoom = function() {
+			sendMessage({
+				id : 'leaveRoom'
+			});
+
+			for ( var key in participants) {
+				participants[key].dispose();
+			}
+
+			state.ws.close();
+			router.replace({name: 'Main'})
+		}
+		const goMain = function () {
+			if (user.userId === props.owner) {
+				if(confirm('당신은호스트입니다 \n호스트가 회의를 종료하면 방은 삭제됩니다 \n진짜나가시겠습니까?')){
+					leaveRoom()
+					store.dispatch('root/deleteRoom', {
+						sequence: props.conferenceId
+          })
+          .then(function (result) {
+						console.log(result)
+          })
+          .catch(function (err) {
+            alert(err.response.data.message)
+          })
+				}
+			} else {
+				if(confirm('화상회의를 종료하시겠습니까?')) {
+					leaveRoom()
+				}
+			}
+		}
 		const receiveVideo = function(sender) {
 			let participant = new Participant(sender);
 			participants[sender] = participant;
@@ -177,10 +209,15 @@ export default {
 
 		const onParticipantLeft = function(request) {
 			console.log('Participant ' + request.name + ' left');
-		
+
 			let participant = participants[request.name];
 			participant.dispose();
 			delete participants[request.name];
+
+			if (request.name === props.owner) {
+				alert('방장이 방삭제함')
+				router.replace({name: 'Main'})
+			}
 		}
 	
 
@@ -262,12 +299,12 @@ export default {
 			Object.defineProperty(this, 'rtcPeer', { writable: true});
 
 			this.dispose = function() {
-				console.log('Disposing participant ' + this.name);
+				// console.log('Disposing participant ' + this.name);
 				this.rtcPeer.dispose();
 				container.parentNode.removeChild(container);
 			};
 		}
-		return {participants, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant}
+		return {goMain, router, participants, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant, leaveRoom}
 		},
 }
 </script>

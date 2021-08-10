@@ -100,7 +100,10 @@ export default {
           })
           .then(function (result) {
             // console.log(result.data.sequence)
-            router.push({name: 'Conference', params: { conferenceId : result.data.sequence }})
+            router.replace({name: 'Conference', params: { 
+              conferenceId : result.data.sequence,
+              owner: state.room.owner
+            }})
             handleClose()
           })
           .catch(function (err) {

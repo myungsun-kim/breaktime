@@ -58,12 +58,19 @@ export default {
       if (state.room.password) {
         state.roomPasswordDialogOpen = true
       } else {
-        router.push({name: 'Conference', params: { conferenceId : state.room.number }})
+        // replace는 뒤로가기를 남기지않음
+        router.replace({name: 'Conference', params: { 
+          conferenceId : state.room.number,
+          owner: state.room.owner
+        }})
       }
     }
 
     const goSecretRoom = function () {
-      router.push({name: 'Conference', params: { conferenceId : state.room.number }})
+      router.replace({name: 'Conference', params: { 
+        conferenceId : state.room.number,
+        owner: state.room.owner
+      }})
     }
 
     const onCloseroomPasswordDialog = function () {
