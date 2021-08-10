@@ -225,7 +225,7 @@ export default {
     text-align:center;  
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 600px) {
     .form {
       width: 80%;
       margin: 10%;
