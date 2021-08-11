@@ -91,7 +91,7 @@ export default {
       if (value === '') {
         return callback(new Error('인증번호를 입력해주세요.'))
       }
-      else if (value !==  state.checkCnumber) {
+      else if (value !=  state.checkCNumber) {
         return callback(new Error('잘못된 인증번호 입니다.'))
       } else{
         callback()
@@ -110,7 +110,7 @@ export default {
         CNumber: '',
       },
       checkId: '',
-      checkCnumber: '',
+      checkCNumber: '',
       rules: {
         id: [
           { required: true, validator: validateId, trigger: 'blur'}
@@ -156,8 +156,7 @@ export default {
     const checkCnumber = function () {
       store.dispatch('root/requestCheckCNumber', {phone: state.form.phone})
       .then(function (result) {
-        // state.checkCNumber = state.form.CNumber
-        console.log(result) 
+        state.checkCNumber = result.data
         alert('인증번호가 전송되었습니다')
       })
       .catch(function (err) {

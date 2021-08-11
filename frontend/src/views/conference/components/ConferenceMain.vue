@@ -2,6 +2,7 @@
 	<div id="container">
 			<h1>main</h1>
 			<div id="participants"></div>
+			<el-button type="primary" round @click="videoOnOff">비디오On/Off</el-button>
 			<el-button type="danger" round @click="goMain">방나가기</el-button>
 	</div>
 </template>

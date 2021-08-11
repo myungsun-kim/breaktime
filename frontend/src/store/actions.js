@@ -37,8 +37,8 @@ export function requestCheckId({ /*state*/ }, payload) {
 // 핸드폰 번호 체크 관련 axios
 export function requestCheckCNumber({ /*state*/}, payload) {
   const phone = payload.phone
-  const url = `/user/check/${phone}`
-  return $axios.get(url)
+  const url = `/auth/${phone}`
+  return $axios.post(url)
 }
 
 // 방생성 관련 axios

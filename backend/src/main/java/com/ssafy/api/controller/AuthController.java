@@ -1,10 +1,13 @@
 package com.ssafy.api.controller;
 
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +24,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import io.swagger.annotations.ApiResponse;
 
 /**
@@ -55,4 +60,44 @@ public class AuthController {
 		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
 		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "잘못된 비밀번호입니다.", (String) null));
 	}
+	
+	@PostMapping("/{phonenumber}") // Get으로 해보고, PostMapping 으로 다시 해보기 PathVariable 을 사용못함.
+  	public int smstest (@PathVariable("phonenumber") String phonenumber) {
+    String api_key = "NCSKIUXUNKOUKGXR";
+    String api_secret = "L63V4VH4ABUEOFC0EKFAZXLWQLAEXUEV";
+    Message coolsms = new Message(api_key, api_secret);
+    System.out.println("함수실행");
+    // 버튼을 누르면, 인증번호가 전송이 되고, 입력 후 전송하면 인증이 완료되었다고 뜨게 해야 한다.
+    
+    
+    // 4 params(to, from, type, text) are mandatory. must be filled
+    HashMap<String, String> params = new HashMap<String, String>();
+    params.put("to", phonenumber); //수신번호
+    params.put("from", "01091689599"); //발신번호 (무조건 등록된번호)
+    
+    
+    
+    int min = 10;
+    int max = 100;
+    int random = (int) ((Math.random() * (max - min)) + min);
+    System.out.println(random);
+
+    params.put("type", "SMS");
+    params.put("text", "인증번호는  "+ random +" 입니다. "); // 보낼 메세지를 입력하시오.
+    params.put("app_version", "test app 1.2"); // application name and version
+
+    try {
+    	//send() 는 메시지를 보내는 함수  
+      JSONObject obj = (JSONObject) coolsms.send(params);
+      System.out.println(obj.toString());
+    } catch (CoolsmsException e) {
+      System.out.println(e.getMessage());
+      System.out.println(e.getCode());
+      
+      
+    		  // front 로 인증번호를 return 해주고, front 에서는 인증번호를 받아서 해당 사용자에게 받은 번호와
+    		 // 같은지 비교 후 승인 or 거부
+    }
+    return random;
+  }
 }
