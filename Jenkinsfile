@@ -24,7 +24,7 @@ pipeline {
     }
   stage('Deploy Server') {
       steps {
-        sh 'nohup java -jar /home/ubuntu/jenkins/app.jar > /dev/null 2>&1 &'
+        sh 'JENKINS_NODE_COOKIE=dontKillMe nohup /mnt/d/jenkins_slave_home/test.sh > /dev/null 2>&1 &'
       }
     }
   }
