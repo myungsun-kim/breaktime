@@ -37,6 +37,7 @@ public class Conference{
 	
 	private String name; // 회의방 이름
 	private String owner; // 호스트
+	private String ownerNick;
 	private LocalDateTime produceTime; // 생성 시간
 	private int participantLimit; // 참가자 제한 수
     
