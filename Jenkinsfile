@@ -9,7 +9,12 @@ pipeline {
     }
   stage('Remove JAR') {
       steps {
-        sh 'kill -9 $(ps -ef | grep java | grep app.jar | awk '{print $2}')'
+        sh '''PID= $(ps -ef | grep java | grep app.jar | awk '{print $2}')
+	if [ -z $PID ]
+ 	then echo "process not existed"
+ 	else kill -9 $PID
+ 	fi
+	'''
       }
     }
   stage('JAR Copy') {
