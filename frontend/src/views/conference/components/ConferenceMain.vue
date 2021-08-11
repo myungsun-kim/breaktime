@@ -34,7 +34,7 @@ export default {
 		let participants = {};
 		const state = reactive({
 			ws: null,
-			name: user.userId,
+			name: user.name,
 			room: props.conferenceId
 		})
 
@@ -115,11 +115,9 @@ export default {
 			}
 		}
 		window.onbeforeunload = function() {
-			console.log('나감')
-			ws.close();
+			state.ws.close();
 		};
 		const onExistingParticipants = function(msg) {
-			console.log(msg)
 			let constraints = {
 				audio : true,
 				video : {
@@ -167,9 +165,8 @@ export default {
 			router.replace({name: 'Main'})
 		}
 		const goMain = function () {
-			if (user.userId === props.owner) {
+			if (user.name === props.owner) {
 				if(confirm('당신은호스트입니다 \n호스트가 회의를 종료하면 방은 삭제됩니다 \n진짜나가시겠습니까?')){
-					leaveRoom()
 					store.dispatch('root/deleteRoom', {
 						sequence: props.conferenceId
           })
@@ -179,6 +176,7 @@ export default {
           .catch(function (err) {
             alert(err.response.data.message)
           })
+					leaveRoom()
 				}
 			} else {
 				if(confirm('화상회의를 종료하시겠습니까?')) {
@@ -216,6 +214,7 @@ export default {
 
 			if (request.name === props.owner) {
 				alert('방장이 방삭제함')
+				state.ws.close()
 				router.replace({name: 'Main'})
 			}
 		}
