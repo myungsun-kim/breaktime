@@ -1,6 +1,5 @@
 <template>
   <div class="form">
-    <h2>로그인</h2>
     <el-form :model="state.form" :rules="state.rules" ref="loginForm" label-width="5.5rem">
       <el-form-item prop="id" label="아이디" >
         <el-input v-model="state.form.id" autocomplete="off" placeholder="ID를입력해주세요"></el-input>
@@ -9,8 +8,8 @@
         <el-input v-model="state.form.password" autocomplete="off" show-password placeholder="PW를입력해주세요"
         @keyup.enter="clickLogin"></el-input>
       </el-form-item>
-      <el-button type="primary" @click="clickLogin" >로그인</el-button>
-      <el-button type="danger" @click="clickSignUp" >회원가입</el-button>
+      <el-button class="button-login" @click="clickLogin" >로그인</el-button>
+      <el-button class="button-signup" @click="clickSignUp" >회원가입</el-button>
     </el-form>
   </div>
 </template>
@@ -116,15 +115,27 @@ export default {
 </script>
 
 <style scoped>
+
+
   .form {
-    width: 50%;
-    margin: 10% 0 10% 25%;
-    background-color: whitesmoke;
-    padding: 1rem;
+    width: 400px;
+    margin: 20px auto;
+    background-color: #F6F6F6;
+    background-size: 100vh;
+    padding: 2rem;
     border-radius: 1rem;
+    font-family: 'Sumflower', sans-serify;
   }
 
   .el-input {
     width: 100%;
+  }
+
+  .button-login {
+    background-color: #F17F42;
+  }
+
+  .button-signup {
+    background-color: #F17F42
   }
 </style>

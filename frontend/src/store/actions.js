@@ -10,8 +10,14 @@ export function requestLogin ({ /*state*/ }, payload) {
 // 토큰으로 회원정보 받기 
 export function requestUserInfo ({ /*state*/ }, payload) {
   const url = '/user/me'
+  const token = localStorage.getItem('jwt')
+  const instance = $axios.create({
+    headers: {
+      Authorization : "Bearer " + token
+    }
+  })
   let body = payload
-  return $axios.get(url, body)
+  return instance.get(url, body)
 }
 
 // 회원가입 관련 axios
@@ -31,8 +37,8 @@ export function requestCheckId({ /*state*/ }, payload) {
 // 핸드폰 번호 체크 관련 axios
 export function requestCheckCNumber({ /*state*/}, payload) {
   const phone = payload.phone
-  const url = `/user/check/${phone}`
-  return $axios.get(url)
+  const url = `/auth/${phone}`
+  return $axios.post(url)
 }
 
 // 방생성 관련 axios
@@ -66,4 +72,17 @@ export function searchRoom({/*state*/}, payload) {
     url = `/conference/search/name/${input}`
   }
   return $axios.get(url)
+}
+
+// 방삭제 관련 axios
+export function deleteRoom({/*state*/}, payload) {
+  const sequence = payload.sequence
+  const url = `/conference/delete/${sequence}`
+  const token = localStorage.getItem('jwt')
+  const instance = $axios.create({
+    headers: {
+      Authorization : "Bearer " + token
+    }
+  })
+  return instance.get(url)
 }

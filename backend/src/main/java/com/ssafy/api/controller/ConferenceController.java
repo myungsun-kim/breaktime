@@ -37,10 +37,6 @@ public class ConferenceController {
 	ConferenceService conferenceService;
 	@Autowired
 	ConferenceRepository conferenceRepository;
-//	@Autowired
-//	ConferenceParticipantService conferenceParticipantService;
-//	@Autowired
-//	ConferenceParticipantRepository conferenceParticipantRepository;
 	
 	@PostMapping("/make") // 회의방 생성
 	public ResponseEntity<? extends BaseResponseBody> make(Authentication authentication, @RequestBody ConferenceVO confer){
@@ -52,12 +48,12 @@ public class ConferenceController {
 		category.setSequence(confer.getCategory_seq()); // 회의방의 카테고리 컬럼을 카테고리 테이블 기본키랑 연결하기 위함
 		
 		Conference conference = new Conference();
-//		ConferenceParticipant conferenceParticipant = new ConferenceParticipant(); //회의방 참가자 테이블
 		
 		conference.setConferenceCategory(category);
 		conference.setDescription(confer.getDescription());
 		conference.setName(confer.getName());
 		conference.setOwner(confer.getOwner());
+		conference.setOwnerNick(confer.getOwnerNick());
 		conference.setParticipantLimit(confer.getParticipantLimit());
 		conference.setPassword(confer.getPassword());
 		

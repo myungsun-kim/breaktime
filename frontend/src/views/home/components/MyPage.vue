@@ -1,12 +1,9 @@
 <template>
   <div class="home-bg">
-    <img src="../../../assets/logo.png" alt="" class="logo">
-    <el-form :model="state.form" :rules="state.rules" ref="signUpForm" label-width="7.5rem" class="form">
+    <el-form :model="state.form" :rules="state.rules" ref="modifyForm" label-width="7.5rem" class="form">
       <el-form-item prop="id" label="아이디" class="formIn">
         <el-input v-model="state.form.id" autocomplete="off">
-          <template #append>
-            <el-button @click='checkId'>ID중복확인</el-button>
-          </template>
+          {{user.userId}}
         </el-input>
       </el-form-item>
       <el-form-item prop="password" label="비밀번호" class="formIn" >
@@ -31,24 +28,26 @@
       <el-form-item prop="CNumber" label="인증번호" class="formIn">
         <el-input v-model="state.form.CNumber" autocomplete="off"></el-input>
       </el-form-item>
-      <el-button type="info" @click="clickSignUp">회원가입</el-button>
+      <el-button type="info" @click="clickModify">정보수정</el-button>
     </el-form>  
   </div>
 </template>
 
 <script>
 import { reactive, ref } from 'vue'
-import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 export default {
-  name: 'SignUp',
+  name: 'MyPage',
   setup() {
     const store = useStore()
+    const user = store.getters['root/getUserInfo']
+    console.log(user)
     const router = useRouter()
-    const signUpForm = ref(null)
+    const modifyForm = ref(null)
 
-    var validatePass = (rule, value, callback) => {
+   var validatePass = (rule, value, callback) => {
       var num = value.search(/[0-9]/g);
       var eng = value.search(/[a-z]/ig);
       var spe = value.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
@@ -91,7 +90,7 @@ export default {
       if (value === '') {
         return callback(new Error('인증번호를 입력해주세요.'))
       }
-      else if (value !=  state.checkCNumber) {
+      else if (value !==  state.checkCnumber) {
         return callback(new Error('잘못된 인증번호 입니다.'))
       } else{
         callback()
@@ -110,7 +109,7 @@ export default {
         CNumber: '',
       },
       checkId: '',
-      checkCNumber: '',
+      checkCnumber: '',
       rules: {
         id: [
           { required: true, validator: validateId, trigger: 'blur'}
@@ -156,7 +155,8 @@ export default {
     const checkCnumber = function () {
       store.dispatch('root/requestCheckCNumber', {phone: state.form.phone})
       .then(function (result) {
-        state.checkCNumber = result.data
+        // state.checkCNumber = state.form.CNumber
+        console.log(result) 
         alert('인증번호가 전송되었습니다')
       })
       .catch(function (err) {
@@ -174,9 +174,9 @@ export default {
 
 
 
-    const clickSignUp = function () {
+    const clickModify = function () {
       // 회원가입 유효성검사후 axios 요청(store - actions으로)
-      signUpForm.value.validate((valid) => {
+      modifyForm.value.validate((valid) => {
         if (valid) {
           store.dispatch('root/requestSignUp', { 
               id: state.form.id, 
@@ -198,7 +198,7 @@ export default {
         }
       });
     }
-    return { state, signUpForm, clickSignUp, store, router, checkId, checkCnumber} 
+    return { state, modifyForm, clickModify, store, router, checkId, checkCnumber} 
   }
 }
 </script>

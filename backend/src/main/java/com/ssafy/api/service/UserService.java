@@ -50,16 +50,13 @@ public class UserService {
  		if (findUser != null) throw new IllegalStateException("이미 존재하는 회원입니다.");
 	}
 	 	
-	 /**
-	 * 전체 회원 조회
-	 */
-	 	
-	 public List<User> findUsers() {
-		 return userRepository.findAll();
+	public List<User> findUsers() {
+		return userRepository.findAll();
 		 
-	 }
-	 public User findOne(String userId) {
-		 return userRepository.findOne(userId);
+	}
+	
+	public User findOne(String userId) {
+		return userRepository.findOne(userId);
 		 
-	 }
+	}
 }

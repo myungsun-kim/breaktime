@@ -3,7 +3,10 @@
     <el-header>Header</el-header>
     <el-container class="conference-box">
       <el-main>
-        <conference-main :conferenceId="props.conferenceId"/>
+        <conference-main 
+          :conferenceId="props.conferenceId"
+          :owner="props.owner"
+        />
       </el-main>
       <el-aside width="25%" class="chat">
         <chat-side :conferenceId="props.conferenceId"/>
@@ -23,10 +26,16 @@ export default {
     ConferenceMain,
   },
   props: {
-    conferenceId: Number
+    conferenceId: {
+      type: Number,
+      default: 0
+    },
+    owner: {
+      type: String,
+      default: ''
+    },
   },
-  setup(props) {
-    console.log(props.conferenceId)
+  setup(props) { 
     return {props}
   }
 }
