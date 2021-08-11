@@ -48,6 +48,9 @@ Thumbs.db
 *.mov
 *.wmv
 
+backend/src/main/generated/com/ssafy/db/entity/
+*.log
+*.gz
 .gradle
 .settings
 bin
