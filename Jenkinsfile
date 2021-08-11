@@ -9,12 +9,12 @@ pipeline {
     }
   stage('JAR Copy') {
       steps {
-        sh 'sudo cp ./backend/build/libs/ssafy-fifth-web-common-project-1.0-SNAPSHOT.jar /home/ubuntu/app.jar'
+        sh 'cp ./backend/build/libs/ssafy-fifth-web-common-project-1.0-SNAPSHOT.jar /home/ubuntu/jenkins/app.jar'
       }
     }
   stage('Deploy Server') {
       steps {
-        sh 'sudo nohup java -jar /home/ubuntu/app.jar &'
+        sh 'nohup java -jar /home/ubuntu/jenkins/app.jar &'
       }
     }
   }
