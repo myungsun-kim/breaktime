@@ -24,7 +24,7 @@ pipeline {
     }
   stage('Deploy Server') {
       steps {
-        sh 'nohup java -jar /home/ubuntu/jenkins/app.jar &'
+        sh 'nohup java -jar /home/ubuntu/jenkins/app.jar'
       }
     }
   }
