@@ -3,8 +3,8 @@ pipeline {
   stages {
   stage('Gradle Build') {
       steps {
-        sh 'chmod +x ./backend/gradlew'
-        sh './backend/gradlew clean build'
+        dir('backend'){sh 'chmod +x ./gradlew'
+                          sh './gradlew clean build'}
       }
     }
   stage('JAR Copy') {
