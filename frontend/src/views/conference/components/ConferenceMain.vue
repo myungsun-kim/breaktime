@@ -36,7 +36,8 @@ export default {
 		const state = reactive({
 			ws: null,
 			name: user.name,
-			room: props.conferenceId
+			room: props.conferenceId,
+			videoState: true,
 		})
 
 		const connect = function() {
@@ -76,6 +77,11 @@ export default {
 								}
 						});
 						break;
+				case 'videoState':
+					state.videoState = parsedMessage.videoState
+					let participant = participants[parsedMessage.name];
+					participant.switchVideoOnOff()
+					break;
 				default:
 					console.error('Unrecognized message', parsedMessage);
 				}
@@ -153,6 +159,20 @@ export default {
 
 			msg.data.forEach(receiveVideo);
 		}
+
+		// 비디오 on/off관련 함수
+		const videoOnOff = function () {
+			let message = {		
+				id : 'videoOnOff',		
+				name : state.name,
+				room : state.room,
+				videoState : state.videoState
+			}
+
+			sendMessage(message)
+		}
+
+		// 방 나기가 관련 함수
 		const leaveRoom = function() {
 			sendMessage({
 				id : 'leaveRoom'
@@ -165,6 +185,8 @@ export default {
 			state.ws.close();
 			router.replace({name: 'Main'})
 		}
+
+		// 방나가기 버튼 클릭시 동작함수
 		const goMain = function () {
 			if (user.name === props.owner) {
 				if(confirm('당신은호스트입니다 \n호스트가 회의를 종료하면 방은 삭제됩니다 \n진짜나가시겠습니까?')){
@@ -221,7 +243,7 @@ export default {
 		}
 	
 
-		// 3번  메세지를받음 -> onmessage로
+		// 메세지를 backend단으로 이동 (CallHandler.java로 이동)
 		const sendMessage = function(message) {
 			let jsonMessage = JSON.stringify(message);
 			console.log('Sending message: ' + jsonMessage);
@@ -245,9 +267,9 @@ export default {
 			span.appendChild(document.createTextNode(name));
 
 			video.id = 'video-' + name;
-			video.autoplay = true;
+			video.className = isVideoState() ? 'd-inline' : 'd-none'
+			video.autoplay = true
 			video.controls = false;
-
 
 			this.getElement = function() {
 				return container;
@@ -272,6 +294,24 @@ export default {
 
 			function isPresentMainParticipant() {
 				return ((document.getElementsByClassName(PARTICIPANT_MAIN_CLASS)).length != 0);
+			}
+
+			this.switchVideoOnOff = function () {
+				console.log('실행')
+				if (video.className === 'd-inline') {
+					video.className = 'd-none'
+				} else {
+					video.className = 'd-inline'
+				}
+			}
+
+			// function switchVideoOnOff() {
+			// 	video.autoplay = state.videoState
+			// }
+
+			function isVideoState () {
+				console.log('실행')
+				return (state.videoState)
 			}
 			// 9번 실행 같이
 			this.offerToReceiveVideo = function(error, offerSdp, wp){
@@ -304,7 +344,7 @@ export default {
 				container.parentNode.removeChild(container);
 			};
 		}
-		return {goMain, router, participants, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant, leaveRoom}
+		return {videoOnOff, goMain, router, participants, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant, leaveRoom}
 		},
 }
 </script>
