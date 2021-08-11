@@ -95,13 +95,14 @@ export default {
             description: state.form.description,
             name: state.form.name,
             owner: user.userId,
+            ownerNick: user.name,
             password: state.form.password,
             participantLimit: state.form.participant_limit,
           })
           .then(function (result) {
             router.replace({name: 'Conference', params: { 
               conferenceId : result.data.sequence,
-              owner: user.userId
+              owner: user.name
             }})
             handleClose()
           })

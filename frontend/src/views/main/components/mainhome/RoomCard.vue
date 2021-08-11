@@ -61,7 +61,7 @@ export default {
         // replace는 뒤로가기를 남기지않음
         router.replace({name: 'Conference', params: { 
           conferenceId : state.room.number,
-          owner: state.room.owner
+          owner: props.item.ownerNick
         }})
       }
     }
@@ -69,7 +69,7 @@ export default {
     const goSecretRoom = function () {
       router.replace({name: 'Conference', params: { 
         conferenceId : state.room.number,
-        owner: state.room.owner
+        owner: props.item.ownerNick
       }})
     }
 
