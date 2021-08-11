@@ -16,7 +16,7 @@ agent {
 docker {
 image 'maven:3-alpine'
 args '-v /root/.m2:/root/.m2'
-}수동배포/자동배포 14
+}
 }
 options { skipDefaultCheckout(false) }
 steps {
