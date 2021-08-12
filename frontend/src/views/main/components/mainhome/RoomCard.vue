@@ -13,7 +13,7 @@
     </template>
     <div class="d-flex flex-column align-items-center">
       <span>{{state.room.description}}</span>
-      <el-button @click="goRoom">입장하기</el-button>
+      <el-button class ="enter-room" @click="goRoom">입장하기</el-button>
     </div>
     <room-password-dialog
       :open="state.roomPasswordDialogOpen"
@@ -85,5 +85,10 @@ export default {
 <style scoped>
   .key {
     background-color: #E6A23C;
+  }
+
+  .enter-room {
+    margin: 35px;
+    background-color: #F6F6F6;
   }
 </style>

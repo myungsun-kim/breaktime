@@ -37,12 +37,9 @@ public class UserService {
 	}
 	
 	@Transactional // 수정
-	public void modify(User user) {
-		User findUser = userRepository.findOne(user.getId());
-		findUser.setNickname(user.getNickname());
-		findUser.setEmailS(user.getEmailS());
-		findUser.setEmailE(user.getEmailE());
-		findUser.setPhone(user.getPhone());
+	public void modify(String userId, String nickName) {
+		User findUser = userRepository.findOne(userId);
+		findUser.setNickname(nickName);
 	}
 	 
     private void validateDuplicateUser(User user) {
