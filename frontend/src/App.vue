@@ -44,9 +44,11 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Crete+Round&display=swap');
+
 
 #app {
-  font-family: Georgia, Serif;
+  font-family: 'Jua', sans-serif;
   font-weight: bold;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

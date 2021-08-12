@@ -1,30 +1,32 @@
 <template>
-  <h1>순현</h1>
-  <div id="socket">
-    유저이름:
-    <input
-      v-model="state.form.userName"
-      type="text"
-    >
-    내용: <input
-      v-model="state.form.message"
-      type="text"
-      @keyup="sendMessage"
-    >
-    <div
-      v-for="(item, idx) in state.form.recvList"
-      :key="idx"
-    >
-      <span> 유저이름: {{ item.userName }}</span>
-      <span>내용: {{ item.message }}</span>
-    </div>
-    <!-- <div>
-      유저 이름: {{ state.form.userName}}
-      내용 : {{ state.form.message}}
-    </div> -->
+  <div>
+    <h1>순현</h1>
+    <div id="socket">
+      유저이름:
+      <input
+        v-model="state.form.userName"
+        type="text"
+      >
+      내용: <input
+        v-model="state.form.message"
+        type="text"
+        @keyup="sendMessage"
+      >
+      <div
+        v-for="(item, idx) in state.form.recvList"
+        :key="idx"
+      >
+        <span> 유저이름: {{ item.userName }}</span>
+        <span>내용: {{ item.message }}</span>
+      </div>
+      <!-- <div>
+        유저 이름: {{ state.form.userName}}
+        내용 : {{ state.form.message}}
+      </div> -->
   </div>
 </template>
-<style>
+
+<style scoped>
   #socket {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

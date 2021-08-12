@@ -31,7 +31,7 @@
       <el-form-item prop="CNumber" label="인증번호" class="formIn">
         <el-input v-model="state.form.CNumber" autocomplete="off"></el-input>
       </el-form-item>
-      <el-button type="info" @click="clickSignUp">회원가입</el-button>
+      <el-button class="signup-button" @click="clickSignUp">회원가입</el-button>
     </el-form>  
   </div>
 </template>
@@ -251,6 +251,10 @@ export default {
   .phone_certify {
     width: 110px;
     text-align: center;
+  }
+
+  .signup-button {
+    background-color: #FFEEE4;
   }
 
 

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <search-bar @searchRoom="searchRoom"/>
-    <el-button @click="createRoom">방만들기</el-button>
+    <el-button class="make-room" @click="createRoom">방만들기</el-button>
     <el-scrollbar height="70vh">
       <ul class="row room">
         <li v-for="item in state.room" :key="item" class="col-12 col-sm-6 col-md-4 col-lg-3 roomcard">
@@ -80,6 +80,11 @@ export default {
 </script>
 
 <style scoped>
+  .make-room {
+    margin: 15px;
+    background-color: #dedcee;
+  }
+
   .room {
     margin: 5px;
   }

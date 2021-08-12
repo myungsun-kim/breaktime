@@ -24,6 +24,7 @@ export default {
 }
 </script>
 
+
 <style scoped>
   .home-bg {
     height: 100vh;
