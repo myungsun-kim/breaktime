@@ -1,4 +1,5 @@
 <template>
+
   <el-dialog title="방만들기" v-model="state.dialogVisible"  @close="handleClose" width="400px">
     <el-form ref="createRoomForm" :model="state.form" :rules="state.rules" label-width="80px">
       <el-form-item label="방제목" prop="name">
@@ -30,6 +31,7 @@
       <el-button @click="createRoom">생성하기</el-button>
     </el-form>
   </el-dialog>
+
 </template>
 
 <script>
@@ -127,3 +129,8 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+
+
+</style>

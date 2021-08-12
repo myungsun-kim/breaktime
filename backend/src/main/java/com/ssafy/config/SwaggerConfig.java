@@ -3,8 +3,10 @@ package com.ssafy.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.SecurityReference;
@@ -22,16 +24,22 @@ import static com.google.common.collect.Lists.newArrayList;
 /**
  * API 문서 관련 swagger2 설정 정의.
  */
+
+//https://localhost:8443/swagger-ui/
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-
     @Bean
     public Docket api() {
+    	final ApiInfo apiInfo = new ApiInfoBuilder()
+    			.title("SSAFY BreakTime API")
+    			.description("<h3>웹 RTC 프로젝트 BreakTime에서 사용되는 RestApi에 대한 문서 제공<h3>")
+    			.build();
         return new Docket(DocumentationType.SWAGGER_2).useDefaultResponseMessages(false)
+        		.apiInfo(apiInfo)
                 .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.ant("/api/**"))
+                .apis(RequestHandlerSelectors.basePackage("com.ssafy.api.controller"))
+                .paths(PathSelectors.ant("/**"))
                 .build()
                 .securityContexts(newArrayList(securityContext()))
                 .securitySchemes(newArrayList(apiKey()))

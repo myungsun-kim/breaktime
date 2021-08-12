@@ -9,7 +9,11 @@
         @keyup.enter="clickLogin"></el-input>
       </el-form-item>
       <el-button class="button-login" @click="clickLogin" >로그인</el-button>
-      <el-button class="button-signup" @click="clickSignUp" >회원가입</el-button>
+      <br>
+      <div class="signup">
+        <span>계정이 없으신가요? </span>
+        <el-button size="xsmall" class="button-signup" @click="clickSignUp" >가입하기</el-button>
+      </div>
     </el-form>
   </div>
 </template>
@@ -132,10 +136,17 @@ export default {
   }
 
   .button-login {
-    background-color: #F17F42;
+    background-color: #dedcee;
   }
-
+  
+  .signup {
+    font-size: smaller;
+    margin-top: 10px;
+  }
   .button-signup {
-    background-color: #F17F42
+    color: #30A9DE;
+    background-color: #F6F6F6;
+    border: 0;
+    outline: 0;
   }
 </style>

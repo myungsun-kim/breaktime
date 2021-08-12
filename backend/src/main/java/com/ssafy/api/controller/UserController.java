@@ -54,7 +54,7 @@ public class UserController {
 	@Autowired
 	UserRepository userRepository;
 	
-	@PostMapping("/signup")
+	@PostMapping("/signup") //회원가입
 	public ResponseEntity<? extends BaseResponseBody> register(@RequestBody UserRegisterVO userRegister) {
 		
 		User user = new User(userRegister.getId(), userRegister.getName(), userRegister.getPassword(),
@@ -65,7 +65,7 @@ public class UserController {
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 	
-	@GetMapping("/me")
+	@GetMapping("/me") //회원정보조회
 	public ResponseEntity<UserRes> getUserInfo(@ApiIgnore Authentication authentication) {
 		/**
 		 * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
@@ -89,24 +89,21 @@ public class UserController {
 		
 	}
 	
-	@DeleteMapping("/{userId}")
-	public ResponseEntity<? extends BaseResponseBody> deleteUser (Authentication authentication, @PathVariable("userId") String userId) {
-
+	@DeleteMapping //회원 탈퇴
+	public ResponseEntity<? extends BaseResponseBody> deleteUser (Authentication authentication) {
 		SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
 		String nowId = userDetails.getUsername();
 		
-		userRepository.delete(userId);
+		userRepository.delete(nowId);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "삭제되었습니다"));
-
 	}
 	
-	@PatchMapping("/modify")
-	public ResponseEntity<? extends BaseResponseBody> modifyUser (Authentication authentication, @RequestBody User user) {
+	@PatchMapping("/modify") //회원 수정
+	public ResponseEntity<? extends BaseResponseBody> modifyUser (Authentication authentication, String userNickname) {
+		System.out.println(authentication);
 		SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-		String nowId = userDetails.getUsername();
-		
-		userService.modify(user);
+		String nowId = userDetails.getUser().getId();
+		userService.modify(nowId, userNickname);//회원의 정보, 변경할 닉네임
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "수정되었습니다"));
-	
 	}
 }

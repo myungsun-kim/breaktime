@@ -7,8 +7,11 @@
         v-for="(item, idx) in state.form.recvList"
         :key="idx" 
       >
-        <div style="float:left;"> {{ item.userName }} :</div>
+      <div class="sentence">
+        <div style="float:left;"> {{ item.userName }} : </div>
         <div>{{ item.message }}</div>
+      </div>
+  
       </div>
       </div>
       <!-- 유저이름:
@@ -159,3 +162,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .sentence {
+    background-color: #F6F6F6;
+    border-radius: 10px;
+    margin: 10px 15px 15px 0;
+  }
+</style>
