@@ -30,6 +30,8 @@ public class QConference extends EntityPathBase<Conference> {
 
     public final StringPath owner = createString("owner");
 
+    public final StringPath ownerNick = createString("ownerNick");
+
     public final NumberPath<Integer> participantLimit = createNumber("participantLimit", Integer.class);
 
     public final StringPath password = createString("password");
@@ -37,8 +39,6 @@ public class QConference extends EntityPathBase<Conference> {
     public final DateTimePath<java.time.LocalDateTime> produceTime = createDateTime("produceTime", java.time.LocalDateTime.class);
 
     public final NumberPath<Long> sequence = createNumber("sequence", Long.class);
-
-    public final ListPath<User, QUser> users = this.<User, QUser>createList("users", User.class, QUser.class, PathInits.DIRECT2);
 
     public QConference(String variable) {
         this(Conference.class, forVariable(variable), INITS);
