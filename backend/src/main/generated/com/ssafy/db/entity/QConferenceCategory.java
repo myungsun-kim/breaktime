@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -23,8 +22,6 @@ public class QConferenceCategory extends EntityPathBase<ConferenceCategory> {
     public final StringPath atmosphere = createString("atmosphere");
 
     public final StringPath background = createString("background");
-
-    public final ListPath<Conference, QConference> conferences = this.<Conference, QConference>createList("conferences", Conference.class, QConference.class, PathInits.DIRECT2);
 
     public final StringPath name = createString("name");
 
