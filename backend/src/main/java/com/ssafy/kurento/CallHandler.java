@@ -63,6 +63,9 @@ public class CallHandler extends TextWebSocketHandler{
 	          user.addCandidate(cand, jsonMessage.get("name").getAsString());
 	        }
 	        break;
+				case "videoOnOff":
+					videoOnOff(jsonMessage, user);
+					break;
 	      default:
 	        break;
 	    }
@@ -82,6 +85,12 @@ public class CallHandler extends TextWebSocketHandler{
 	  Room room = roomManager.getRoom(roomName);
 	  final UserSession user = room.join(name, session);
 	  registry.register(user);
+	}
+
+	private void videoOnOff(JsonObject params, UserSession user)  throws IOException {
+		final Room room = roomManager.getRoom(user.getRoomName());
+		final Boolean state = params.get("videoState").getAsBoolean();
+		room.videoState(user, state);
 	}
 
 	private void leaveRoom(UserSession user) throws IOException {

@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import Home from '@/views/home/Home.vue'
 import SignUp from '@/views/home/components/SignUp.vue'
+import MyPage from '@/views/home/components/MyPage.vue'
 import Main from '@/views/main/Main.vue'
 import Comference from '@/views/conference/Conference.vue'
 
@@ -26,6 +27,18 @@ const routes = [
         next({name:'Main'})
       } else {
         next();
+      }
+    }
+  },
+  {
+    path: '/mypage',
+    name: 'Mypage',
+    component: MyPage,
+    beforeEnter: function (to, from, next) {
+      if (localStorage.getItem('jwt')) {
+        next()
+      } else {
+        next({name:'Main'})
       }
     }
   },

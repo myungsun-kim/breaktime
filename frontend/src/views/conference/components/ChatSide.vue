@@ -100,7 +100,7 @@ export default {
     })
 
     const sendMessage = function (e) {
-      console.log('eeeeee', e.keyCode, 'username', state.form.userName, 'msg', state.form.message, 'recvList', state.form.recvList )
+      // console.log('eeeeee', e.keyCode, 'username', state.form.userName, 'msg', state.form.message, 'recvList', state.form.recvList )
       if(e.keyCode === 13 && state.form.userName !== '' && state.form.message !== ''){
         send()
         state.form.message = ''
@@ -114,7 +114,7 @@ export default {
     }
 
     const send = function() {
-      console.log("Send message:" + state.form.message);
+      // console.log("Send message:" + state.form.message);
       if (state.form.stompClient && state.form.stompClient.connected) {
         const msg = {
           type: "CHAT",
@@ -123,7 +123,7 @@ export default {
           message: state.form.message,
           // recvList: state.form.recvList,
         };
-        console.log('메세지확인', msg)
+        // console.log('메세지확인', msg)
         state.form.stompClient.send("/pub/chat/message", JSON.stringify(msg), {});
       }
     }
@@ -133,18 +133,18 @@ export default {
       const serverURL = "https://localhost:8443/ws-stomp"
       let socket = new SockJS(serverURL);
       state.form.stompClient = Stomp.over(socket);
-      console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
+      // console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
       state.form.stompClient.connect(
         {},
         frame => {
           // 소켓 연결 성공
           state.form.stompClient.connected = true;
-          console.log('소켓 연결 성공', frame, 'id', props.conferenceId);
+          // console.log('소켓 연결 성공', frame, 'id', props.conferenceId);
           // 서버의 메시지 전송 endpoint를 구독합니다.
           // 이런형태를 pub sub 구조라고 합니다.
           state.form.stompClient.subscribe('/sub/chat/room/' + props.conferenceId,
           res => {
-            console.log('구독으로 받은 메시지 입니다.', res.body);
+            // console.log('구독으로 받은 메시지 입니다.', res.body);
 
             // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
             state.form.recvList.push(JSON.parse(res.body))
@@ -152,7 +152,7 @@ export default {
         },
         error => {
           // 소켓 연결 실패
-          console.log('소켓 연결 실패', error);
+          // console.log('소켓 연결 실패', error);
           state.form.stompClient.connected = false;
         }
       );

@@ -60,6 +60,21 @@ public class Room implements Closeable{
 		this.removeParticipant(user.getName());
 		user.close();
 	}
+
+	// 참가자 video on/off
+	public void videoState(UserSession user, Boolean state) throws IOException{
+		final JsonObject videoState = new JsonObject();
+		videoState.addProperty("id", "videoState");
+		videoState.addProperty("name", user.getName());
+		videoState.addProperty("videoState", !state);
+		for(final UserSession participant : participants.values()) {
+			try {
+				participant.sendMessage(videoState);
+			}catch(final IOException e) {
+				System.out.println("실패함");
+			}
+		}
+	}
 	
 	// 새 참가자 방에 들어옴
 	private Collection<String> joinRoom(UserSession newParticipant) throws IOException{

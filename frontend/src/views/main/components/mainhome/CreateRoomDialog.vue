@@ -97,16 +97,19 @@ export default {
             description: state.form.description,
             name: state.form.name,
             owner: user.userId,
+            ownerNick: user.name,
             password: state.form.password,
             participantLimit: state.form.participant_limit,
           })
           .then(function (result) {
-            // console.log(result.data.sequence)
-            router.push({name: 'Conference', params: { conferenceId : result.data.sequence }})
+            router.replace({name: 'Conference', params: { 
+              conferenceId : result.data.sequence,
+              owner: user.name
+            }})
             handleClose()
           })
           .catch(function (err) {
-            alert(err.response.data.message)
+            alert(err)
           })
         } else {
           alert('조건에 맞게 넣으세요ㅡㅡ')

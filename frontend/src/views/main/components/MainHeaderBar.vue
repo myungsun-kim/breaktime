@@ -14,12 +14,15 @@
     
     <button class="logout-button" @click="clickLogOut" >로그아웃</button>
   </div>
+    <el-button type="info" @click="clickMyPage" >마이페이지</el-button>
+  </h1>
 </div>
 </template>
 
 <script>
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+
 
 export default {
   name: 'MainHeaderBar',
@@ -34,8 +37,12 @@ export default {
       router.push({name: 'Home'})
     }
 
+    const clickMyPage = function () {
+      router.push({name: 'Mypage'})
+    }
 
-    return { store, user, clickLogOut, router}
+
+    return { store, user, clickLogOut, clickMyPage, router}
   }
 }
 </script>

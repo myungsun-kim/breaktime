@@ -18,6 +18,7 @@ import { reactive } from '@vue/reactivity'
 import { useStore } from 'vuex'
 import RoomCard from './mainhome/RoomCard.vue'
 import SearchBar from './mainhome/SearchBar.vue'
+import { onMounted } from '@vue/runtime-core'
 
 export default {
   name: 'MainHome',
@@ -41,8 +42,9 @@ export default {
         console.log(err)
       })
     }
-
-    getRoom()
+    onMounted(() => {
+      getRoom()
+    })
 
     const searchRoom = function (searchInfo) {
       const value = searchInfo.value
