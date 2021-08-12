@@ -13,9 +13,9 @@
     <span class="username">Hello {{user.name}}</span>
     
     <button class="logout-button" @click="clickLogOut" >로그아웃</button>
+    <button class="mypage-button" @click="clickMyPage" >마이페이지</button>
   </div>
-    <el-button type="info" @click="clickMyPage" >마이페이지</el-button>
-  </h1>
+ 
 </div>
 </template>
 
@@ -77,6 +77,14 @@ export default {
   border-radius: 5px;
   border: none;
   background-color: #FFEEE4;
+  padding: 10px;
+}
+
+.mypage-button {
+  font-size: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #dedcee;
   padding: 10px;
 }
 
