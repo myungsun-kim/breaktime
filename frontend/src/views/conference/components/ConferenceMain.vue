@@ -242,6 +242,7 @@ export default {
 			let participant = new Participant(sender, senderVideo, senderMic);
 			state.participants[sender] = participant;
 			setTimeout(() => {
+				participant.isMic()
 				let video = participant.getVideoElement();
 	
 				let options = {
@@ -307,8 +308,6 @@ export default {
 			this.getElement = function() {
 				return container;
 			}
-
-
 
 			this.getVideoElement = function() {
 				
