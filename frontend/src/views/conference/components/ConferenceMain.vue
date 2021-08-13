@@ -107,6 +107,7 @@ export default {
 				id : 'joinRoom',		
 				name : state.name,
 				room : state.room,
+				videoState : true,
 			}
 			// 2. 메세지전송
 			sendMessage(message);
