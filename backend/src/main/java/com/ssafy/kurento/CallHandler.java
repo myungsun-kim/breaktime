@@ -85,7 +85,7 @@ public class CallHandler extends TextWebSocketHandler{
 	  log.info("PARTICIPANT {}: trying to join room {}, videoState {}", name, roomName, videoState);
 
 	  Room room = roomManager.getRoom(roomName);
-	  final UserSession user = room.join(name, session);
+	  final UserSession user = room.join(name, videoState, session);
 	  registry.register(user);
 	}
 

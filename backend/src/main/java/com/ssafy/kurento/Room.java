@@ -45,9 +45,9 @@ public class Room implements Closeable{
 	}
 	
 	// 참가자 등록
-	public UserSession join(String userName, WebSocketSession session) throws IOException{
+	public UserSession join(String userName, boolean videoState, WebSocketSession session) throws IOException{
 		log.info("ROOM {}: adding participant {}", this.name, userName);
-	    final UserSession participant = new UserSession(userName, this.name, session, this.pipeline);
+	    final UserSession participant = new UserSession(userName, this.name, session, this.pipeline, videoState);
 	    joinRoom(participant);
 	    participants.put(participant.getName(), participant);
 	    sendParticipantNames(participant);
@@ -81,6 +81,7 @@ public class Room implements Closeable{
 		final JsonObject newParticipantMsg = new JsonObject();
 		newParticipantMsg.addProperty("id", "newParticipantArrived");
 		newParticipantMsg.addProperty("name", newParticipant.getName());
+		newParticipantMsg.addProperty("videoState", newParticipant.getVideoState());
 		
 		final List<String> participantsList = new ArrayList<>(participants.values().size());
 		log.debug("ROOM {}: notifying other participants of new participant {}", name, newParticipant.getName());
@@ -117,17 +118,20 @@ public class Room implements Closeable{
 	}
 	// 참가자 정보?이름 추가
 	public void sendParticipantNames(UserSession user) throws IOException{
-		final JsonArray participantsArray = new JsonArray();
+		final JsonArray participantsArray = new JsonArray();//참가자 이름 저장
+		final JsonArray participantsVideoArray = new JsonArray();//참가자 비디오 상태 저장
 		for(final UserSession participant : this.getParticipants()) {
 			if(!participant.equals(user)) {
 				final JsonElement participantName = new JsonPrimitive(participant.getName());
+				final JsonElement participantVideoState = new JsonPrimitive(participant.getVideoState());
 				participantsArray.add(participantName);
 			}
 		}
 		
 		final JsonObject existingParticipantsMsg = new JsonObject();
 		existingParticipantsMsg.addProperty("id", "existingParticipants");
-		existingParticipantsMsg.add("data", participantsArray);
+		existingParticipantsMsg.add("data", participantsArray);//프론트로 데이터 넘김
+		existingParticipantsMsg.add("videoState", participantsVideoArray);//참가자 데이터 넘김
 		log.debug("PARTICIPANT{}: sending a list of {} participants", user.getName(), participantsArray.size());
 		//참가자와 참가자 목록 사이즈(참가자수)
 		user.sendMessage(existingParticipantsMsg);

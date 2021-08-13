@@ -68,6 +68,16 @@ public class ConferenceController {
 		}
 	}
 	
+	@GetMapping("/search/all") // 회의방 전체 검색
+	public List<Conference> searchAll(){
+		return conferenceService.findConferences();
+	}
+	
+	@GetMapping("/search/category/{category}") // 회의방 카테고리 검색
+	public List<Conference> searchCategory(@PathVariable("category") String category){
+		return conferenceService.findConferences(category);
+	}
+	
 	@GetMapping("/search/name/{name}") // 이름으로 검색
 	public List<Conference> searchName(@PathVariable("name") String name) {
 		return conferenceService.findOne(name);
@@ -77,12 +87,6 @@ public class ConferenceController {
 	public Conference searchNum(@PathVariable("num") Long sequence) {
 		return conferenceService.findOne(sequence);
 	}
-	
-	@GetMapping("/search/all") // 회의방 전체 검색
-	public List<Conference> searchAll(){
-		return conferenceService.findConferences();
-	}
-	
 	@PostMapping("/update/{sequence}") // 회의방 수정
     public void updateConference(Authentication authentication, @PathVariable("sequence") Long sequence, @RequestBody ConferenceVO confer){
 		
