@@ -86,6 +86,7 @@ public class CallHandler extends TextWebSocketHandler{
 	  Boolean videoState = params.get("videoState").getAsBoolean();
 	  // videoState 유저 비디오상태 -> 처음입장하면 무조건 true로 들어온다.
 	  Boolean micState = params.get("micState").getAsBoolean();
+
 	  // videoState 유저 마이크음소거상태 -> 처음입장하면 무조건 false로 들어온다.
 	  log.info("PARTICIPANT {}: trying to join room {}, videoState {}", name, roomName, videoState);
 
