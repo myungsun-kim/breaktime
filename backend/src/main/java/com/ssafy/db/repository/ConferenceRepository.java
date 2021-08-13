@@ -28,13 +28,14 @@ public class ConferenceRepository{
 		}
 	}
 	
-	public Conference findOne(Long sequence) { // 회의방 번호로 찾기
-		System.out.println("회의방찾기");
-		return em.find(Conference.class, sequence);
-	}
-	
 	public List<Conference> findAll(){ // 모든 회의방 리스트
 		return em.createQuery("select c from Conference c", Conference.class).getResultList();
+	}
+	
+	public List<Conference> findCategory(String category) { // 카테고리 이름으로 검색
+		return em.createQuery("select c from Conference c where c.conferenceCategory.sequence=(select sequence from ConferenceCategory where name = :category)", Conference.class)
+				.setParameter("category", category)
+				.getResultList();
 	}
 	
 	public List<Conference> findByName(String name){ // 특정 이름을 가진 회의방
@@ -42,6 +43,12 @@ public class ConferenceRepository{
 				.setParameter("name", name)
 				.getResultList();
 	}
+	
+	public Conference findOne(Long sequence) { // 회의방 번호로 찾기
+		System.out.println("회의방찾기");
+		return em.find(Conference.class, sequence);
+	}
+	
 	// 회의방 초대하기
 	
   
