@@ -81,7 +81,7 @@ public class CallHandler extends TextWebSocketHandler{
 	  final String roomName = params.get("room").getAsString();
 	  final String name = params.get("name").getAsString();
 		// videoState 유저 비디오상태 -> 처음입장하면 무조건 true로 들어온다.
-		final Boolean videoState = params.get("videoState").getAsBoolean();
+	  Boolean videoState = params.get("videoState").getAsBoolean();
 	  log.info("PARTICIPANT {}: trying to join room {}, videoState {}", name, roomName, videoState);
 
 	  Room room = roomManager.getRoom(roomName);
@@ -91,7 +91,7 @@ public class CallHandler extends TextWebSocketHandler{
 
 	private void videoOnOff(JsonObject params, UserSession user)  throws IOException {
 		final Room room = roomManager.getRoom(user.getRoomName());
-		final Boolean state = params.get("videoState").getAsBoolean();
+		Boolean state = params.get("videoState").getAsBoolean();
 		room.videoState(user, state);
 	}
 

@@ -33,7 +33,7 @@ public class UserSession implements Closeable{
 	private final WebRtcEndpoint outgoingMedia;//PeerToPeer로 통신하는 WebRTC의 한쪽
 	private ConcurrentMap<String, WebRtcEndpoint> incomingMedia = new ConcurrentHashMap<>();
 	
-	private final boolean videoState;
+	private boolean videoState;
 
 	
 	public UserSession(final String name, String roomName, final WebSocketSession session, MediaPipeline pipeline, boolean videoState) {
@@ -82,6 +82,10 @@ public class UserSession implements Closeable{
 	  
 	public boolean getVideoState() {
 		return this.videoState;
+	}
+	
+	public void setVideoState(boolean videoState) {
+		this.videoState=videoState;
 	}
 
 	public void receiveVideoFrom(UserSession sender, String sdpOffer) throws IOException{
