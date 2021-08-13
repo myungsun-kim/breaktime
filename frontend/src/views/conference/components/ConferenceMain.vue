@@ -79,7 +79,6 @@ export default {
 					state.participants[parsedMessage.name].switchVideoOnOff(parsedMessage.videoState) // 화면 on/off를 누른 참가자의 switchVideoOnOff함수 실행
 					break;
 				case 'micState':
-					console.log('parsedMessage.micState', parsedMessage.micState)
 					state.participants[parsedMessage.name].switchMicOnOff(parsedMessage.micState) // 화면 on/off를 누른 참가자의 switchVideoOnOff함수 실행
 					break;
 				default:
@@ -110,14 +109,14 @@ export default {
 				name : state.name,
 				room : state.room,
 				videoState : true,
-				micState: true
+				micState: false
 			}
 			// 2. 메세지전송
 			sendMessage(message);
 		}
 
 		const onNewParticipant = function(request) {
-			receiveVideo(request.name, true, true);
+			receiveVideo(request.name, true, false);
 		}
 
 		const receiveVideoResponse = function(result) {
@@ -152,7 +151,7 @@ export default {
 			// console.log(name + " registered in room " + room);
 			// 7번 participant.js에서 참가자 만들기
 			
-			var participant = new Participant(state.name, true, true);
+			var participant = new Participant(state.name, true, false);
 			state.participants[state.name] = participant;
 			setTimeout(() => {
 				let video = participant.getVideoElement();
@@ -181,7 +180,9 @@ export default {
 				room : state.room,
 				videoState : state.participants[state.name].videoState
 			}
-			state.participants[state.name].videoState = !state.participants[state.name].videoState
+			let participant = state.participants[state.name]
+			participant.videoState = !participant.videoState
+			participant.isVideo()
 			sendMessage(message)
 		}
 
@@ -194,7 +195,6 @@ export default {
 				micState : state.participants[state.name].micState
 			}
 			state.participants[state.name].micState = !state.participants[state.name].micState
-			console.log('마이크on/off버튼눌러서보냄', state.participants[state.name].micState)
 			sendMessage(message)
 			// let video = document.getElementById('video-' + state.name)
 			// console.log(video.muted)
@@ -345,17 +345,19 @@ export default {
 
 			this.switchMicOnOff = function (micSwitch) {
 				this.micState = micSwitch
-				console.log('micSwitch', micSwitch)
-				this.isVideo()
+				this.isMic()
 			}
 
 			// video정보를 videoState에 따라 변경하고 video값을 리턴해준다.
 			this.isVideo = function () {
 				let video = document.getElementById('video-' + name)
 				video.className = this.isVideoState() ? 'd-inline' : 'd-none'
-				video.muted = !this.isMicState()
-				console.log('video', video)
 				return video
+			}
+
+			this.isMic = function () {
+				let video = document.getElementById('video-' + name)
+				video.muted = this.isMicState()
 			}
 
 			// 비디오 상태 return
