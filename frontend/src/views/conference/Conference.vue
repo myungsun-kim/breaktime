@@ -1,6 +1,12 @@
 <template>
   <el-container>
-    <el-header>Header</el-header>
+    <el-header>
+      <div class="logo-breaktime">
+        <img src="../../assets/logo_cat.png" alt="" class="logo">
+        <img src="../../assets/breaktime.png" alt="" class="breaktime">
+      </div>
+    </el-header>
+
     <el-container class="conference-box">
       <el-main>
         <conference-main 
@@ -49,5 +55,10 @@ export default {
   .chat {
     border: 1px solid gray;
     margin: 40px;
+  }
+
+  .logo-breaktime {
+    margin-left: 20px;
+    border-bottom: 1px solid;
   }
 </style>

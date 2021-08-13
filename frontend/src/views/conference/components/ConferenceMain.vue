@@ -405,3 +405,27 @@ export default {
 		},
 }
 </script>
+
+<style scoped>
+
+ .conference-main {
+	margin: 60px auto;
+ }
+
+ .video-onoff {
+	font-size: 10px;
+	border-radius: 5px;
+	border: none;
+	background-color: #FFEEE4;
+	padding: 10px;
+ }
+
+ .room-exit {
+	font-size: 10px;
+	border-radius: 5px;
+	border: none;
+	background-color: #FFEEE4;
+	padding: 10px;
+ }
+
+</style>
