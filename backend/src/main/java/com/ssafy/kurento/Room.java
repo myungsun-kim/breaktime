@@ -89,12 +89,15 @@ public class Room implements Closeable{
 		UserSession currentUser = participants.remove(user.getName());//video on/off를 할 참가자
 		currentUser.setMicState(!state);//현재 유저 Video on/off
 		participants.put(user.getName(),currentUser);
+		participants.put(user.getName(),currentUser);
 		
 		for(final UserSession participant : participants.values()) {
-			try {
-				participant.sendMessage(micState);
-			}catch(final IOException e) {
-				System.out.println("실패함");
+			if(!participant.equals(user)) {				
+				try {
+					participant.sendMessage(micState);
+				}catch(final IOException e) {
+					System.out.println("실패함");
+				}
 			}
 		}
 	}
