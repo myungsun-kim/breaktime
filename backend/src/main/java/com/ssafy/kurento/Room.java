@@ -72,10 +72,12 @@ public class Room implements Closeable{
 		participants.put(user.getName(),currentUser);
 		
 		for(final UserSession participant : participants.values()) {
-			try {
-				participant.sendMessage(videoState);
-			}catch(final IOException e) {
-				System.out.println("실패함");
+			if(!participant.equals(user)) {				
+				try {
+					participant.sendMessage(videoState);
+				}catch(final IOException e) {
+					System.out.println("실패함");
+				}
 			}
 		}
 	}
@@ -92,7 +94,7 @@ public class Room implements Closeable{
 		participants.put(user.getName(),currentUser);
 		
 		for(final UserSession participant : participants.values()) {
-			if(!participant.equals(user)) {				
+			if(!participant.equals(user)) {
 				try {
 					participant.sendMessage(micState);
 				}catch(final IOException e) {
