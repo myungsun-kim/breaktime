@@ -35,7 +35,8 @@ export default {
       default: ''
     },
   },
-  setup(props) { 
+  setup(props) {
+
     return {props}
   }
 }

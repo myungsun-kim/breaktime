@@ -40,13 +40,17 @@ public class ConferenceService {
 	public List<Conference> findConferences(){ 
 		return conferenceRepository.findAll();
 	}
-	// 번호로 회의방 찾기
-	public Conference findOne(Long sequence) { 
-		return conferenceRepository.findOne(sequence);
+	// 회의방 카테고리 조회
+	public List<Conference> findConferences(String category){ 
+		return conferenceRepository.findCategory(category);
 	}
 	// 이름으로 회의방 찾기
 	public List<Conference> findOne(String name) {
 		return conferenceRepository.findByName(name);
+	}
+	// 번호로 회의방 찾기
+	public Conference findOne(Long sequence) { 
+		return conferenceRepository.findOne(sequence);
 	}
 	// 회의방 초대하기
 	

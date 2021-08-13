@@ -45,9 +45,9 @@ public class Room implements Closeable{
 	}
 	
 	// 참가자 등록
-	public UserSession join(String userName, WebSocketSession session) throws IOException{
+	public UserSession join(String userName, boolean videoState, boolean micState, WebSocketSession session) throws IOException{
 		log.info("ROOM {}: adding participant {}", this.name, userName);
-	    final UserSession participant = new UserSession(userName, this.name, session, this.pipeline);
+	    final UserSession participant = new UserSession(userName, this.name, session, this.pipeline, videoState, micState);
 	    joinRoom(participant);
 	    participants.put(participant.getName(), participant);
 	    sendParticipantNames(participant);
@@ -67,6 +67,10 @@ public class Room implements Closeable{
 		videoState.addProperty("id", "videoState");
 		videoState.addProperty("name", user.getName());
 		videoState.addProperty("videoState", !state);
+		UserSession currentUser = participants.remove(user.getName());//video on/off를 할 참가자
+		currentUser.setVideoState(!state);//현재 유저 Video on/off
+		participants.put(user.getName(),currentUser);
+		
 		for(final UserSession participant : participants.values()) {
 			try {
 				participant.sendMessage(videoState);
@@ -76,11 +80,35 @@ public class Room implements Closeable{
 		}
 	}
 	
+	// 참가자 mic on/off
+	public void micState(UserSession user, Boolean state) throws IOException{
+		final JsonObject micState = new JsonObject();
+		micState.addProperty("id", "micState");
+		micState.addProperty("name", user.getName());
+		micState.addProperty("micState", !state);
+		UserSession currentUser = participants.remove(user.getName());//video on/off를 할 참가자
+		currentUser.setMicState(!state);//현재 유저 Video on/off
+		participants.put(user.getName(),currentUser);
+		participants.put(user.getName(),currentUser);
+		
+		for(final UserSession participant : participants.values()) {
+			if(!participant.equals(user)) {				
+				try {
+					participant.sendMessage(micState);
+				}catch(final IOException e) {
+					System.out.println("실패함");
+				}
+			}
+		}
+	}
+	
 	// 새 참가자 방에 들어옴
 	private Collection<String> joinRoom(UserSession newParticipant) throws IOException{
 		final JsonObject newParticipantMsg = new JsonObject();
 		newParticipantMsg.addProperty("id", "newParticipantArrived");
 		newParticipantMsg.addProperty("name", newParticipant.getName());
+		newParticipantMsg.addProperty("videoState", newParticipant.getVideoState());
+		newParticipantMsg.addProperty("micState", newParticipant.getMicState());
 		
 		final List<String> participantsList = new ArrayList<>(participants.values().size());
 		log.debug("ROOM {}: notifying other participants of new participant {}", name, newParticipant.getName());
@@ -117,17 +145,25 @@ public class Room implements Closeable{
 	}
 	// 참가자 정보?이름 추가
 	public void sendParticipantNames(UserSession user) throws IOException{
-		final JsonArray participantsArray = new JsonArray();
+		final JsonArray participantsArray = new JsonArray();//참가자 이름 저장
+		final JsonArray participantsVideoArray = new JsonArray();//참가자 비디오 상태 저장
+		final JsonArray participantsMicArray = new JsonArray();//참가자 마이크 상태 저장
 		for(final UserSession participant : this.getParticipants()) {
 			if(!participant.equals(user)) {
 				final JsonElement participantName = new JsonPrimitive(participant.getName());
+				final JsonElement participantVideoState = new JsonPrimitive(participant.getVideoState());
+				final JsonElement participantMicState = new JsonPrimitive(participant.getMicState());
 				participantsArray.add(participantName);
+				participantsVideoArray.add(participantVideoState);
+				participantsMicArray.add(participantMicState);
 			}
 		}
 		
 		final JsonObject existingParticipantsMsg = new JsonObject();
 		existingParticipantsMsg.addProperty("id", "existingParticipants");
-		existingParticipantsMsg.add("data", participantsArray);
+		existingParticipantsMsg.add("data", participantsArray);//프론트로 참가자 이름 데이터 넘김
+		existingParticipantsMsg.add("videoState", participantsVideoArray);//참가자 비디오 상태 데이터 넘김
+		existingParticipantsMsg.add("micState", participantsMicArray);//참가자 비디오 상태 데이터 넘김
 		log.debug("PARTICIPANT{}: sending a list of {} participants", user.getName(), participantsArray.size());
 		//참가자와 참가자 목록 사이즈(참가자수)
 		user.sendMessage(existingParticipantsMsg);
