@@ -1,7 +1,11 @@
 <template>
 	<div id="container">
 			<h1>main</h1>
-			<div id="participants"></div>
+			<!-- <div id="participants"></div> -->
+			<div v-for="participant in state.participants" :key="participant.name" :id="participant.name">
+				<video :id="'video-' + participant.name" autoplay></video>
+				<span>{{participant.name}}</span>
+			</div>
 			<el-button type="primary" round @click="videoOnOff">비디오On/Off</el-button>
 			<el-button type="danger" round @click="goMain">방나가기</el-button>
 	</div>
@@ -30,31 +34,25 @@ export default {
 		const store = useStore()
 		const router = useRouter()
 		const user = store.getters['root/getUserInfo']
-		const PARTICIPANT_MAIN_CLASS = 'participant main';
-		const PARTICIPANT_CLASS = 'participant';
-		let participants = {};
+		// const PARTICIPANT_MAIN_CLASS = 'participant main';
+		// const PARTICIPANT_CLASS = 'participant';
 		const state = reactive({
 			ws: null,
 			name: user.name,
 			room: props.conferenceId,
 			videoState: true,
+			participants: {},
 		})
 
 		const connect = function() {
 			state.ws = new WebSocket('wss://' + location.host + '/groupcall');
 			state.ws.onopen = function(event) {
-				console.log(event)
-				console.log("Successfully connected to the echo websocket server...")
+				// console.log("Successfully connected to the echo websocket server...")
 				register()
 			}
-			// 웹 rtc 종료시
-			// state.ws.onclose = function(event) {
-			// 	console.log(event)
-			// 	console.log('webRTC꺼짐')
-			// }
 			state.ws.onmessage = function(message) {
 				let parsedMessage = JSON.parse(message.data);
-				console.info('Received message: ' + message.data);
+				// console.info('Received message: ' + message.data);
 	
 				switch (parsedMessage.id) {
 				case 'existingParticipants':
@@ -70,7 +68,7 @@ export default {
 					receiveVideoResponse(parsedMessage);
 					break;
 				case 'iceCandidate':
-					participants[parsedMessage.name].rtcPeer.addIceCandidate(parsedMessage.candidate, function (error) {
+					state.participants[parsedMessage.name].rtcPeer.addIceCandidate(parsedMessage.candidate, function (error) {
 								if (error) {
 								console.error("Error adding candidate: " + error);
 								return;
@@ -79,7 +77,7 @@ export default {
 						break;
 				case 'videoState':
 					state.videoState = parsedMessage.videoState
-					let participant = participants[parsedMessage.name];
+					let participant = state.participants[parsedMessage.name];
 					participant.switchVideoOnOff()
 					break;
 				default:
@@ -89,7 +87,18 @@ export default {
 		}
 		onMounted(() => {
 			connect()
+			window.addEventListener('beforeunload', function() {
+				state.ws.close();
+			});
 		})
+		// onBeforeUnmount(() => {
+		// 	window.removeEventListener('beforeunload', function(e) {
+    //   	console.log('새로고침')
+    //   	e.preventDefault()
+		// 		e.returnValue = ''
+    // 	})
+		// })
+
 		
 		// 4번 실행 
 		// 1. 회의방 참가 
@@ -106,14 +115,14 @@ export default {
 			receiveVideo(request.name);
 		}
 		const receiveVideoResponse = function(result) {
-			participants[result.name].rtcPeer.processAnswer(result.spdAnswer, function (error) {
+			state.participants[result.name].rtcPeer.processAnswer(result.spdAnswer, function (error) {
 				if (error) return console.error (error);
 			});
 		}
 		const callResponse = function(message) {
 			console.log('callResponse', message.response)
 			if (message.response != 'accepted') {
-				console.info('Call not accepted by peer. Closing call');
+				// console.info('Call not accepted by peer. Closing call');
 				stop();
 			} else {
 				webRtcPeer.processAnswer(message.spdAnswer, function (error) {
@@ -121,9 +130,7 @@ export default {
 				});
 			}
 		}
-		window.onbeforeunload = function() {
-			state.ws.close();
-		};
+
 		const onExistingParticipants = function(msg) {
 			let constraints = {
 				audio : true,
@@ -139,25 +146,23 @@ export default {
 			// console.log(name + " registered in room " + room);
 			// 7번 participant.js에서 참가자 만들기
 			
-			let participant = new Participant(state.name);
-			participants[state.name] = participant;
-			let video = participant.getVideoElement();
-
-			let options = {
-						localVideo: video,
-						mediaConstraints: constraints,
-						onicecandidate: participant.onIceCandidate.bind(participant)
-					}
-			// participant.rtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function (error) {
-			// 		if(error) return console.error(error);
-			// 		this.generateOffer (participant.offerToReceiveVideo.bind(participant));
-			// });
-			participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function (error) {
-					if(error) return console.error(error);
-					this.generateOffer (participant.offerToReceiveVideo.bind(participant));
-			});
+			var participant = new Participant(state.name);
+			state.participants[state.name] = participant;
+			setTimeout(() => {
+				let video = participant.getVideoElement();
+	
+				let options = {
+							localVideo: video,
+							mediaConstraints: constraints,
+							onicecandidate: participant.onIceCandidate.bind(participant)
+						}
+				participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function (error) {
+						if(error) return console.error(error);
+						this.generateOffer (participant.offerToReceiveVideo.bind(participant));
+				});
 
 			msg.data.forEach(receiveVideo);
+			}, 100)
 		}
 
 		// 비디오 on/off관련 함수
@@ -178,8 +183,8 @@ export default {
 				id : 'leaveRoom'
 			});
 
-			for ( var key in participants) {
-				participants[key].dispose();
+			for ( var key in state.participants) {
+				state.participants[key].dispose();
 			}
 
 			state.ws.close();
@@ -193,8 +198,7 @@ export default {
 					store.dispatch('root/deleteRoom', {
 						sequence: props.conferenceId
           })
-          .then(function (result) {
-						console.log(result)
+          .then(function () {
           })
           .catch(function (err) {
             alert(err.response.data.message)
@@ -209,31 +213,32 @@ export default {
 		}
 		const receiveVideo = function(sender) {
 			let participant = new Participant(sender);
-			participants[sender] = participant;
-		
-			let video = participant.getVideoElement();
-
-			let options = {
-					remoteVideo: video,
-					onicecandidate: participant.onIceCandidate.bind(participant)
-				}
-
-			participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options,
-					function (error) {
-						if(error) {
-							return console.error(error);
-						}
-						this.generateOffer (participant.offerToReceiveVideo.bind(participant));
-			});
+			state.participants[sender] = participant;
+			setTimeout(() => {
+				let video = participant.getVideoElement();
+	
+				let options = {
+						remoteVideo: video,
+						onicecandidate: participant.onIceCandidate.bind(participant)
+					}
+	
+				participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options,
+						function (error) {
+							if(error) {
+								return console.error(error);
+							}
+							this.generateOffer (participant.offerToReceiveVideo.bind(participant));
+				});
+			}, 100)
 
 		}
 
 		const onParticipantLeft = function(request) {
-			console.log('Participant ' + request.name + ' left');
+			// console.log('Participant ' + request.name + ' left');
 
-			let participant = participants[request.name];
+			let participant = state.participants[request.name];
 			participant.dispose();
-			delete participants[request.name];
+			delete state.participants[request.name];
 
 			if (request.name === props.owner) {
 				alert('방장이 방삭제함')
@@ -246,58 +251,64 @@ export default {
 		// 메세지를 backend단으로 이동 (CallHandler.java로 이동)
 		const sendMessage = function(message) {
 			let jsonMessage = JSON.stringify(message);
-			console.log('Sending message: ' + jsonMessage);
+			// console.log('Sending message: ' + jsonMessage);
 			state.ws.send(jsonMessage);
 		}
 
 		const Participant = function(name) {
 			this.name = name;
-			var container = document.createElement('div');
-			container.className = isPresentMainParticipant() ? PARTICIPANT_CLASS : PARTICIPANT_MAIN_CLASS;
-			container.id = name;
-			var span = document.createElement('span');
-			var video = document.createElement('video');
+			// var container = document.createElement('div');
+			// container.className = isPresentMainParticipant() ? PARTICIPANT_CLASS : PARTICIPANT_MAIN_CLASS;
+			// container.id = name;
+			// var span = document.createElement('span');
+			// var video = document.createElement('video');
 			var rtcPeer;
 
-			container.appendChild(video);
-			container.appendChild(span);
-			container.onclick = switchContainerClass;
-			document.getElementById('participants').appendChild(container);
+			// container.appendChild(video);
+			// container.appendChild(span);
+			// container.onclick = switchContainerClass;
+			// document.getElementById('participants').appendChild(container);
 
-			span.appendChild(document.createTextNode(name));
+			// span.appendChild(document.createTextNode(name));
 
-			video.id = 'video-' + name;
-			video.className = isVideoState() ? 'd-inline' : 'd-none'
-			video.autoplay = true
-			video.controls = false;
+			// video.id = 'video-' + name;
+			// video.className = isVideoState() ? 'd-inline' : 'd-none'
+			// video.autoplay = true
+			// video.controls = false;
 
 			this.getElement = function() {
 				return container;
 			}
 
 			this.getVideoElement = function() {
+				let video = document.getElementById('video-' + name)
+				// let videoId = 'video-' + name
+				// console.log(videoId)
+				// console.log(this.$refs.videoId.focus())
+				// let video = document.getElementById('video-' + name)
+				// console.log(video)
 				return video;
 			}
 
-			function switchContainerClass() {
-				if (container.className === PARTICIPANT_CLASS) {
-					var elements = Array.prototype.slice.call(document.getElementsByClassName(PARTICIPANT_MAIN_CLASS));
-					elements.forEach(function(item) {
-							item.className = PARTICIPANT_CLASS;
-						});
+			// function switchContainerClass() {
+			// 	if (container.className === PARTICIPANT_CLASS) {
+			// 		var elements = Array.prototype.slice.call(document.getElementsByClassName(PARTICIPANT_MAIN_CLASS));
+			// 		elements.forEach(function(item) {
+			// 				item.className = PARTICIPANT_CLASS;
+			// 			});
 
-						container.className = PARTICIPANT_MAIN_CLASS;
-					} else {
-					container.className = PARTICIPANT_CLASS;
-				}
-			}
+			// 			container.className = PARTICIPANT_MAIN_CLASS;
+			// 		} else {
+			// 		container.className = PARTICIPANT_CLASS;
+			// 	}
+			// }
 
-			function isPresentMainParticipant() {
-				return ((document.getElementsByClassName(PARTICIPANT_MAIN_CLASS)).length != 0);
-			}
+			// function isPresentMainParticipant() {
+			// 	return ((document.getElementsByClassName(PARTICIPANT_MAIN_CLASS)).length != 0);
+			// }
 
+			// 비디오 on / off 관련함수
 			this.switchVideoOnOff = function () {
-				console.log('실행')
 				if (video.className === 'd-inline') {
 					video.className = 'd-none'
 				} else {
@@ -305,12 +316,7 @@ export default {
 				}
 			}
 
-			// function switchVideoOnOff() {
-			// 	video.autoplay = state.videoState
-			// }
-
 			function isVideoState () {
-				console.log('실행')
 				return (state.videoState)
 			}
 			// 9번 실행 같이
@@ -325,7 +331,7 @@ export default {
 			}
 			// 9번 이거 실행
 			this.onIceCandidate = function (candidate, wp) {
-					console.log("Local candidate" + JSON.stringify(candidate));
+					// console.log("Local candidate" + JSON.stringify(candidate));
 
 					var message = {
 						id: 'onIceCandidate',
@@ -341,10 +347,10 @@ export default {
 			this.dispose = function() {
 				// console.log('Disposing participant ' + this.name);
 				this.rtcPeer.dispose();
-				container.parentNode.removeChild(container);
+				// container.parentNode.removeChild(container);
 			};
 		}
-		return {videoOnOff, goMain, router, participants, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant, leaveRoom}
+		return {videoOnOff, goMain, router, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant, leaveRoom}
 		},
 }
 </script>
