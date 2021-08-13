@@ -130,7 +130,7 @@ export default {
 
     const connect = function() {
       // "https://3.35.171.221:8443/ws-stomp"
-      const serverURL = "https://localhost:8443/ws-stomp"
+      const serverURL = "https://i5d202.p.ssafy.io:8443/ws-stomp" 
       let socket = new SockJS(serverURL);
       state.form.stompClient = Stomp.over(socket);
       // console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
