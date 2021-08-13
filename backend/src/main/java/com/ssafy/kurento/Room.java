@@ -152,7 +152,7 @@ public class Room implements Closeable{
 				final JsonElement participantMicState = new JsonPrimitive(participant.getMicState());
 				participantsArray.add(participantName);
 				participantsVideoArray.add(participantVideoState);
-				participantsVideoArray.add(participantMicState);
+				participantsMicArray.add(participantMicState);
 			}
 		}
 		
