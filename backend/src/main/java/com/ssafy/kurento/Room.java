@@ -67,6 +67,10 @@ public class Room implements Closeable{
 		videoState.addProperty("id", "videoState");
 		videoState.addProperty("name", user.getName());
 		videoState.addProperty("videoState", !state);
+		UserSession currentUser = participants.remove(user.getName());//video on/off를 할 참가자
+		currentUser.setVideoState(!state);//현재 유저 Video on/off
+		participants.put(user.getName(),currentUser);
+		
 		for(final UserSession participant : participants.values()) {
 			try {
 				participant.sendMessage(videoState);
@@ -131,8 +135,8 @@ public class Room implements Closeable{
 		
 		final JsonObject existingParticipantsMsg = new JsonObject();
 		existingParticipantsMsg.addProperty("id", "existingParticipants");
-		existingParticipantsMsg.add("data", participantsArray);//프론트로 데이터 넘김
-		existingParticipantsMsg.add("videoState", participantsVideoArray);//참가자 데이터 넘김
+		existingParticipantsMsg.add("data", participantsArray);//프론트로 참가자 이름 데이터 넘김
+		existingParticipantsMsg.add("videoState", participantsVideoArray);//참가자 비디오 상태 데이터 넘김
 		log.debug("PARTICIPANT{}: sending a list of {} participants", user.getName(), participantsArray.size());
 		//참가자와 참가자 목록 사이즈(참가자수)
 		user.sendMessage(existingParticipantsMsg);
