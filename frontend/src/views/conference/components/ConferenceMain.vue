@@ -193,6 +193,7 @@ export default {
 				room : state.room,
 				micState : state.participants[state.name].micState
 			}
+			state.participants[state.name].micState = !state.participants[state.name].micState
 			console.log('마이크on/off버튼눌러서보냄', state.participants[state.name].micState)
 			sendMessage(message)
 			// let video = document.getElementById('video-' + state.name)
