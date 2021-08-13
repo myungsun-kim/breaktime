@@ -7,6 +7,7 @@
 				<span>{{participant.name}}</span>
 			</div>
 			<el-button type="primary" round @click="videoOnOff">비디오On/Off</el-button>
+			<el-button type="success" round @click="micOnOff">마이크On/Off</el-button>
 			<el-button type="danger" round @click="goMain">방나가기</el-button>
 	</div>
 </template>
@@ -75,9 +76,7 @@ export default {
 						});
 						break;
 				case 'videoState':
-					state.videoState = parsedMessage.videoState
-					let participant = state.participants[parsedMessage.name];
-					participant.switchVideoOnOff()
+					state.participants[parsedMessage.name].switchVideoOnOff(parsedMessage.videoState) // 화면 on/off를 누른 참가자의 switchVideoOnOff함수 실행
 					break;
 				default:
 					console.error('Unrecognized message', parsedMessage);
@@ -107,18 +106,22 @@ export default {
 				name : state.name,
 				room : state.room,
 				videoState : true,
+				micState: true
 			}
 			// 2. 메세지전송
 			sendMessage(message);
 		}
+
 		const onNewParticipant = function(request) {
-			receiveVideo(request.name);
+			receiveVideo(request.name, true);
 		}
+
 		const receiveVideoResponse = function(result) {
 			state.participants[result.name].rtcPeer.processAnswer(result.spdAnswer, function (error) {
 				if (error) return console.error (error);
 			});
 		}
+
 		const callResponse = function(message) {
 			console.log('callResponse', message.response)
 			if (message.response != 'accepted') {
@@ -178,6 +181,16 @@ export default {
 			sendMessage(message)
 		}
 
+		// 마이크 on/off관련 함수
+		const micOnOff = function () {
+			let video = document.getElementById('video-' + state.name)
+			console.log(video.muted)
+			if (video.muted) {
+				video.muted = false
+			} else {
+				video.muted = true
+			}
+		}
 		// 방 나기가 관련 함수
 		const leaveRoom = function() {
 			sendMessage({
@@ -282,19 +295,16 @@ export default {
 				return container;
 			}
 
+
+
 			this.getVideoElement = function() {
-				let video = document.getElementById('video-' + name)
-				if (videoState) {
-					video.className = 'd-inline'
-				} else {
-					video.className = 'd-none'
-				}
+				
 				// let videoId = 'video-' + name
 				// console.log(videoId)
 				// console.log(this.$refs.videoId.focus())
 				// let video = document.getElementById('video-' + name)
 				// console.log(video)
-				return video;
+				return this.isVideo();
 			}
 
 			// function switchContainerClass() {
@@ -315,17 +325,22 @@ export default {
 			// }
 
 			// 비디오 on / off 관련함수
-			this.switchVideoOnOff = function () {
-				if (video.className === 'd-inline') {
-					video.className = 'd-none'
-				} else {
-					video.className = 'd-inline'
-				}
+			this.switchVideoOnOff = function (videoSwitch) {
+				this.videoState = videoSwitch
+				this.isVideo()
 			}
 
-			function isVideoState () {
-				return (videoState)
+			// video정보를 videoState에 따라 변경하고 video값을 리턴해준다.
+			this.isVideo = function () {
+				let video = document.getElementById('video-' + name)
+				video.className = this.isVideoState() ? 'd-inline' : 'd-none'
+				return video
 			}
+
+			this.isVideoState = function() {
+				return (this.videoState)
+			}
+
 			// 9번 실행 같이
 			this.offerToReceiveVideo = function(error, offerSdp, wp){
 				if (error) return console.error ("sdp offer error")
@@ -358,7 +373,7 @@ export default {
 				// container.parentNode.removeChild(container);
 			};
 		}
-		return {videoOnOff, goMain, router, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant, leaveRoom}
+		return {micOnOff, videoOnOff, goMain, router, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant, leaveRoom}
 		},
 }
 </script>
