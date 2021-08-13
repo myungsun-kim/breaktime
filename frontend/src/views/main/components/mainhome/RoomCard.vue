@@ -1,7 +1,7 @@
 <template>
   <el-card v-if="props.item" class="box-card">
     <template #header>
-      <div class="d-flex justify-content-between" >
+      <div class="d-flex justify-content-between" :class="{ 'room-color' : (state.room.conferenceCategory.sequence === 1)}">
         <!-- :class="{'study': roomStyle(state) }" -->
         <span>{{state.room.number}}. {{state.room.name}}</span>
         <span style="overflow:hidden white-space:nowrap">
