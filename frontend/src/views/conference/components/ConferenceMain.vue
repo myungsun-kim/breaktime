@@ -78,6 +78,10 @@ export default {
 				case 'videoState':
 					state.participants[parsedMessage.name].switchVideoOnOff(parsedMessage.videoState) // 화면 on/off를 누른 참가자의 switchVideoOnOff함수 실행
 					break;
+				case 'micState':
+					console.log('parsedMessage.micState', parsedMessage.micState)
+					state.participants[parsedMessage.name].switchMicOnOff(parsedMessage.micState) // 화면 on/off를 누른 참가자의 switchVideoOnOff함수 실행
+					break;
 				default:
 					console.error('Unrecognized message', parsedMessage);
 				}
@@ -113,7 +117,7 @@ export default {
 		}
 
 		const onNewParticipant = function(request) {
-			receiveVideo(request.name, true);
+			receiveVideo(request.name, true, true);
 		}
 
 		const receiveVideoResponse = function(result) {
@@ -123,7 +127,7 @@ export default {
 		}
 
 		const callResponse = function(message) {
-			console.log('callResponse', message.response)
+			// console.log('callResponse', message.response)
 			if (message.response != 'accepted') {
 				// console.info('Call not accepted by peer. Closing call');
 				stop();
@@ -148,7 +152,7 @@ export default {
 			// console.log(name + " registered in room " + room);
 			// 7번 participant.js에서 참가자 만들기
 			
-			var participant = new Participant(state.name, true);
+			var participant = new Participant(state.name, true, true);
 			state.participants[state.name] = participant;
 			setTimeout(() => {
 				let video = participant.getVideoElement();
@@ -164,7 +168,7 @@ export default {
 				});
 			let dataLen = msg.data.length
 			for (let i = 0; i < dataLen; i++) {
-				receiveVideo(msg.data[i], msg.videoState[i])
+				receiveVideo(msg.data[i], msg.videoState[i], msg.micState[i])
 			}
 			}, 100)
 		}
@@ -183,13 +187,21 @@ export default {
 
 		// 마이크 on/off관련 함수
 		const micOnOff = function () {
-			let video = document.getElementById('video-' + state.name)
-			console.log(video.muted)
-			if (video.muted) {
-				video.muted = false
-			} else {
-				video.muted = true
+			let message = {		
+				id : 'micOnOff',		
+				name : state.name,
+				room : state.room,
+				micState : state.participants[state.name].micState
 			}
+			console.log('마이크on/off버튼눌러서보냄', state.participants[state.name].micState)
+			sendMessage(message)
+			// let video = document.getElementById('video-' + state.name)
+			// console.log(video.muted)
+			// if (video.muted) {
+			// 	video.muted = false
+			// } else {
+			// 	video.muted = true
+			// }
 		}
 		// 방 나기가 관련 함수
 		const leaveRoom = function() {
@@ -225,8 +237,8 @@ export default {
 				}
 			}
 		}
-		const receiveVideo = function(sender, senderVideo) {
-			let participant = new Participant(sender, senderVideo);
+		const receiveVideo = function(sender, senderVideo, senderMic) {
+			let participant = new Participant(sender, senderVideo, senderMic);
 			state.participants[sender] = participant;
 			setTimeout(() => {
 				let video = participant.getVideoElement();
@@ -269,7 +281,7 @@ export default {
 			state.ws.send(jsonMessage);
 		}
 
-		const Participant = function(name, videoState) {
+		const Participant = function(name, videoState, micState) {
 			this.name = name;
 			// var container = document.createElement('div');
 			// container.className = isPresentMainParticipant() ? PARTICIPANT_CLASS : PARTICIPANT_MAIN_CLASS;
@@ -278,7 +290,7 @@ export default {
 			// var video = document.createElement('video');
 			var rtcPeer;
 			this.videoState = videoState
-
+			this.micState = micState
 			// container.appendChild(video);
 			// container.appendChild(span);
 			// container.onclick = switchContainerClass;
@@ -330,15 +342,29 @@ export default {
 				this.isVideo()
 			}
 
+			this.switchMicOnOff = function (micSwitch) {
+				this.micState = micSwitch
+				console.log('micSwitch', micSwitch)
+				this.isVideo()
+			}
+
 			// video정보를 videoState에 따라 변경하고 video값을 리턴해준다.
 			this.isVideo = function () {
 				let video = document.getElementById('video-' + name)
 				video.className = this.isVideoState() ? 'd-inline' : 'd-none'
+				video.muted = !this.isMicState()
+				console.log('video', video)
 				return video
 			}
 
+			// 비디오 상태 return
 			this.isVideoState = function() {
 				return (this.videoState)
+			}
+
+			// 마이크 상태 return
+			this.isMicState = function() {
+				return this.micState
 			}
 
 			// 9번 실행 같이
