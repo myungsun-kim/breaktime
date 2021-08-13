@@ -1,14 +1,25 @@
 <template>
-	<div id="container">
+	<div id="container" v-if="state.participants[state.name]">
 			<h1>main</h1>
 			<!-- <div id="participants"></div> -->
-			<div v-for="participant in state.participants" :key="participant.name" :id="participant.name">
+			<div class="total-box" v-for="participant in state.participants" :key="participant.name" :id="participant.name">
 				<video :id="'video-' + participant.name" autoplay></video>
-				<span>{{participant.name}}</span>
+				<div class="video-box" :class="[participant.isVideoState() ? 'd-none' : 'd-inline-block']">비디오OFF</div>
+				<span class="name-box">
+					<i :class="[participant.isMicState() ? 
+						'el-icon-turn-off-microphone text-danger' : 
+						'el-icon-microphone text-success' ]"></i>
+					{{participant.name}}
+				</span>
 			</div>
-			<el-button type="primary" round @click="videoOnOff">비디오On/Off</el-button>
-			<el-button type="success" round @click="micOnOff">마이크On/Off</el-button>
-			<el-button type="danger" round @click="goMain">방나가기</el-button>
+			<el-button v-if="state.participants[state.name].isVideoState()" 
+				icon="el-icon-video-camera" type="success" round @click="videoOnOff">비디오끄기</el-button>
+			<el-button v-else type="danger" icon="el-icon-video-camera" round @click="videoOnOff">비디오켜기</el-button>
+
+			<el-button v-if="state.participants[state.name].isMicState()" 
+			type="danger" icon="el-icon-turn-off-microphone" round @click="micOnOff">마이크켜기</el-button>
+			<el-button v-else type="success" icon="el-icon-microphone" round @click="micOnOff">마이크끄기</el-button>
+			<el-button type="danger" icon="el-icon-phone" round @click="goMain">방나가기</el-button>
 	</div>
 </template>
 
@@ -372,7 +383,7 @@ export default {
 			// 9번 실행 같이
 			this.offerToReceiveVideo = function(error, offerSdp, wp){
 				if (error) return console.error ("sdp offer error")
-				console.log('Invoking SDP offer callback function');
+				// console.log('Invoking SDP offer callback function');
 				var msg =  { id : "receiveVideoFrom",
 						sender : name,
 						sdpOffer : offerSdp
@@ -407,25 +418,42 @@ export default {
 </script>
 
 <style scoped>
-
- .conference-main {
+	.conference-main {
 	margin: 60px auto;
- }
+	}
 
- .video-onoff {
+	.video-onoff {
 	font-size: 10px;
 	border-radius: 5px;
 	border: none;
 	background-color: #FFEEE4;
 	padding: 10px;
- }
+	}
 
- .room-exit {
+	.room-exit {
 	font-size: 10px;
 	border-radius: 5px;
 	border: none;
 	background-color: #FFEEE4;
 	padding: 10px;
- }
+	}
 
+	.total-box {
+		position: relative;
+	}
+
+	.video-box {
+		width: 320px;
+		height: 262px;
+		background-color: #a0a0a0;
+	}
+
+	.name-box {
+		position: absolute;
+		padding: 1rem 0;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		color: white;
+	}
 </style>
