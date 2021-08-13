@@ -181,7 +181,7 @@ export default {
 				room : state.room,
 				videoState : state.participants[state.name].videoState
 			}
-
+			state.participants[state.name].videoState = !state.participants[state.name].videoState
 			sendMessage(message)
 		}
 
