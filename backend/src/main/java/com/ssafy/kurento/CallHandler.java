@@ -42,19 +42,19 @@ public class CallHandler extends TextWebSocketHandler{
 		}
 		
 		switch (jsonMessage.get("id").getAsString()) {
-	      case "joinRoom":
+	      case "joinRoom"://방 입장
 	        joinRoom(jsonMessage, session);
 	        break;
-	      case "receiveVideoFrom":
+	      case "receiveVideoFrom"://비디오 수신
 	        final String senderName = jsonMessage.get("sender").getAsString();
 	        final UserSession sender = registry.getByName(senderName);
 	        final String sdpOffer = jsonMessage.get("sdpOffer").getAsString();
 	        user.receiveVideoFrom(sender, sdpOffer);
 	        break;
-	      case "leaveRoom":
+	      case "leaveRoom"://방 나가기
 	        leaveRoom(user);
 	        break;
-	      case "onIceCandidate":
+	      case "onIceCandidate"://참가자 등록??
 	        JsonObject candidate = jsonMessage.get("candidate").getAsJsonObject();
 
 	        if (user != null) {
@@ -63,9 +63,12 @@ public class CallHandler extends TextWebSocketHandler{
 	          user.addCandidate(cand, jsonMessage.get("name").getAsString());
 	        }
 	        break;
-				case "videoOnOff":
-					videoOnOff(jsonMessage, user);
-					break;
+		  case "videoOnOff"://비디오 onoff
+			  videoOnOff(jsonMessage, user);
+			break;
+		  case "micOnOff"://마이크 onoff
+			  micOnOff(jsonMessage, user);
+			  break;
 	      default:
 	        break;
 	    }
@@ -80,17 +83,27 @@ public class CallHandler extends TextWebSocketHandler{
 	private void joinRoom(JsonObject params, WebSocketSession session) throws IOException {
 	  final String roomName = params.get("room").getAsString();
 	  final String name = params.get("name").getAsString();
-	  log.info("PARTICIPANT {}: trying to join room {}", name, roomName);
+	  Boolean videoState = params.get("videoState").getAsBoolean();
+	  // videoState 유저 비디오상태 -> 처음입장하면 무조건 true로 들어온다.
+	  Boolean micState = params.get("micState").getAsBoolean();
+	  // videoState 유저 마이크음소거상태 -> 처음입장하면 무조건 false로 들어온다.
+	  log.info("PARTICIPANT {}: trying to join room {}, videoState {}", name, roomName, videoState);
 
 	  Room room = roomManager.getRoom(roomName);
-	  final UserSession user = room.join(name, session);
+	  final UserSession user = room.join(name, videoState, micState, session);
 	  registry.register(user);
 	}
 
 	private void videoOnOff(JsonObject params, UserSession user)  throws IOException {
 		final Room room = roomManager.getRoom(user.getRoomName());
-		final Boolean state = params.get("videoState").getAsBoolean();
+		Boolean state = params.get("videoState").getAsBoolean();
 		room.videoState(user, state);
+	}
+	
+	private void micOnOff(JsonObject params, UserSession user)  throws IOException {
+		final Room room = roomManager.getRoom(user.getRoomName());
+		Boolean state = params.get("micState").getAsBoolean();
+		room.micState(user, state);
 	}
 
 	private void leaveRoom(UserSession user) throws IOException {

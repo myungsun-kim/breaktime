@@ -32,20 +32,25 @@ public class UserSession implements Closeable{
 	private final String roomName;
 	private final WebRtcEndpoint outgoingMedia;//PeerToPeer로 통신하는 WebRTC의 한쪽
 	private ConcurrentMap<String, WebRtcEndpoint> incomingMedia = new ConcurrentHashMap<>();
+	
+	private boolean videoState; //비디오 상태
+	private boolean micState; //마이크 상태
 
 	
-	public UserSession(final String name, String roomName, final WebSocketSession session, MediaPipeline pipeline) {
+	public UserSession(final String name, String roomName, final WebSocketSession session, MediaPipeline pipeline, boolean videoState, boolean micState) {
 		this.name = name;
 		this.session = session;
 		this.pipeline = pipeline;
 		this.roomName = roomName;
 		this.outgoingMedia = new WebRtcEndpoint.Builder(pipeline).build();
+		this.videoState = videoState;
+		this.micState = micState;
 		
 		this.outgoingMedia.addIceCandidateFoundListener(new EventListener<IceCandidateFoundEvent>() {
 		//RTCIceCandidate:RTCPeerConnection을 구축 할 때 사용되는 Internet Connectivity Establishment의 후보군(candidate)
 		//addIceCandidateFoundListener를 사용하여 candidate를 찾는 과정
 			@Override
-			public void onEvent(IceCandidateFoundEvent event) {
+			public void onEvent(IceCandidateFoundEvent event) { 
 				JsonObject response = new JsonObject();
 				response.addProperty("id", "iceCandidate");
 				response.addProperty("name", name);
@@ -77,6 +82,22 @@ public class UserSession implements Closeable{
 	    return this.roomName;
   	}
 	  
+	public boolean getVideoState() {
+		return this.videoState;
+	}
+	
+	public void setVideoState(boolean videoState) {
+		this.videoState=videoState;
+	}
+	
+	public boolean getMicState() {
+		return this.micState;
+	}
+	
+	public void setMicState(boolean micState) {
+		this.micState=micState;
+	}
+
 	public void receiveVideoFrom(UserSession sender, String sdpOffer) throws IOException{
 		//SDP Session Description Protocol 멀티미티어 세션 파라미터를 협상하는 프로토콜
 		//sdpOffer: 어떤 방식으로 연결될지 확인
