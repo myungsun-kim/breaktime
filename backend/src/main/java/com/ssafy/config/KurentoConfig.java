@@ -16,12 +16,12 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 import com.ssafy.kurento.CallHandler;
 import com.ssafy.kurento.RoomManager;
 import com.ssafy.kurento.UserRegistry;
-
+//KurentoClient는 이 클래스에서 Spring Bean으로 인스턴스화되고, 
+//이 빈은 애플리케이션 미디어 기능을 추가하는 데 사용되는 Kurento Media Server의 위치를 지정해야 함
 @EnableWebSocket
 @Configuration
 public class KurentoConfig implements WebSocketConfigurer{
 
-	
     @Bean
     public HttpMessageConverter<String> responseBodyConverter() {
         return new StringHttpMessageConverter(Charset.forName("UTF-8"));
