@@ -40,7 +40,6 @@ export default {
 			ws: null,
 			name: user.name,
 			room: props.conferenceId,
-			videoState: true,
 			participants: {},
 		})
 
@@ -143,11 +142,10 @@ export default {
 					}
 				}
 			};
-
 			// console.log(name + " registered in room " + room);
 			// 7번 participant.js에서 참가자 만들기
 			
-			var participant = new Participant(state.name);
+			var participant = new Participant(state.name, true);
 			state.participants[state.name] = participant;
 			setTimeout(() => {
 				let video = participant.getVideoElement();
@@ -161,8 +159,10 @@ export default {
 						if(error) return console.error(error);
 						this.generateOffer (participant.offerToReceiveVideo.bind(participant));
 				});
-
-			msg.data.forEach(receiveVideo);
+			let dataLen = msg.data.length
+			for (let i = 0; i < dataLen; i++) {
+				receiveVideo(msg.data[i], msg.videoState[i])
+			}
 			}, 100)
 		}
 
@@ -172,7 +172,7 @@ export default {
 				id : 'videoOnOff',		
 				name : state.name,
 				room : state.room,
-				videoState : state.videoState
+				videoState : state.participants[state.name].videoState
 			}
 
 			sendMessage(message)
@@ -212,8 +212,8 @@ export default {
 				}
 			}
 		}
-		const receiveVideo = function(sender) {
-			let participant = new Participant(sender);
+		const receiveVideo = function(sender, senderVideo) {
+			let participant = new Participant(sender, senderVideo);
 			state.participants[sender] = participant;
 			setTimeout(() => {
 				let video = participant.getVideoElement();
@@ -256,7 +256,7 @@ export default {
 			state.ws.send(jsonMessage);
 		}
 
-		const Participant = function(name) {
+		const Participant = function(name, videoState) {
 			this.name = name;
 			// var container = document.createElement('div');
 			// container.className = isPresentMainParticipant() ? PARTICIPANT_CLASS : PARTICIPANT_MAIN_CLASS;
@@ -264,6 +264,7 @@ export default {
 			// var span = document.createElement('span');
 			// var video = document.createElement('video');
 			var rtcPeer;
+			this.videoState = videoState
 
 			// container.appendChild(video);
 			// container.appendChild(span);
@@ -283,6 +284,11 @@ export default {
 
 			this.getVideoElement = function() {
 				let video = document.getElementById('video-' + name)
+				if (videoState) {
+					video.className = 'd-inline'
+				} else {
+					video.className = 'd-none'
+				}
 				// let videoId = 'video-' + name
 				// console.log(videoId)
 				// console.log(this.$refs.videoId.focus())
@@ -318,7 +324,7 @@ export default {
 			}
 
 			function isVideoState () {
-				return (state.videoState)
+				return (videoState)
 			}
 			// 9번 실행 같이
 			this.offerToReceiveVideo = function(error, offerSdp, wp){
@@ -339,6 +345,7 @@ export default {
 						candidate: candidate,
 						name: name
 					};
+
 					sendMessage(message);
 			}
 			// Object.defineProperty() 정적 메서드는 객체에 직접 새로운 속성을 정의하거나 이미 존재하는 속성을 수정한 후, 그 객체를 반환합니다.
