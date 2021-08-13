@@ -33,16 +33,18 @@ public class UserSession implements Closeable{
 	private final WebRtcEndpoint outgoingMedia;//PeerToPeer로 통신하는 WebRTC의 한쪽
 	private ConcurrentMap<String, WebRtcEndpoint> incomingMedia = new ConcurrentHashMap<>();
 	
-	private boolean videoState;
+	private boolean videoState; //비디오 상태
+	private boolean micState; //마이크 상태
 
 	
-	public UserSession(final String name, String roomName, final WebSocketSession session, MediaPipeline pipeline, boolean videoState) {
+	public UserSession(final String name, String roomName, final WebSocketSession session, MediaPipeline pipeline, boolean videoState, boolean micState) {
 		this.name = name;
 		this.session = session;
 		this.pipeline = pipeline;
 		this.roomName = roomName;
 		this.outgoingMedia = new WebRtcEndpoint.Builder(pipeline).build();
 		this.videoState = videoState;
+		this.micState = micState;
 		
 		this.outgoingMedia.addIceCandidateFoundListener(new EventListener<IceCandidateFoundEvent>() {
 		//RTCIceCandidate:RTCPeerConnection을 구축 할 때 사용되는 Internet Connectivity Establishment의 후보군(candidate)
@@ -86,6 +88,14 @@ public class UserSession implements Closeable{
 	
 	public void setVideoState(boolean videoState) {
 		this.videoState=videoState;
+	}
+	
+	public boolean getMicState() {
+		return this.micState;
+	}
+	
+	public void setMicState(boolean micState) {
+		this.micState=micState;
 	}
 
 	public void receiveVideoFrom(UserSession sender, String sdpOffer) throws IOException{
