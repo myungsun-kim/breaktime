@@ -42,19 +42,19 @@ public class CallHandler extends TextWebSocketHandler{
 		}
 		
 		switch (jsonMessage.get("id").getAsString()) {
-	      case "joinRoom":
+	      case "joinRoom"://방 입장
 	        joinRoom(jsonMessage, session);
 	        break;
-	      case "receiveVideoFrom":
+	      case "receiveVideoFrom"://비디오 수신
 	        final String senderName = jsonMessage.get("sender").getAsString();
 	        final UserSession sender = registry.getByName(senderName);
 	        final String sdpOffer = jsonMessage.get("sdpOffer").getAsString();
 	        user.receiveVideoFrom(sender, sdpOffer);
 	        break;
-	      case "leaveRoom":
+	      case "leaveRoom"://방 나가기
 	        leaveRoom(user);
 	        break;
-	      case "onIceCandidate":
+	      case "onIceCandidate"://참가자 등록??
 	        JsonObject candidate = jsonMessage.get("candidate").getAsJsonObject();
 
 	        if (user != null) {
@@ -63,9 +63,12 @@ public class CallHandler extends TextWebSocketHandler{
 	          user.addCandidate(cand, jsonMessage.get("name").getAsString());
 	        }
 	        break;
-				case "videoOnOff":
-					videoOnOff(jsonMessage, user);
-					break;
+		  case "videoOnOff"://비디오 onoff
+			  videoOnOff(jsonMessage, user);
+			break;
+		  case "micOnOff"://마이크 onoff
+			  micOnOff(jsonMessage, user);
+			  break;
 	      default:
 	        break;
 	    }
@@ -95,6 +98,12 @@ public class CallHandler extends TextWebSocketHandler{
 		final Room room = roomManager.getRoom(user.getRoomName());
 		Boolean state = params.get("videoState").getAsBoolean();
 		room.videoState(user, state);
+	}
+	
+	private void micOnOff(JsonObject params, UserSession user)  throws IOException {
+		final Room room = roomManager.getRoom(user.getRoomName());
+		Boolean state = params.get("micState").getAsBoolean();
+		room.micState(user, state);
 	}
 
 	private void leaveRoom(UserSession user) throws IOException {
