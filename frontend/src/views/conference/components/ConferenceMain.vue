@@ -1,14 +1,25 @@
 <template>
-	<div id="container">
+	<div id="container" v-if="state.participants[state.name]">
 			<h1>main</h1>
 			<!-- <div id="participants"></div> -->
-			<div v-for="participant in state.participants" :key="participant.name" :id="participant.name">
+			<div class="total-box" v-for="participant in state.participants" :key="participant.name" :id="participant.name">
 				<video :id="'video-' + participant.name" autoplay></video>
-				<span>{{participant.name}}</span>
+				<div class="video-box" :class="[participant.isVideoState() ? 'd-none' : 'd-inline-block']">비디오OFF</div>
+				<span class="name-box">
+					<i :class="[participant.isMicState() ? 
+						'el-icon-turn-off-microphone text-danger' : 
+						'el-icon-microphone text-success' ]"></i>
+					{{participant.name}}
+				</span>
 			</div>
-			<el-button type="primary" round @click="videoOnOff">비디오On/Off</el-button>
-			<el-button type="success" round @click="micOnOff">마이크On/Off</el-button>
-			<el-button type="danger" round @click="goMain">방나가기</el-button>
+			<el-button v-if="state.participants[state.name].isVideoState()" 
+				icon="el-icon-video-camera" type="success" round @click="videoOnOff">비디오끄기</el-button>
+			<el-button v-else type="danger" icon="el-icon-video-camera" round @click="videoOnOff">비디오켜기</el-button>
+
+			<el-button v-if="state.participants[state.name].isMicState()" 
+			type="danger" icon="el-icon-turn-off-microphone" round @click="micOnOff">마이크켜기</el-button>
+			<el-button v-else type="success" icon="el-icon-microphone" round @click="micOnOff">마이크끄기</el-button>
+			<el-button type="danger" icon="el-icon-phone" round @click="goMain">방나가기</el-button>
 	</div>
 </template>
 
@@ -79,7 +90,6 @@ export default {
 					state.participants[parsedMessage.name].switchVideoOnOff(parsedMessage.videoState) // 화면 on/off를 누른 참가자의 switchVideoOnOff함수 실행
 					break;
 				case 'micState':
-					console.log('parsedMessage.micState', parsedMessage.micState)
 					state.participants[parsedMessage.name].switchMicOnOff(parsedMessage.micState) // 화면 on/off를 누른 참가자의 switchVideoOnOff함수 실행
 					break;
 				default:
@@ -110,14 +120,14 @@ export default {
 				name : state.name,
 				room : state.room,
 				videoState : true,
-				micState: true
+				micState: false
 			}
 			// 2. 메세지전송
 			sendMessage(message);
 		}
 
 		const onNewParticipant = function(request) {
-			receiveVideo(request.name, true, true);
+			receiveVideo(request.name, true, false);
 		}
 
 		const receiveVideoResponse = function(result) {
@@ -152,7 +162,7 @@ export default {
 			// console.log(name + " registered in room " + room);
 			// 7번 participant.js에서 참가자 만들기
 			
-			var participant = new Participant(state.name, true, true);
+			var participant = new Participant(state.name, true, false);
 			state.participants[state.name] = participant;
 			setTimeout(() => {
 				let video = participant.getVideoElement();
@@ -181,7 +191,9 @@ export default {
 				room : state.room,
 				videoState : state.participants[state.name].videoState
 			}
-
+			let participant = state.participants[state.name]
+			participant.videoState = !participant.videoState
+			participant.isVideo()
 			sendMessage(message)
 		}
 
@@ -194,7 +206,6 @@ export default {
 				micState : state.participants[state.name].micState
 			}
 			state.participants[state.name].micState = !state.participants[state.name].micState
-			console.log('마이크on/off버튼눌러서보냄', state.participants[state.name].micState)
 			sendMessage(message)
 			// let video = document.getElementById('video-' + state.name)
 			// console.log(video.muted)
@@ -242,6 +253,7 @@ export default {
 			let participant = new Participant(sender, senderVideo, senderMic);
 			state.participants[sender] = participant;
 			setTimeout(() => {
+				participant.isMic()
 				let video = participant.getVideoElement();
 	
 				let options = {
@@ -308,8 +320,6 @@ export default {
 				return container;
 			}
 
-
-
 			this.getVideoElement = function() {
 				
 				// let videoId = 'video-' + name
@@ -345,17 +355,19 @@ export default {
 
 			this.switchMicOnOff = function (micSwitch) {
 				this.micState = micSwitch
-				console.log('micSwitch', micSwitch)
-				this.isVideo()
+				this.isMic()
 			}
 
 			// video정보를 videoState에 따라 변경하고 video값을 리턴해준다.
 			this.isVideo = function () {
 				let video = document.getElementById('video-' + name)
 				video.className = this.isVideoState() ? 'd-inline' : 'd-none'
-				video.muted = !this.isMicState()
-				console.log('video', video)
 				return video
+			}
+
+			this.isMic = function () {
+				let video = document.getElementById('video-' + name)
+				video.muted = this.isMicState()
 			}
 
 			// 비디오 상태 return
@@ -371,7 +383,7 @@ export default {
 			// 9번 실행 같이
 			this.offerToReceiveVideo = function(error, offerSdp, wp){
 				if (error) return console.error ("sdp offer error")
-				console.log('Invoking SDP offer callback function');
+				// console.log('Invoking SDP offer callback function');
 				var msg =  { id : "receiveVideoFrom",
 						sender : name,
 						sdpOffer : offerSdp
@@ -404,3 +416,44 @@ export default {
 		},
 }
 </script>
+
+<style scoped>
+	.conference-main {
+	margin: 60px auto;
+	}
+
+	.video-onoff {
+	font-size: 10px;
+	border-radius: 5px;
+	border: none;
+	background-color: #FFEEE4;
+	padding: 10px;
+	}
+
+	.room-exit {
+	font-size: 10px;
+	border-radius: 5px;
+	border: none;
+	background-color: #FFEEE4;
+	padding: 10px;
+	}
+
+	.total-box {
+		position: relative;
+	}
+
+	.video-box {
+		width: 320px;
+		height: 262px;
+		background-color: #a0a0a0;
+	}
+
+	.name-box {
+		position: absolute;
+		padding: 1rem 0;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		color: white;
+	}
+</style>

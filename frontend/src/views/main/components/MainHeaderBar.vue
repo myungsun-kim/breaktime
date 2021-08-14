@@ -16,6 +16,7 @@
     <button class="mypage-button" @click="clickMyPage" >마이페이지</button>
   </div>
  
+
 </div>
 </template>
 
@@ -55,6 +56,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #F6F6F6;
 }
 
 .logo {

@@ -1,7 +1,8 @@
 <template>
   <el-card v-if="props.item" class="box-card">
     <template #header>
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between" :class="{ 'room-color' : (state.room.conferenceCategory.sequence === 1)}">
+        <!-- :class="{'study': roomStyle(state) }" -->
         <span>{{state.room.number}}. {{state.room.name}}</span>
         <span style="overflow:hidden white-space:nowrap">
           <i v-if="state.room.conferenceCategory.sequence === 1" class="el-icon-notebook-1"></i>
@@ -77,6 +78,11 @@ export default {
       state.roomPasswordDialogOpen = false
     }
 
+    const roomStyle = function (state) {
+      if(state.room.conferenceCategory.sequence == 1) return ture;
+      else false;
+    }
+
     return {props, state, router, goRoom, onCloseroomPasswordDialog, goSecretRoom}
   }
 }
@@ -91,4 +97,8 @@ export default {
     margin: 35px;
     background-color: #F6F6F6;
   }
+
+  /* .d-flex justify-content-between study {
+    background-color: #E6A23C;
+  } */
 </style>
