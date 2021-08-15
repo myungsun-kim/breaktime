@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.api.request.UserModifyDto;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
 
@@ -37,9 +38,12 @@ public class UserService {
 	}
 	
 	@Transactional // 수정
-	public void modify(String userId, String nickName) {
+	public void modify(String userId, UserModifyDto userModifyDto) {
 		User findUser = userRepository.findOne(userId);
-		findUser.setNickname(nickName);
+		findUser.setNickname(userModifyDto.getNickname());
+		findUser.setEmailE(userModifyDto.getEmailE());
+		findUser.setEmailS(userModifyDto.getEmailS());
+		
 	}
 	 
     private void validateDuplicateUser(User user) {

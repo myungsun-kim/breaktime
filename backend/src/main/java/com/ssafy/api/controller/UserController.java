@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.api.request.UserModifyDto;
 import com.ssafy.api.request.UserRegisterDTO;
 import com.ssafy.api.response.UserRes;
 import com.ssafy.api.service.UserService;
@@ -36,7 +37,7 @@ public class UserController {
 	@Autowired
 	UserRepository userRepository;
 	
-	@PostMapping("/signup") //회원가입
+	@PostMapping
 	@ApiOperation(value = "회원 가입", notes = "<strong>아이디, 패스워드, 이메일, 닉네임, 핸드폰 번호</strong>를 통해 회원가입 한다.") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
@@ -54,7 +55,14 @@ public class UserController {
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 	
-	@GetMapping("/me") //회원정보조회
+	@GetMapping
+	@ApiOperation(value = "회원 정보 조회", notes = "<strong>Bearer token</strong>을 통해 현재 회원 정보를 가져온다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
 	public ResponseEntity<UserRes> getUserInfo(@ApiIgnore Authentication authentication) {
 		/**
 		 * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
@@ -67,7 +75,14 @@ public class UserController {
 		return ResponseEntity.status(200).body(UserRes.of(user));
 	}
 	
-	@GetMapping("/{userId}") // 회원가입 ID 중복 체크
+	@GetMapping("/{userId}")
+	@ApiOperation(value = " ID 중복 체크", notes = "<strong>입력한 ID</strong>를 통해 DB의 중복된 값이 있는지 확인한다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
 	public ResponseEntity<? extends BaseResponseBody> duplicateId (@PathVariable("userId") String userId ) {
 
 		User user = userService.findOne(userId);
@@ -78,8 +93,15 @@ public class UserController {
 		
 	}
 	
-	@DeleteMapping //회원 탈퇴
-	public ResponseEntity<? extends BaseResponseBody> deleteUser (Authentication authentication) {
+	@DeleteMapping
+	@ApiOperation(value = "회원 탈퇴", notes = "<strong>Bearer token</strong>을 통해 가져온 회원을 삭제한다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<? extends BaseResponseBody> deleteUser (@ApiIgnore Authentication authentication) {
 		SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
 		String nowId = userDetails.getUsername();
 		
@@ -87,12 +109,19 @@ public class UserController {
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "삭제되었습니다"));
 	}
 	
-	@PatchMapping("/modify") //회원 수정
-	public ResponseEntity<? extends BaseResponseBody> modifyUser (Authentication authentication, String userNickname) {
-		System.out.println(authentication);
+	@PatchMapping
+	@ApiOperation(value = "회원 정보 수정", notes = "<strong>Bearer token</strong>을 통해 가져온 회원의 정보를 입력받은 정보로 수정한다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<? extends BaseResponseBody> modifyUser (@ApiIgnore Authentication authentication, UserModifyDto userModifyDto) {
+
 		SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
 		String nowId = userDetails.getUser().getId();
-		userService.modify(nowId, userNickname);//회원의 정보, 변경할 닉네임
+		userService.modify(nowId, userModifyDto);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "수정되었습니다"));
 	}
 }

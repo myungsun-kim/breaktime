@@ -9,7 +9,7 @@ export function requestLogin ({ /*state*/ }, payload) {
 
 // 토큰으로 회원정보 받기 
 export function requestUserInfo ({ /*state*/ }, payload) {
-  const url = '/user/me'
+  const url = '/user'
   const token = localStorage.getItem('jwt')
   const instance = $axios.create({
     headers: {
@@ -22,7 +22,7 @@ export function requestUserInfo ({ /*state*/ }, payload) {
 
 // 회원가입 관련 axios
 export function requestSignUp ({ /*state*/ }, payload) {
-  const url = '/user/signup'
+  const url = '/user'
   let body = payload
   return $axios.post(url, body)
 }

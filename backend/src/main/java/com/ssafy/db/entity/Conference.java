@@ -60,11 +60,12 @@ public class Conference{
 
     public Conference() {}
     
-	public Conference(String name, String owner, LocalDateTime produceTime, int participantLimit,
+	public Conference(String name, String owner, String ownerNick, LocalDateTime produceTime, int participantLimit,
 			ConferenceCategory conferenceCategory, String description, String password) {
 		super();
 		this.name = name;
 		this.owner = owner;
+		this.ownerNick = ownerNick;
 		this.produceTime = produceTime;
 		this.participantLimit = participantLimit;
 		this.conferenceCategory = conferenceCategory;
