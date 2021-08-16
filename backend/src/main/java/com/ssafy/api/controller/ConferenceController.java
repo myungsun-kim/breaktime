@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,14 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.api.request.ConferenceDTO;
-import com.ssafy.api.service.ConferenceParticipantService;
 import com.ssafy.api.service.ConferenceService;
 import com.ssafy.common.auth.SsafyUserDetails;
-import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.common.model.response.BasicResponse;
 import com.ssafy.db.entity.Conference;
 import com.ssafy.db.entity.ConferenceCategory;
-import com.ssafy.db.entity.ConferenceParticipant;
-import com.ssafy.db.repository.ConferenceParticipantRepository;
 import com.ssafy.db.repository.ConferenceRepository;
 
 import io.swagger.annotations.ApiOperation;
@@ -40,8 +38,11 @@ public class ConferenceController {
 	
 	@Autowired
 	ConferenceService conferenceService;
+	
 	@Autowired
 	ConferenceRepository conferenceRepository;
+	
+	private final String SUCCESS_MESSAGE = "성공";
 	
 	@PostMapping
 	@ApiOperation(value = "회의방 생성", notes = "<strong>Bearer token과 입력 받은 회의방 정보</strong>를 통해 회의방을 생성한다.") 
@@ -51,7 +52,7 @@ public class ConferenceController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<? extends BaseResponseBody> make(@ApiIgnore Authentication authentication, @RequestBody ConferenceDTO confer){
+	public ResponseEntity<? extends BasicResponse> make(@ApiIgnore Authentication authentication, @RequestBody ConferenceDTO confer){
 		
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		String userId = userDetails.getUsername();
@@ -64,11 +65,8 @@ public class ConferenceController {
 
 		Long seq = conferenceService.create(conference);
 		
-		if(seq != null) {
-			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success", seq));
-		}else {
-			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail", null));
-		}
+		BasicResponse response = new BasicResponse(HttpStatus.OK, SUCCESS_MESSAGE);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 	@GetMapping("/search/all")
@@ -127,7 +125,7 @@ public class ConferenceController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-    public void updateConference(@ApiIgnore Authentication authentication, @PathVariable("sequence") Long sequence, @RequestBody ConferenceDTO confer){
+    public ResponseEntity<? extends BasicResponse> updateConference(@ApiIgnore Authentication authentication, @PathVariable("sequence") Long sequence, @RequestBody ConferenceDTO confer){
 		
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		String userId = userDetails.getUsername();
@@ -146,7 +144,9 @@ public class ConferenceController {
 		conference.setPassword(confer.getPassword());
 		
         conferenceService.save(conference);
-
+        
+        BasicResponse response = new BasicResponse(HttpStatus.OK, SUCCESS_MESSAGE);
+		return new ResponseEntity<>(response, HttpStatus.OK);
     }
 	
 	@DeleteMapping("/{sequence}")
@@ -157,28 +157,12 @@ public class ConferenceController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public void deleteConference(@ApiIgnore Authentication authentication, @PathVariable("sequence") Long sequence) {
-		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-		String userId = userDetails.getUsername();
+	public ResponseEntity<? extends BasicResponse> deleteConference(@ApiIgnore Authentication authentication, @PathVariable("sequence") Long sequence) {
 
 		conferenceRepository.delete(sequence);
+		
+		BasicResponse response = new BasicResponse(HttpStatus.OK, SUCCESS_MESSAGE);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-//	@PostMapping("/{sequence}") //회의방 입장
-//	public void enterRoom(Authentication authentication, @PathVariable("sequence") Long sequence){
-//		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-//		Conference conference = conferenceService.findOne(sequence);//해당 시퀀스로 회의방 찾기
-//		
-//		ConferenceParticipant conferenceParticipant = new ConferenceParticipant(); //회의방 참가자 테이블
-//		
-//		conferenceParticipant.setConference(conference);
-//		conferenceParticipant.setUser(userDetails.getUser());
-//
-//		conferenceParticipantService.save(conferenceParticipant);
-//	}
-//	
-//	@DeleteMapping("/leave") //회의방 나가기
-//	public void leaveRoom(String userId) {//해당 아이디 DB에서 제거
-//		conferenceParticipantRepository.delete(userId);
-//	}
 }
