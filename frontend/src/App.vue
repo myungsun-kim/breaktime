@@ -1,9 +1,6 @@
 <template>
   <div>
     <router-view />
-    <footer>
-      <span>footer</span>
-    </footer>
   </div>
   <!-- <Home /> -->
 

@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header>
+    <el-header style="height: 100px">
       <div class="logo-breaktime">
         <img src="../../assets/logo_cat.png" alt="" class="logo">
         <img src="../../assets/breaktime.png" alt="" class="breaktime">
