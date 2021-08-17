@@ -1,0 +1,4 @@
+Hostname - 3.35.171.221
+Port - 3306
+Username - d202
+Password - !d210726D

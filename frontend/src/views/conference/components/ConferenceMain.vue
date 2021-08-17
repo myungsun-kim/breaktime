@@ -1,15 +1,41 @@
 <template>
-	<div id="container">
-			<h1>main</h1>
-			<!-- <div id="participants"></div> -->
-			<div v-for="participant in state.participants" :key="participant.name" :id="participant.name">
-				<video :id="'video-' + participant.name" autoplay></video>
-				<span>{{participant.name}}</span>
-			</div>
-			<el-button type="primary" round @click="videoOnOff">비디오On/Off</el-button>
-			<el-button type="success" round @click="micOnOff">마이크On/Off</el-button>
-			<el-button type="danger" round @click="goMain">방나가기</el-button>
-	</div>
+  <el-container class="conference-box" v-if="state.participants[state.name]">
+		<el-main>
+				<div class="row">
+					<div class="total-box col-4" v-for="participant in state.participants" :key="participant.name" :id="participant.name">
+						<video :id="'video-' + participant.name" autoplay></video>
+						<div class="video-box" :class="[participant.isVideoState() ? 'd-none' : 'd-inline-block']">비디오OFF</div>
+						<span class="name-box">
+							<i :class="[participant.isMicState() ? 
+								'el-icon-turn-off-microphone text-danger' : 
+								'el-icon-microphone text-success' ]"></i>
+							{{participant.name}}
+						</span>
+					</div>
+				</div>
+		</el-main>
+		<el-footer>
+				<el-button v-if="state.participants[state.name].isVideoState()" 
+					icon="el-icon-video-camera" type="success" class="d-inline-flex flex-row" round @click="videoOnOff">
+					<span class="d-none d-md-block">비디오끄기</span>
+				</el-button>
+				<el-button v-else type="danger" icon="el-icon-video-camera" class="d-inline-flex flex-row" round @click="videoOnOff">
+					<span class="d-none d-md-block">비디오켜기</span>
+				</el-button>
+
+				<el-button v-if="state.participants[state.name].isMicState()" 
+				type="danger" icon="el-icon-turn-off-microphone" class="d-inline-flex flex-row" round @click="micOnOff">
+					<span class="d-none d-md-block">마이크켜기</span>
+				</el-button>
+				<el-button v-else type="success" icon="el-icon-microphone" class="d-inline-flex flex-row" round @click="micOnOff">
+					<span class="d-none d-md-block">마이크끄기</span>
+				</el-button>
+
+				<el-button type="danger" icon="el-icon-phone" class="d-inline-flex flex-row" round @click="goMain">
+					<span class="d-none d-md-block">방나가기</span>
+				</el-button>
+		</el-footer>
+	</el-container>
 </template>
 
 <script>
@@ -43,6 +69,10 @@ export default {
 			room: props.conferenceId,
 			participants: {},
 		})
+
+		const participantLen = function () {
+			return participants.length
+		}
 
 		const connect = function() {
 			state.ws = new WebSocket('wss://' + location.host + '/groupcall');
@@ -142,7 +172,7 @@ export default {
 				audio : true,
 				video : {
 					mandatory : {
-						maxWidth : 320,
+						maxWidth : 400,
 						maxFrameRate : 15,
 						minFrameRate : 15
 					}
@@ -372,7 +402,7 @@ export default {
 			// 9번 실행 같이
 			this.offerToReceiveVideo = function(error, offerSdp, wp){
 				if (error) return console.error ("sdp offer error")
-				console.log('Invoking SDP offer callback function');
+				// console.log('Invoking SDP offer callback function');
 				var msg =  { id : "receiveVideoFrom",
 						sender : name,
 						sdpOffer : offerSdp
@@ -401,7 +431,52 @@ export default {
 				// container.parentNode.removeChild(container);
 			};
 		}
-		return {micOnOff, videoOnOff, goMain, router, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant, leaveRoom}
+		return {participantLen, micOnOff, videoOnOff, goMain, router, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant, leaveRoom}
 		},
 }
 </script>
+
+<style scoped>
+	.conference-box {
+    height: 100vh;
+  }
+
+	.video-onoff {
+	font-size: 10px;
+	border-radius: 5px;
+	border: none;
+	background-color: #FFEEE4;
+	padding: 10px;
+	}
+
+	.room-exit {
+	font-size: 10px;
+	border-radius: 5px;
+	border: none;
+	background-color: #FFEEE4;
+	padding: 10px;
+	}
+
+	.total-box {
+		width: 400px;
+		height: 300px;
+		position: relative;
+		padding: 0;
+	}
+
+	.video-box {
+		width: 400px;
+		height: 300px;
+		background-color: #a0a0a0;
+	}
+
+
+	.name-box {
+		position: absolute;
+		padding: 1rem 0;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		color: white;
+	}
+</style>

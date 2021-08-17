@@ -1,35 +1,33 @@
 <template>
-  <div class="home-bg">
-    <el-form :model="state.form" :rules="state.rules" ref="modifyForm" label-width="7.5rem" class="form">
-      <el-form-item prop="id" label="아이디" class="formIn">
-        <el-input v-model="state.form.id" autocomplete="off">
-          {{user.userId}}
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="password" label="비밀번호" class="formIn" >
-        <el-input v-model="state.form.password" autocomplete="off" show-password></el-input>
-      </el-form-item>
-      <el-form-item prop="passwordCheck" label="비밀번호확인" class="formIn">
-        <el-input v-model="state.form.passwordCheck" autocomplete="off" show-password></el-input>
-      </el-form-item>
-      <el-form-item prop="name" label="이름" class="formIn">
-        <el-input v-model="state.form.name" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item prop="email" label="이메일(선택)" class="formIn">
-        <el-input v-model="state.form.email" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item prop="phone" label="휴대폰" class="formIn">
-        <el-input v-model="state.form.phone" autocomplete="off" placeholder="-없이 입력">
-          <template #append>
-            <el-button class="phone_certify">인증번호전송</el-button>
-          </template>
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="CNumber" label="인증번호" class="formIn">
-        <el-input v-model="state.form.CNumber" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-button type="info" @click="clickModify">정보수정</el-button>
-    </el-form>  
+  <div class="home-bg" float:left>
+    <center>
+    <br>
+    
+    <p>
+      
+      <label for="title"> <i class="el-icon-user-solid"></i> 정보 수정 </label>
+      
+    </p>
+    <p>
+      <label for="id" style="text-align:left"> ID {{user.userId}}  </label>
+    </p>
+    <p>
+      <lable for="phone"> phone 0{{user.phone}} </lable>
+    </p>
+    <p>
+      <label for="email"> email {{user.email}} </label>
+    </p>
+    <p>
+      <label for="nickname"> NickName </label>
+    &nbsp;
+      <input type="text" id="nickname" v-model="state.name" name="nickname" required minlength="2" maxlenth="12" size="10"> 
+    </p>
+    
+    <el-button class="button-login" @click="clickModify" > 정보수정 </el-button>
+    <el-button class="button-signup" @click="clickDeleteUser" > 회원탈퇴 </el-button>
+    <br>
+    <br>
+    </center>
   </div>
 </template>
 
@@ -43,170 +41,66 @@ export default {
   setup() {
     const store = useStore()
     const user = store.getters['root/getUserInfo']
+    // 유저 정보 받아오기
     console.log(user)
     const router = useRouter()
-    const modifyForm = ref(null)
-
-   var validatePass = (rule, value, callback) => {
-      var num = value.search(/[0-9]/g);
-      var eng = value.search(/[a-z]/ig);
-      var spe = value.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
-      if (value.length < 9){
-        return callback(new Error('최소 9글자를 입력해야 합니다.'))
-      } else if (16 < value.length){
-        return callback(new Error('최대 16 글자까지 입력가능합니다.'))
-      } else if (num < 0 || eng < 0 || spe < 0) {
-        return callback(new Error('비밀번호는 영문, 숫자, 특수문자가 조합되어야합니다.'))
-      } else {
-        callback()
-      }
-    }
-
-    var validatePass2 = (rule, value, callback) => {
-      if (value !== state.form.password ){
-        return callback(new Error('비밀번호가 다릅니다'))
-      } else{
-        callback()
-      }
-    }
-
-    var validateId = (rule, value, callback) => {
-      if (value === '') {
-        return callback(new Error('ID를 입력해주세요.'))
-      } else if (16 < value.length) {
-        return callback(new Error('ID는 최대 16자까지 가능합니다.'))
-      } else if (value !== state.checkId) {
-        return callback(new Error('ID중복검사를 실시해주세요'))
-      } else {
-        callback()
-      }
-    }
-  // 인증번호 유효성검사
-    // 검증하기
-    // 
-    // rule , value callback 기본값 (있어야 함수 정의 가능)
-    // 사용 프레임워크 엘리먼트 플러스
-    var validateCnumber = (rule, value, callback) => {
-      if (value === '') {
-        return callback(new Error('인증번호를 입력해주세요.'))
-      }
-      else if (value !==  state.checkCnumber) {
-        return callback(new Error('잘못된 인증번호 입니다.'))
-      } else{
-        callback()
-      }
-    }
-
 
     const state = reactive({
-      form: {
-        id: '',
-        password: '',
-        passwordCheck: '',
-        email: '',
-        phone: '',
-        name: '',
-        CNumber: '',
-      },
-      checkId: '',
-      checkCnumber: '',
-      rules: {
-        id: [
-          { required: true, validator: validateId, trigger: 'blur'}
-        ],
-        password: [
-          { required: true, validator: validatePass, trigger: 'blur'}
-        ],
-        passwordCheck: [
-          { required: true, validator: validatePass2, trigger: 'change'}
-        ],
-        name: [
-          { required: true, message: '이름을 입력해주세요',trigger: 'blur' }
-        ],
-        phone: [
-          { required: true, message: '핸드폰번호를 입력해주세요',trigger: 'blur'}
-        ],
-        CNumber: [
-          { required: true, validator: validateCnumber ,trigger: 'blur'}
-        ]
-      },
+      name : user.name,
+      phone : user.phone
     })
-
-    const checkId = function () {
-      store.dispatch('root/requestCheckId', {id: state.form.id})
-      .then(function (result) {
-        state.checkId = state.form.id
-        alert('사용가능한 ID 입니다')
-      })
-      .catch(function (err) {
-        alert(err.response.data.message)
-      })
-    }
-
-    // 변경사항
-    // 목표기능
-    // Backend 에서 return 받은 random 값이, 사용자가 입력한 값과 같은지 검증 후
-    // 맞으면 -> 휴대폰 인증 완료
-    // 틀리면 -> " 인증번호가 올바르지 않습니다. " 출력
-
-
     
-    
-    const checkCnumber = function () {
-      store.dispatch('root/requestCheckCNumber', {phone: state.form.phone})
-      .then(function (result) {
-        // state.checkCNumber = state.form.CNumber
-        console.log(result) 
-        alert('인증번호가 전송되었습니다')
-      })
-      .catch(function (err) {
-        console.log(err.response)
-      })
-    }
-
-
-
-
-    // 변경사항 끝
-    // 물어볼 것
-    // 유효성검사에 CNumber 추가해야하는지?
-    // Back 에서 return 받은 random 값을 CNumber 로 받아오고, 인식하려면?
-
-
-
     const clickModify = function () {
-      // 회원가입 유효성검사후 axios 요청(store - actions으로)
-      modifyForm.value.validate((valid) => {
-        if (valid) {
-          store.dispatch('root/requestSignUp', { 
-              id: state.form.id, 
-              password: state.form.password,
-              passwordCheck: state.form.passwordCheck,
-              email: state.form.email,
-              phone: state.form.phone,
-              name: state.form.name
+          store.dispatch('root/modifyUserInfo', { 
+              name: state.name
             }
           )
           .then(function (result) {
-            router.push({name: 'Home'})
+            console.log(result)
+            // router.push({name: 'Home'})
           })
           .catch(function (err) {
             alert(err.response.data.message)
           })
-        } else {
-          alert('조건에 맞게 넣으세요ㅡㅡ')
         }
-      });
+        
+    const clickDeleteUser = function () {
+      store.dispatch('root/deleteUserInfo', {
+        id: user.id
+        }
+      )
+      // 성공하면 then
+      // 실패하면 catch
+      .then(function (result) {
+        localStorage.removeItem('user') // key 에 맞는 값을 삭제한다.
+        // localStorage.clear() 로컬 스토리지에 저장된 모든 값을 삭제한다.
+        // 모두 삭제해야하는지? 혹은 특정 키값(유저) ?
+
+        router.push({name: 'Login'})
+        // 삭제 후 로그인으로 이동
+        console.log(result)
+      })
+      .catch(function (err) {
+            alert(err.response.data.message)
+          })
     }
-    return { state, modifyForm, clickModify, store, router, checkId, checkCnumber} 
-  }
-}
+    return { state, clickModify, clickDeleteUser,  store, router ,user} 
+  }       // 상태 , 수정폼, 클릭수정 , 저장, 라우터, ID 체크 , 인증번호 체크
+}         
+
+  // 끝
+
 </script>
 
 <style scoped>
-  
 
-
+  .home-bg {
+    margin : 30px;
+    justify-content: center;
+    text-align: left;
+    
+    
+  }
   .form {
     /* width: 50%;
     margin: 100px;

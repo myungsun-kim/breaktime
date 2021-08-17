@@ -1,6 +1,8 @@
 <template>
-<div margin="20px">
-  <h1>chat</h1>
+<div class="chat-show">
+  
+    <p>실시간 채팅</p>
+
     <div id="socket">
       <div id="chatMain">
       <div
@@ -20,12 +22,14 @@
         type="text"
       > -->
       <div id="chatInput">
-      Message: <input
+      {{user.name}} : <input
         v-model="state.form.message"
         type="text"
+        placeholder="메시지를 입력하세요"
         @keyup="sendMessage"
         id="input"
-      ></div>
+      >
+      </div>
       <!-- <div>
         유저 이름: {{ state.form.userName}}
         내용 : {{ state.form.message}}
@@ -45,7 +49,7 @@
     margin-left: 30px;
     margin-bottom: 30px;
     /* width: 400px; */
-    height: 1000px;
+    height: 600px;
     /* height: 100%; */
   }
   #chatMain{
@@ -63,6 +67,21 @@
   }
   span{
     width: 100%;
+  }
+
+  .sentence {
+    background-color: #F6F6F6;
+    border-radius: 10px;
+    margin: 10px 15px 15px 0;
+  }
+
+  .chat-show {
+    height: 100%;
+    background-color: #F6F6F6;
+  }
+
+  .chat-show::-webkit-scrollbar {
+    width: 1px;
   }
 </style>
 
@@ -163,10 +182,3 @@ export default {
 }
 </script>
 
-<style scoped>
-  .sentence {
-    background-color: #F6F6F6;
-    border-radius: 10px;
-    margin: 10px 15px 15px 0;
-  }
-</style>

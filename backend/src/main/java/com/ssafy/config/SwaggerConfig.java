@@ -45,7 +45,8 @@ public class SwaggerConfig {
                 .securitySchemes(newArrayList(apiKey()))
                 ;
     }
-
+    
+    // 전역 JWT 설정 
     private ApiKey apiKey() {
         return new ApiKey(SECURITY_SCHEMA_NAME, "Authorization", "header");
     }
@@ -65,8 +66,8 @@ public class SwaggerConfig {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         return newArrayList(new SecurityReference(SECURITY_SCHEMA_NAME, authorizationScopes));
-    }
-
+    } // 전역 JWT 설정 
+    
     @Bean
     UiConfiguration uiConfig() {
         return UiConfigurationBuilder.builder()
