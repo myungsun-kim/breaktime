@@ -1,24 +1,9 @@
 <template>
   <el-container>
-
     <el-header>
-      <div class="conference-header">
-
-        <div class="logo-breaktime">
-          <img src="../../assets/logo_cat.png" alt="" class="logo">
-          <img src="../../assets/breaktime.png" alt="" class="breaktime">
-        </div>
-
-        <div>
-          
-          <p class="title">Room : {{name}}</p>
-        </div>
-
-        <div class="room-owner">
-          <p>방번호: {{conferenceId}} </p>
-          <p>방 장: {{owner}} </p>
-        </div>
-
+      <div class="logo-breaktime">
+        <img src="../../assets/logo_cat.png" alt="" class="logo">
+        <img src="../../assets/breaktime.png" alt="" class="breaktime">
       </div>
     </el-header>
 
