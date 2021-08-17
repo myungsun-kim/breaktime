@@ -1,14 +1,15 @@
 <template>
   <el-card v-if="props.item" class="box-card">
     <template #header>
-      <div class="d-flex justify-content-between" :class="{ 'room-color' : (state.room.conferenceCategory.sequence === 1)}">
+      <div class="d-flex justify-content-between" >
         <!-- :class="{'study': roomStyle(state) }" -->
-        <span>{{state.room.number}}. {{state.room.name}}</span>
+
+        <span :class="{ 'study' : (state.room.conferenceCategory.sequence === 1), 'sing' : (state.room.conferenceCategory.sequence === 2), 'talk' : (state.room.conferenceCategory.sequence === 3) }">{{state.room.number}}. {{state.room.name}}</span>
         <span style="overflow:hidden white-space:nowrap">
-          <i v-if="state.room.conferenceCategory.sequence === 1" class="el-icon-notebook-1"></i>
-          <i v-else-if="state.room.conferenceCategory.sequence === 2" class="el-icon-microphone"></i>
-          <i v-else class="el-icon-user"></i>
-          <i v-if="state.room.password" class="el-icon-key key"></i>
+          <i v-if="state.room.conferenceCategory.sequence === 1" class="el-icon-notebook-2" :class="{'study-icon': true}">study</i>
+          <i v-else-if="state.room.conferenceCategory.sequence === 2" class="el-icon-microphone" :class="{'sing-icon': true}">sing</i>
+          <i v-else class="el-icon-user" :class="{'talk-icon': true}">talk</i>
+          <i v-if="state.room.password" class="el-icon-key key" ></i>
         </span>
       </div>
     </template>
@@ -62,7 +63,8 @@ export default {
         // replace는 뒤로가기를 남기지않음
         router.replace({name: 'Conference', params: { 
           conferenceId : state.room.number,
-          owner: props.item.ownerNick
+          owner: props.item.ownerNick,
+          name: state.room.name
         }})
       }
     }
@@ -98,7 +100,38 @@ export default {
     background-color: #F6F6F6;
   }
 
-  /* .d-flex justify-content-between study {
-    background-color: #E6A23C;
-  } */
+  .study {
+    color: #E53A40;
+    border-radius: 5px;
+  }
+
+  .sing {
+    color: #30A9DE;
+    border-radius: 5px;
+  }
+
+  .talk {
+    color: #EFDC05;
+    border-radius:5px;
+  }
+
+  .study-icon {
+    font-weight: bold;
+    border: 2px solid #E53A40;
+    border-radius: 5px;
+  }
+
+  .sing-icon {
+    font-weight: bold;
+    border: 2px solid #30A9DE;
+    border-radius: 5px;
+  }
+
+  .talk-icon {
+    font-weight: bold;
+    border: 2px solid #EFDC05;
+    border-radius: 5px;
+  }
+
+
 </style>
