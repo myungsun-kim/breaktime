@@ -2,7 +2,7 @@
   <el-container class="conference-box" v-if="state.participants[state.name]">
 		<el-main>
 				<div class="row">
-					<div class="total-box col col-md-4" v-for="participant in state.participants" :key="participant.name" :id="participant.name">
+					<div class="total-box col-12 col-md-4" v-for="participant in state.participants" :key="participant.name" :id="participant.name">
 						<video :id="'video-' + participant.name" class="video-box" autoplay></video>
 						<div class="video-box" :class="[participant.isVideoState() ? 'd-none' : 'd-inline-block']">비디오OFF</div>
 						<span class="name-box">
@@ -173,6 +173,7 @@ export default {
 				video : {
 					mandatory : {
 						maxWidth : 400,
+						maxHeight : 300,
 						maxFrameRate : 15,
 						minFrameRate : 15
 					}
