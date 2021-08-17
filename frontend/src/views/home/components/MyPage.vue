@@ -5,7 +5,7 @@
     
     <p>
       
-      <label for="title"> <img src="https://img.icons8.com/ios-glyphs/25/000000/user-male-circle.png"/> 정보 수정 </label>
+      <label for="title"> <i class="el-icon-user-solid"></i> 정보 수정 </label>
       
     </p>
     <p>
