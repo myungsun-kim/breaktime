@@ -2,8 +2,8 @@
   <el-container class="conference-box" v-if="state.participants[state.name]">
 		<el-main>
 				<div class="row">
-					<div class="total-box col-4" v-for="participant in state.participants" :key="participant.name" :id="participant.name">
-						<video :id="'video-' + participant.name" autoplay></video>
+					<div class="total-box col col-md-4" v-for="participant in state.participants" :key="participant.name" :id="participant.name">
+						<video :id="'video-' + participant.name" class="video-box" autoplay></video>
 						<div class="video-box" :class="[participant.isVideoState() ? 'd-none' : 'd-inline-block']">비디오OFF</div>
 						<span class="name-box">
 							<i :class="[participant.isMicState() ? 
@@ -14,7 +14,7 @@
 					</div>
 				</div>
 		</el-main>
-		<el-footer>
+		<el-footer class="p-0">
 				<el-button v-if="state.participants[state.name].isVideoState()" 
 					icon="el-icon-video-camera" type="success" class="d-inline-flex flex-row" round @click="videoOnOff">
 					<span class="d-none d-md-block">비디오끄기</span>
@@ -459,24 +459,41 @@ export default {
 
 	.total-box {
 		width: 400px;
-		height: 300px;
 		position: relative;
 		padding: 0;
 	}
 
 	.video-box {
 		width: 400px;
-		height: 300px;
 		background-color: #a0a0a0;
+	}
+
+	@media (min-width: 700px) {
+		.total-box {
+			height: 300px;
+		}
+
+		.video-box {
+			height: 300px;
+		}
+	}
+
+	.total-box video {
+		width: 100% !important;
+		height: auto !important;
+	}
+
+	.total-box:before {
+		position: absolute;
 	}
 
 
 	.name-box {
 		position: absolute;
-		padding: 1rem 0;
 		bottom: 0;
 		left: 50%;
 		transform: translateX(-50%);
-		color: white;
+		background-color: rgba( 255, 255, 255, 0.5 );
 	}
+
 </style>
