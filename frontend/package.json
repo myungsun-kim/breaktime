@@ -14,6 +14,8 @@
     "element-plus": "^1.0.2-beta.55",
     "kurento-client": "^6.16.0",
     "kurento-utils": "^6.16.0",
+    "material-design-icons": "^3.0.1",
+    "mdue": "^0.1.4",
     "sockjs-client": "^1.5.1",
     "stompjs": "^2.3.3",
     "vue": "^3.0.0",
