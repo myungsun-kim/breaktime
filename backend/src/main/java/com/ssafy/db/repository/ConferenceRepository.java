@@ -28,7 +28,7 @@ public class ConferenceRepository{
 	}
 	
 	public List<Conference> findCategory(String category) { // 카테고리 이름으로 검색
-		return em.createQuery("select c from Conference c where c.conferenceCategory.sequence=(select sequence from ConferenceCategory where name = :category)", Conference.class)
+		return em.createQuery("select c from Conference c where c.conferenceCategory.sequence=(select sequence from ConferenceCategory where name like concat('%', :category, '%'))", Conference.class)
 				.setParameter("category", category)
 				.getResultList();
 	}
