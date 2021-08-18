@@ -18,6 +18,9 @@
       <el-form-item prop="name" label="이름" class="formIn">
         <el-input v-model="state.form.name" autocomplete="off"></el-input>
       </el-form-item>
+      <el-form-item prop="nickname" label="닉네임" class="formIn">
+        <el-input v-model="state.form.nickname" autocomplete="off"></el-input>
+      </el-form-item>
       <el-form-item prop="email" label="이메일(선택)" class="formIn">
         <el-input v-model="state.form.email" autocomplete="off"></el-input>
       </el-form-item>
@@ -107,6 +110,7 @@ export default {
         email: '',
         phone: '',
         name: '',
+        nickname: '',
         CNumber: '',
       },
       checkId: '',
@@ -123,6 +127,9 @@ export default {
         ],
         name: [
           { required: true, message: '이름을 입력해주세요',trigger: 'blur' }
+        ],
+        nickname: [
+          { required: true, message: '닉네임을 입력해주세요',trigger: 'blur' }
         ],
         phone: [
           { required: true, message: '핸드폰번호를 입력해주세요',trigger: 'blur'}
@@ -184,7 +191,8 @@ export default {
               passwordCheck: state.form.passwordCheck,
               email: state.form.email,
               phone: state.form.phone,
-              name: state.form.name
+              name: state.form.name,
+              nickname: state.form.nickname
             }
           )
           .then(function (result) {

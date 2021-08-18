@@ -36,8 +36,7 @@ public class User{
     private String password;
     
     private String nickname; // 닉네임
-    private String emailS; // 이메일 앞
-    private String emailE; // 이메일 뒤
+    private String email; // 이메일
     private int phone; // 전화번호
     
     @ManyToOne(fetch = FetchType.LAZY)
@@ -53,14 +52,13 @@ public class User{
     
     public User() {}
     
-	public User(String id, String name, String password, String nickname, String emailS, String emailE, int phone) {
+	public User(String id, String name, String password, String nickname, String email, int phone) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.nickname = nickname;
-		this.emailS = emailS;
-		this.emailE = emailE;
+		this.email = email;
 		this.phone = phone;
 	}
     

@@ -1,17 +1,12 @@
 package com.ssafy.db.repository;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
-
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.ssafy.db.entity.Conference;
+
 import lombok.RequiredArgsConstructor;
 
 @Repository
@@ -33,13 +28,13 @@ public class ConferenceRepository{
 	}
 	
 	public List<Conference> findCategory(String category) { // 카테고리 이름으로 검색
-		return em.createQuery("select c from Conference c where c.conferenceCategory.sequence=(select sequence from ConferenceCategory where name = :category)", Conference.class)
+		return em.createQuery("select c from Conference c where c.conferenceCategory.sequence=(select sequence from ConferenceCategory where name like concat('%', :category, '%'))", Conference.class)
 				.setParameter("category", category)
 				.getResultList();
 	}
 	
 	public List<Conference> findByName(String name){ // 특정 이름을 가진 회의방
-		return em.createQuery("select c from Conference c where c.name = :name", Conference.class)
+		return em.createQuery("select c from Conference c where c.name like concat('%', :name, '%')", Conference.class)
 				.setParameter("name", name)
 				.getResultList();
 	}

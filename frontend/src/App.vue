@@ -28,7 +28,7 @@ export default {
         })
         .then(function (result) {
           store.commit('root/setUser', {
-            user: result.data
+            user: result.data.user
           })
           router.push({name: 'Main'})
         })
