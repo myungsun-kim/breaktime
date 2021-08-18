@@ -24,9 +24,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final QConference conference;
 
-    public final StringPath emailE = createString("emailE");
-
-    public final StringPath emailS = createString("emailS");
+    public final StringPath email = createString("email");
 
     public final ListPath<Friend, QFriend> friends = this.<Friend, QFriend>createList("friends", Friend.class, QFriend.class, PathInits.DIRECT2);
 
