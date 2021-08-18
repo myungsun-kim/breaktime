@@ -91,7 +91,6 @@ public class Room implements Closeable{
 		UserSession currentUser = participants.remove(user.getName());//video on/off를 할 참가자
 		currentUser.setMicState(!state);//현재 유저 Video on/off
 		participants.put(user.getName(),currentUser);
-		participants.put(user.getName(),currentUser);
 		
 		for(final UserSession participant : participants.values()) {
 			if(!participant.equals(user)) {
@@ -205,5 +204,4 @@ public class Room implements Closeable{
 		});
 		log.debug("Room {} closed", this.name);
 	}
-
 }
