@@ -4,18 +4,17 @@
       <main-header-bar/>
     </el-header>
     <el-container>
-      <el-aside width="200px">
-        <main-side-bar/>
-      </el-aside>
       <el-main>
         <main-home
         @openCreateRoomDialog="onOpenCreateRoomDialog"/>
       </el-main>
     </el-container>
+    <el-footer>Footer</el-footer>
     <create-room-dialog
       :open="createRoomDialogOpen"
       @closeCreateRoomDialog="onCloseCreateRoomDialog"/>
   </el-container>
+  
 </template>
 
 <script>

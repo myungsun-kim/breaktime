@@ -1,26 +1,41 @@
 <template>
-	<div id="container" v-if="state.participants[state.name]">
-			<h1>main</h1>
-			<!-- <div id="participants"></div> -->
-			<div class="total-box" v-for="participant in state.participants" :key="participant.name" :id="participant.name">
-				<video :id="'video-' + participant.name" autoplay></video>
-				<div class="video-box" :class="[participant.isVideoState() ? 'd-none' : 'd-inline-block']">비디오OFF</div>
-				<span class="name-box">
-					<i :class="[participant.isMicState() ? 
-						'el-icon-turn-off-microphone text-danger' : 
-						'el-icon-microphone text-success' ]"></i>
-					{{participant.name}}
-				</span>
-			</div>
-			<el-button v-if="state.participants[state.name].isVideoState()" 
-				icon="el-icon-video-camera" type="success" round @click="videoOnOff">비디오끄기</el-button>
-			<el-button v-else type="danger" icon="el-icon-video-camera" round @click="videoOnOff">비디오켜기</el-button>
+  <el-container class="conference-box" v-if="state.participants[state.name]">
+		<el-main>
+				<div class="row">
+					<div class="total-box col-12 col-md-4" v-for="participant in state.participants" :key="participant.name" :id="participant.name">
+						<video :id="'video-' + participant.name" class="video-box" autoplay></video>
+						<div class="video-box" :class="[participant.isVideoState() ? 'd-none' : 'd-inline-block']">비디오OFF</div>
+						<span class="name-box">
+							<i :class="[participant.isMicState() ? 
+								'el-icon-turn-off-microphone text-danger' : 
+								'el-icon-microphone text-success' ]"></i>
+							{{participant.name}}
+						</span>
+					</div>
+				</div>
+		</el-main>
+		<el-footer class="p-0">
+				<el-button v-if="state.participants[state.name].isVideoState()" 
+					icon="el-icon-video-camera" type="success" class="d-inline-flex flex-row" round @click="videoOnOff">
+					<span class="d-none d-md-block">비디오끄기</span>
+				</el-button>
+				<el-button v-else type="danger" icon="el-icon-video-camera" class="d-inline-flex flex-row" round @click="videoOnOff">
+					<span class="d-none d-md-block">비디오켜기</span>
+				</el-button>
 
-			<el-button v-if="state.participants[state.name].isMicState()" 
-			type="danger" icon="el-icon-turn-off-microphone" round @click="micOnOff">마이크켜기</el-button>
-			<el-button v-else type="success" icon="el-icon-microphone" round @click="micOnOff">마이크끄기</el-button>
-			<el-button type="danger" icon="el-icon-phone" round @click="goMain">방나가기</el-button>
-	</div>
+				<el-button v-if="state.participants[state.name].isMicState()" 
+				type="danger" icon="el-icon-turn-off-microphone" class="d-inline-flex flex-row" round @click="micOnOff">
+					<span class="d-none d-md-block">마이크켜기</span>
+				</el-button>
+				<el-button v-else type="success" icon="el-icon-microphone" class="d-inline-flex flex-row" round @click="micOnOff">
+					<span class="d-none d-md-block">마이크끄기</span>
+				</el-button>
+
+				<el-button type="danger" icon="el-icon-phone" class="d-inline-flex flex-row" round @click="goMain">
+					<span class="d-none d-md-block">방나가기</span>
+				</el-button>
+		</el-footer>
+	</el-container>
 </template>
 
 <script>
@@ -54,6 +69,10 @@ export default {
 			room: props.conferenceId,
 			participants: {},
 		})
+
+		const participantLen = function () {
+			return participants.length
+		}
 
 		const connect = function() {
 			state.ws = new WebSocket('wss://' + location.host + '/groupcall');
@@ -153,7 +172,7 @@ export default {
 				audio : true,
 				video : {
 					mandatory : {
-						maxWidth : 320,
+						maxWidth : 400,
 						maxFrameRate : 15,
 						minFrameRate : 15
 					}
@@ -412,15 +431,15 @@ export default {
 				// container.parentNode.removeChild(container);
 			};
 		}
-		return {micOnOff, videoOnOff, goMain, router, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant, leaveRoom}
+		return {participantLen, micOnOff, videoOnOff, goMain, router, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant, leaveRoom}
 		},
 }
 </script>
 
 <style scoped>
-	.conference-main {
-	margin: 60px auto;
-	}
+	.conference-box {
+    height: 100vh;
+  }
 
 	.video-onoff {
 	font-size: 10px;
@@ -439,21 +458,47 @@ export default {
 	}
 
 	.total-box {
+		width: 400px;
 		position: relative;
+		padding: 0;
 	}
 
 	.video-box {
-		width: 320px;
-		height: 262px;
+		width: 400px;
 		background-color: #a0a0a0;
 	}
 
+	.total-box video {
+		width: 100% !important;
+		height: auto !important;
+	}
+
+	@media (min-width: 700px) {
+		.total-box {
+			height: 300px;
+		}
+
+		.video-box {
+			height: 300px;
+		}
+
+		.total-box video {
+			height: 300px !important;
+		}
+	}
+
+
+	.total-box:before {
+		position: absolute;
+	}
+
+
 	.name-box {
 		position: absolute;
-		padding: 1rem 0;
 		bottom: 0;
 		left: 50%;
 		transform: translateX(-50%);
-		color: white;
+		background-color: rgba( 255, 255, 255, 0.5 );
 	}
+
 </style>

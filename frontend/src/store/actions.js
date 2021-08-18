@@ -41,6 +41,36 @@ export function requestCheckCNumber({ /*state*/}, payload) {
   return $axios.post(url)
 }
 
+// 회원 정보 수정 관련 axios
+// 변경사항
+// mutation.js, getters.js MyPage 적용법
+export function modifyUserInfo ({ /*state*/}, payload) {
+  const url = `/user/modify`
+  const token = localStorage.getItem('jwt')
+  const instance = $axios.create({
+    headers: {
+      Authorization : "Bearer " + token
+    }
+  })
+  let body = payload
+  return instance.patch(url, body)
+}
+
+
+// 회원 정보 삭제 관련 axios
+// const url = `/user/${payload.id}` -> const url = `/user` 로 변경
+export function deleteUserInfo ({ /*satate*/}, payload) {
+  const url = `/user/${payload.id}`
+  const token = localStorage.getItem('jwt')
+  const instance = $axios.create({
+    headers: {
+      Authorization : "Bearer " + token
+    }
+  })
+  let body = payload
+  return instance.delete(url)
+}
+
 // 방생성 관련 axios
 export function createRoom({ /*state*/ }, payload) {
   const url = '/conference/make'
