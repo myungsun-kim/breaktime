@@ -23,7 +23,10 @@
       @closeroomPasswordDialog="onCloseroomPasswordDialog"
       @goRoomEmit="goSecretRoom"/>
   </el-card>
-  <h2 v-else>방이없습니다!!!</h2>
+  <h2 v-else class="room-else-box">
+    <i class="el-icon-error x-icon"></i>
+    존재하는 방이 없습니다. 방을 개설해주세요
+  </h2>
 </template>
 
 <script>
@@ -131,6 +134,14 @@ export default {
     font-weight: bold;
     border: 2px solid #EFDC05;
     border-radius: 5px;
+  }
+
+  .room-else-box {
+    width: 60vw;
+  }
+
+  .x-icon {
+    color: #ff4040;
   }
 
 

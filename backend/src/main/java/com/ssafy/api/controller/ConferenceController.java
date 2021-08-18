@@ -14,8 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< Updated upstream
 import com.ssafy.api.request.ConferenceVO;
 import com.ssafy.api.service.ConferenceParticipantService;
+=======
+import com.ssafy.api.request.ConferenceDTO;
+import com.ssafy.api.response.ConferenceMakeResDTO;
+>>>>>>> Stashed changes
 import com.ssafy.api.service.ConferenceService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
@@ -38,15 +43,31 @@ public class ConferenceController {
 	@Autowired
 	ConferenceRepository conferenceRepository;
 	
+<<<<<<< Updated upstream
 	@PostMapping("/make") // 회의방 생성
 	public ResponseEntity<? extends BaseResponseBody> make(Authentication authentication, @RequestBody ConferenceVO confer){
 		
+=======
+	private final String SUCCESS_MESSAGE = "성공";
+	
+	@PostMapping
+	@ApiOperation(value = "회의방 생성", notes = "<strong>Bearer token과 입력 받은 회의방 정보</strong>를 통해 회의방을 생성한다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public Long make(@ApiIgnore Authentication authentication, @RequestBody ConferenceDTO confer){
+//		return new ResponseEntity<>(response, HttpStatus.OK);
+>>>>>>> Stashed changes
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		String userId = userDetails.getUsername();
 		
 		ConferenceCategory category = new ConferenceCategory(); 
 		category.setSequence(confer.getCategory_seq()); // 회의방의 카테고리 컬럼을 카테고리 테이블 기본키랑 연결하기 위함
 		
+<<<<<<< Updated upstream
 		Conference conference = new Conference();
 		
 		conference.setConferenceCategory(category);
@@ -66,6 +87,17 @@ public class ConferenceController {
 		}else {
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail", null));
 		}
+=======
+		Conference conference = new Conference(confer.getName(), confer.getOwner(), confer.getOwnerNick(), LocalDateTime.now(), confer.getParticipantLimit(),
+				category, confer.getDescription(), confer.getPassword());
+		
+		Long seq = conferenceService.create(conference);
+		System.out.println(seq);
+		ConferenceMakeResDTO response = new ConferenceMakeResDTO(HttpStatus.OK, SUCCESS_MESSAGE, seq);
+		System.out.println(response);
+//		return new ResponseEntity<>(response, HttpStatus.OK);
+		return seq;
+>>>>>>> Stashed changes
 	}
 	
 	@GetMapping("/search/all") // 회의방 전체 검색

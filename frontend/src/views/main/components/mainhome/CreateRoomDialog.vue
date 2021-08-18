@@ -96,15 +96,16 @@ export default {
             category_seq: state.form.option,
             description: state.form.description,
             name: state.form.name,
-            owner: user.userId,
-            ownerNick: user.name,
+            owner: user.id,
+            ownerNick: user.nickname,
             password: state.form.password,
             participantLimit: state.form.participant_limit,
           })
           .then(function (result) {
             router.replace({name: 'Conference', params: { 
-              conferenceId : result.data.sequence,
-              owner: user.name
+              conferenceId : result.data,
+              owner: user.nickname,
+              name: state.form.name
             }})
             handleClose()
           })
