@@ -171,12 +171,11 @@ export default {
 			let constraints = {
 				audio : true,
 				video : {
-					// mandatory : {
-    				width: {ideal: 400},
-    				height: {ideal: 300},
+					mandatory : {
+						maxWidth : 400,
 						maxFrameRate : 15,
 						minFrameRate : 15
-					// }
+					}
 				}
 			};
 			// console.log(name + " registered in room " + room);
@@ -469,6 +468,11 @@ export default {
 		background-color: #a0a0a0;
 	}
 
+	.total-box video {
+		width: 100% !important;
+		height: auto !important;
+	}
+
 	@media (min-width: 700px) {
 		.total-box {
 			height: 300px;
@@ -477,12 +481,12 @@ export default {
 		.video-box {
 			height: 300px;
 		}
+
+		.total-box video {
+			height: 300px !important;
+		}
 	}
 
-	.total-box video {
-		width: 100% !important;
-		height: auto !important;
-	}
 
 	.total-box:before {
 		position: absolute;
