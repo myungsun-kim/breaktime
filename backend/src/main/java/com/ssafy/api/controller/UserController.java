@@ -112,7 +112,7 @@ public class UserController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@PatchMapping
+	@PatchMapping("/modify/{nickname}")//회원 수정
 	@ApiOperation(value = "회원 정보 수정", notes = "<strong>Bearer token</strong>을 통해 가져온 회원의 정보를 입력받은 정보로 수정한다.") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
@@ -120,13 +120,12 @@ public class UserController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<? extends BasicResponse> modifyUser (@ApiIgnore Authentication authentication, UserModifyDto userModifyDto) {
-
+	public ResponseEntity<? extends BasicResponse> modifyUser (Authentication authentication, @PathVariable("nickname") String nickname) {
 		SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
 		String nowId = userDetails.getUser().getId();
-		userService.modify(nowId, userModifyDto);
-
+		userService.modify(nowId, nickname);//회원의 정보, 변경할 닉네임
 		BasicResponse response = new BasicResponse(HttpStatus.OK, SUCCESS_MESSAGE);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+
 }
