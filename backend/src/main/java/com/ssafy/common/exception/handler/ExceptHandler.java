@@ -1,10 +1,19 @@
 package com.ssafy.common.exception.handler;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException.Forbidden;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
@@ -18,8 +27,8 @@ import com.ssafy.common.model.response.BasicResponse;
 
 @ControllerAdvice
 public class ExceptHandler {
-//	@Value("${spa.default-file}")
-//	String defaultFile;
+	@Value("${spa.default-file}")
+	String defaultFile;
 	private final String USER_NOT_EXIST_MESSAGE = "유저가 존재하지 않습니다.";
 	private final String USER_ALREADY_EXIST_MESSAGE = "이미 존재하는 유저입니다.";
 	private final String PASS_NOT_MATCH_MESSAGE = "패스워드가 맞지 않습니다.";
@@ -28,23 +37,23 @@ public class ExceptHandler {
 	private final String FORBIDDEN_MESSAGE = "접근 권한이 없습니다.";
 	private final String DEFAULT_MESSAGE = "요청을 처리할 수 없습니다.";
 	 
-//	@ExceptionHandler(NoHandlerFoundException.class)
-//	public ResponseEntity<String> renderDefaultPage(NoHandlerFoundException ex) {
-//		String url = ex.getRequestURL();
-//		if(url.startsWith("/api/")) {
-//			return ResponseEntity.notFound().build();
-//		}else {
-//			try {
-//				ClassPathResource classPathResource = new ClassPathResource(defaultFile);
-//				InputStream inputStream = classPathResource.getInputStream();
-//    				String body = StreamUtils.copyToString(inputStream, Charset.defaultCharset());
-//			    return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(body);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("There was an error completing the action.");
-//			}
-//		}
-//	}
+	@ExceptionHandler(NoHandlerFoundException.class)
+	public ResponseEntity<String> renderDefaultPage(NoHandlerFoundException ex) {
+		String url = ex.getRequestURL();
+		if(url.startsWith("/api/")) {
+			return ResponseEntity.notFound().build();
+		}else {
+			try {
+				ClassPathResource classPathResource = new ClassPathResource(defaultFile);
+				InputStream inputStream = classPathResource.getInputStream();
+    				String body = StreamUtils.copyToString(inputStream, Charset.defaultCharset());
+			    return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(body);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("There was an error completing the action.");
+			}
+		}
+	}
 	
 	@ExceptionHandler(UserNotExistException.class)
 	public ResponseEntity<Object> UserNotExistExceptionHandle(UserNotExistException e){
