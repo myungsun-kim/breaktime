@@ -25,13 +25,20 @@ export default ({
   name: 'SearchBar',
   setup(props, { emit }) {
     const state = reactive({
-      options: [{
+      options: [
+        {
           value: 1,
           label: '방번호'
-        }, {
+        },
+        {
           value: 2,
           label: '방제목'
-      }],
+        }, 
+        {
+          value: 3,
+          label: '카테고리'
+        }
+      ],
       value: 1,
       input: ''
     })

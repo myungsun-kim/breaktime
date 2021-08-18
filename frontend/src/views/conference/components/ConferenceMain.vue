@@ -65,7 +65,7 @@ export default {
 		// const PARTICIPANT_CLASS = 'participant';
 		const state = reactive({
 			ws: null,
-			name: user.name,
+			name: user.nickname,
 			room: props.conferenceId,
 			participants: {},
 		})
@@ -471,6 +471,7 @@ export default {
 	.total-box video {
 		width: 100% !important;
 		height: auto !important;
+		background-color: #a0a0a0;
 	}
 
 	@media (min-width: 700px) {
