@@ -1,5 +1,6 @@
 package com.ssafy.api.request;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@ApiModel("UserRegisterDTO")
 public class UserRegisterDTO {
 	
 	@ApiModelProperty(name = "id", example = "i5202")

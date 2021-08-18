@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.common.model.response.BasicResponse;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -19,7 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 public class ResponseBodyWriteUtil {
 	
-	public static void sendApiResponse(HttpServletResponse response, BaseResponseBody apiResponse) throws IOException {
+	public static void sendApiResponse(HttpServletResponse response, BasicResponse apiResponse) throws IOException {
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");

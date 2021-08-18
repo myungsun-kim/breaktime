@@ -7,6 +7,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.api.request.UserModifyDto;
+import com.ssafy.common.exception.handler.PassNotMatchException;
+import com.ssafy.common.exception.handler.UserAlreadyExistException;
+import com.ssafy.common.exception.handler.UserNotExistException;
+import com.ssafy.common.util.JwtTokenUtil;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
 
@@ -25,35 +30,50 @@ public class UserService {
 	private final UserRepository userRepository;
 	@Autowired
 	PasswordEncoder passwordEncoder;
-	 /**
-	  * * 회원가입
-	  * */
+
 	@Transactional //변경
-	public String join(User user) {
-		validateDuplicateUser(user); //중복 회원 검증 userRepository.save(user);
+	public void join(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
-		return user.getId();
 	}
 	
 	@Transactional // 수정
-	public void modify(String userId, String nickName) {
+	public void modify(String userId, UserModifyDto userModifyDto) {
 		User findUser = userRepository.findOne(userId);
-		findUser.setNickname(nickName);
+		findUser.setNickname(userModifyDto.getNickname());
+		findUser.setEmailE(userModifyDto.getEmailE());
+		findUser.setEmailS(userModifyDto.getEmailS());
+		
 	}
-	 
-    private void validateDuplicateUser(User user) {
- 		User findUser = userRepository.findOne(user.getId());
- 		if (findUser != null) throw new IllegalStateException("이미 존재하는 회원입니다.");
+	
+    public void validateDuplicateUser(String id) { //중복 회원 검증
+ 		User findUser = userRepository.findOne(id);
+ 		if (findUser != null) throw new UserAlreadyExistException();
 	}
 	 	
 	public List<User> findUsers() {
-		return userRepository.findAll();
-		 
+		return userRepository.findAll(); 
 	}
 	
 	public User findOne(String userId) {
-		return userRepository.findOne(userId);
+		
+		User user = userRepository.findOne(userId);
+		if(user == null) throw new UserNotExistException();
+		
+		return user;
 		 
+	}
+	
+	public String login(String userId, String userPass) {
+		
+		User user = findOne(userId);
+		// 유효한 패스워드인지 여부 확인
+		if(!passwordEncoder.matches(userPass, user.getPassword())) {
+			throw new PassNotMatchException();
+		}
+		
+		String token = JwtTokenUtil.getToken(userId);
+		
+		return token;
 	}
 }
