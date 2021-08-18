@@ -26,13 +26,9 @@ public class UserRegisterDTO {
 	@ApiModelProperty(name = "nickname", example = "무케")
     private String nickname;
 	
-	@ApiModelProperty(name = "emailS", example = "abcdef")
-    @ApiParam(value = "이메일 @ 앞")
-    private String emailS;
-	
-	@ApiModelProperty(name = "emailE", example = "naver.com")
-    @ApiParam(value = "이메일 @ 뒤")
-    private String emailE;
+	@ApiModelProperty(name = "email", example = "abcdef@naver.com")
+    @ApiParam(value = "이메일")
+    private String email;
 	
 	@ApiModelProperty(name = "phone", example = "01012345678")
     private int phone;

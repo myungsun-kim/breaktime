@@ -41,8 +41,7 @@ public class UserService {
 	public void modify(String userId, UserModifyDto userModifyDto) {
 		User findUser = userRepository.findOne(userId);
 		findUser.setNickname(userModifyDto.getNickname());
-		findUser.setEmailE(userModifyDto.getEmailE());
-		findUser.setEmailS(userModifyDto.getEmailS());
+		findUser.setEmail(userModifyDto.getEmail());
 		
 	}
 	

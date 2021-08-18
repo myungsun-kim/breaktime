@@ -50,7 +50,7 @@ public class UserController {
 	public ResponseEntity<? extends BasicResponse> register(@RequestBody UserRegisterDTO userRegister) {
 		
 		User user = new User(userRegister.getId(), userRegister.getName(), userRegister.getPassword(),
-				userRegister.getNickname(), userRegister.getEmailS(), userRegister.getEmailE(), userRegister.getPhone());
+				userRegister.getNickname(), userRegister.getEmail(), userRegister.getPhone());
 		
 		userService.join(user);
 
