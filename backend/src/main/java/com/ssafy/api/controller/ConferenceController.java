@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.api.request.ConferenceVO;
-import com.ssafy.api.service.ConferenceParticipantService;
-
 import com.ssafy.api.request.ConferenceDTO;
 import com.ssafy.api.response.ConferenceMakeResDTO;
 
