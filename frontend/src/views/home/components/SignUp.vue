@@ -24,7 +24,7 @@
       <el-form-item prop="phone" label="휴대폰" class="formIn">
         <el-input v-model="state.form.phone" autocomplete="off" placeholder="-없이 입력">
           <template #append>
-            <el-button class="phone_certify">인증번호전송</el-button>
+            <el-button class="phone_certify" @click="checkCnumber">인증번호전송</el-button>
           </template>
         </el-input>
       </el-form-item>
