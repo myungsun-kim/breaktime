@@ -171,12 +171,12 @@ export default {
 			let constraints = {
 				audio : true,
 				video : {
-					mandatory : {
-						maxWidth : 400,
-						maxHeight : 300,
+					// mandatory : {
+    				width: {ideal: 400},
+    				height: {ideal: 300},
 						maxFrameRate : 15,
 						minFrameRate : 15
-					}
+					// }
 				}
 			};
 			// console.log(name + " registered in room " + room);
