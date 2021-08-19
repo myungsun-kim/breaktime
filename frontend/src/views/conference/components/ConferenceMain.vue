@@ -427,7 +427,7 @@ export default {
 				// container.parentNode.removeChild(container);
 			};
 		}
-		return {participantLen, micOnOff, videoOnOff, goMain, router, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant, leaveRoom}
+		return {micOnOff, videoOnOff, goMain, router, connect, state, register, sendMessage, onParticipantLeft, receiveVideo,onExistingParticipants, callResponse, Participant, leaveRoom}
 		},
 }
 </script>
