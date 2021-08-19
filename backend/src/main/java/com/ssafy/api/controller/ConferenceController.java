@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.api.request.ConferenceDTO;
+import com.ssafy.api.response.ConferenceMakeResDTO;
 import com.ssafy.api.service.ConferenceService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BasicResponse;
@@ -52,7 +53,7 @@ public class ConferenceController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<? extends BasicResponse> make(@ApiIgnore Authentication authentication, @RequestBody ConferenceDTO confer){
+	public Long make(@ApiIgnore Authentication authentication, @RequestBody ConferenceDTO confer){
 		
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		String userId = userDetails.getUsername();
@@ -65,8 +66,8 @@ public class ConferenceController {
 
 		Long seq = conferenceService.create(conference);
 		
-		BasicResponse response = new BasicResponse(HttpStatus.OK, SUCCESS_MESSAGE);
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		ConferenceMakeResDTO response = new ConferenceMakeResDTO(HttpStatus.OK, SUCCESS_MESSAGE, seq);
+		return seq;
 	}
 	
 	@GetMapping("/search/all")

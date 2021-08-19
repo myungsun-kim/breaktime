@@ -73,7 +73,7 @@ export function deleteUserInfo ({ /*satate*/}, payload) {
 
 // 방생성 관련 axios
 export function createRoom({ /*state*/ }, payload) {
-  const url = '/conference/make'
+  const url = '/conference'
   const token = localStorage.getItem('jwt')
   const instance = $axios.create({
     headers: {
