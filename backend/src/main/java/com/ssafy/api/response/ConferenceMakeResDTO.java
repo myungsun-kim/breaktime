@@ -11,11 +11,5 @@ public class ConferenceMakeResDTO extends BasicResponse{
 		super(httpStatus, message);
 		this.seq = seq;
 	}
-
-	@Override
-	public String toString() {
-		return "ConferenceMakeResDTO [seq=" + seq + "]";
-	}
-	
 	
 }
