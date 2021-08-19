@@ -1,9 +1,21 @@
+OS - Window10 64bit
+
 JVM - JavaSE 1.8 (zulu 8)
 
 WebServer, WAS - spring-boot-starter-web-2.4.5
+
+JPA -> spring-boot-starter-data-jpa
 
 STS - 3.9.13
 
 MySQL - 8.0.26-0ubuntu0.20.04.2
 
 실행 설정 - VM arguments에서  -Dkms.url=ws://3.35.171.221:8888/kurento 입력
+
+Vue3
+
+gradle 6.7
+
+vsCode1.58.2~
+
+nodejs 14.16.0
