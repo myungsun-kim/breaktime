@@ -5,16 +5,15 @@
 
     <div id="socket">
       <div id="chatMain">
-      <div
-        v-for="(item, idx) in state.form.recvList"
-        :key="idx" 
-      >
-      <div class="sentence">
-        <div style="float:left;"> {{ item.userName }} : </div>
-        <div>{{ item.message }}</div>
-      </div>
-  
-      </div>
+        <div v-for="(item, idx) in state.form.recvList" :key="idx" >
+          <!-- <div class="sentence d-flex" :class="[ item.userName === user.nickname ? 'flex-row-reverse' : 'flex-row']"> -->
+          <div class="sentence" :class="{'text-end' : item.userName === user.nickname}">
+            <div v-if="item.userName !== user.nickname" class="name-box "> {{ item.userName }} </div>
+            <div class="bubble" :class="[item.userName === user.nickname ? 'right' : 'left' ]">
+              <span> {{ item.message }} </span>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- 유저이름:
       <input
@@ -65,9 +64,6 @@
   #input {
     width: 80%;
   }
-  span{
-    width: 100%;
-  }
 
   .sentence {
     background-color: #F6F6F6;
@@ -83,6 +79,48 @@
   .chat-show::-webkit-scrollbar {
     width: 1px;
   }
+
+  .bubble {
+    position: relative;
+    display: inline-block;
+  }
+
+  .bubble span {
+    display: inline-block;
+    padding: 10px;
+    background: #F6921E;
+    border-radius: 20px;
+  }
+
+  .bubble:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+
+  .bubble.right:after, .bubble.left:after {
+    border-width: 10px 15px;
+    top: 50%;
+    margin-top: -10px;
+  }
+
+  .bubble.left:after {
+    border-color: transparent #F6921E transparent transparent;
+    left: -25px;
+  }
+
+  .bubble.right:after {
+    border-color: transparent transparent transparent #F6921E;
+    right: -25px;
+  }
+
+  .name-box {
+    margin-right: 1rem;
+    display: inline-block;
+  }
+
 </style>
 
 <script>
