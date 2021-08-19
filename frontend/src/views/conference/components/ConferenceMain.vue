@@ -70,8 +70,6 @@ export default {
 			participants: {},
 		})
 
-		console.log(participantLen())
-
 		const connect = function() {
 			state.ws = new WebSocket('wss://' + location.host + '/groupcall');
 			state.ws.onopen = function(event) {
