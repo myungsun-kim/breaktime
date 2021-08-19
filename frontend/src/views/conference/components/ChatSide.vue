@@ -22,7 +22,7 @@
         type="text"
       > -->
       <div id="chatInput">
-      {{user.name}} : <input
+      {{user.nickname}} : <input
         v-model="state.form.message"
         type="text"
         placeholder="메시지를 입력하세요"
@@ -107,7 +107,7 @@ export default {
       conferenceId: '',
       form: {
         // token: localStorage.getItem('jwt'),
-        userName: user.name,
+        userName: user.nickname,
         message: "",
         recvList: [],
         stompClient: "",
@@ -116,6 +116,7 @@ export default {
 
     onMounted(() => {
       connect()
+      
     })
 
     const sendMessage = function (e) {
@@ -152,6 +153,9 @@ export default {
       const serverURL = "https://i5d202.p.ssafy.io:8443/ws-stomp" 
       let socket = new SockJS(serverURL);
       state.form.stompClient = Stomp.over(socket);
+      // 기본적으로 stomp에는 debug가 내장되어있다. 그래서 console창에 로그가 많이남음
+      // 이를 해결하기위해서 stompClient.debug를 빈함수로 만들어서 로그창이 안남도록 설정함
+      state.form.stompClient.debug = () => {};
       // console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
       state.form.stompClient.connect(
         {},
