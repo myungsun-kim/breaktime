@@ -45,22 +45,21 @@ export function requestCheckCNumber({ /*state*/}, payload) {
 // 변경사항
 // mutation.js, getters.js MyPage 적용법
 export function modifyUserInfo ({ /*state*/}, payload) {
-  const url = `/user/modify`
+  const url = `/user/modify/${payload.nickname}`
   const token = localStorage.getItem('jwt')
   const instance = $axios.create({
     headers: {
       Authorization : "Bearer " + token
     }
   })
-  let body = payload
-  return instance.patch(url, body)
+  return instance.patch(url)
 }
 
 
 // 회원 정보 삭제 관련 axios
 // const url = `/user/${payload.id}` -> const url = `/user` 로 변경
 export function deleteUserInfo ({ /*satate*/}, payload) {
-  const url = `/user/${payload.id}`
+  const url = '/user'
   const token = localStorage.getItem('jwt')
   const instance = $axios.create({
     headers: {
@@ -98,8 +97,10 @@ export function searchRoom({/*state*/}, payload) {
   if (value === 1) {
     input = Number(input)
     url = `/conference/search/num/${input}`
-  } else {
+  } else if (value === 2 ){
     url = `/conference/search/name/${input}`
+  } else {
+    url = `/conference/search/category/${input}`
   }
   return $axios.get(url)
 }
@@ -107,12 +108,12 @@ export function searchRoom({/*state*/}, payload) {
 // 방삭제 관련 axios
 export function deleteRoom({/*state*/}, payload) {
   const sequence = payload.sequence
-  const url = `/conference/delete/${sequence}`
+  const url = `/conference/${sequence}`
   const token = localStorage.getItem('jwt')
   const instance = $axios.create({
     headers: {
       Authorization : "Bearer " + token
     }
   })
-  return instance.get(url)
+  return instance.delete(url)
 }

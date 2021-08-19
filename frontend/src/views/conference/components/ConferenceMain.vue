@@ -65,7 +65,7 @@ export default {
 		// const PARTICIPANT_CLASS = 'participant';
 		const state = reactive({
 			ws: null,
-			name: user.name,
+			name: user.nickname,
 			room: props.conferenceId,
 			participants: {},
 		})
@@ -250,7 +250,7 @@ export default {
 
 		// 방나가기 버튼 클릭시 동작함수
 		const goMain = function () {
-			if (user.name === props.owner) {
+			if (user.nickname === props.owner) {
 				if(confirm('당신은호스트입니다 \n호스트가 회의를 종료하면 방은 삭제됩니다 \n진짜나가시겠습니까?')){
 					store.dispatch('root/deleteRoom', {
 						sequence: props.conferenceId
@@ -465,12 +465,13 @@ export default {
 
 	.video-box {
 		width: 400px;
-		background-color: #a0a0a0;
+		background-color: #171717;
 	}
 
 	.total-box video {
 		width: 100% !important;
 		height: auto !important;
+		background-color: #a0a0a0;
 	}
 
 	@media (min-width: 700px) {

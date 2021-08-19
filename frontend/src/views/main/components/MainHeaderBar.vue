@@ -1,16 +1,16 @@
 <template>
-<div class="header">
+<div class="header" >
   <!-- <h1>
     Hello {{user.name}} 
     <el-button type="danger" @click="clickLogOut" >로그아웃</el-button>
   </h1> -->
   <div class="logo-breaktime">
-    <img src="../../../assets/logo_cat.png" alt="" class="logo">
-    <img src="../../../assets/breaktime.png" alt="" class="breaktime">
+    <img src="../../../assets/logo2_2.png" alt="" class="logo2">
+    <!-- <img src="../../../assets/breaktime.png" alt="" class="breaktime"> -->
   </div>
 
   <div class="user">
-    <span class="username">Hello {{user.name}}</span>
+    <span class="username">Hello {{user.nickname}}</span>
     
     <button class="logout-button" @click="clickLogOut" >로그아웃</button>
     <button class="mypage-button" @click="clickMyPage" >마이페이지</button>
@@ -64,6 +64,12 @@ export default {
   height: 100px;
 }
 
+.logo2 {
+  width: 200px;
+  height: 80px;
+  padding-left: 10px;
+}
+
 .breaktime {
   width: 200px;
   height: 50px;
@@ -74,7 +80,6 @@ export default {
 }
 
 .logout-button {
-  
   font-size: 10px;
   border-radius: 5px;
   border: none;
@@ -88,6 +93,7 @@ export default {
   border: none;
   background-color: #dedcee;
   padding: 10px;
+  margin-right: 10px;
 }
 
 </style>
