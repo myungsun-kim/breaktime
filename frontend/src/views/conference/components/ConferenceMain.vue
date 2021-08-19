@@ -70,9 +70,7 @@ export default {
 			participants: {},
 		})
 
-		const participantLen = function () {
-			return participants.length
-		}
+		console.log(participantLen())
 
 		const connect = function() {
 			state.ws = new WebSocket('wss://' + location.host + '/groupcall');
@@ -256,11 +254,11 @@ export default {
 						sequence: props.conferenceId
           })
           .then(function () {
+						leaveRoom()
           })
           .catch(function (err) {
             alert(err.response.data.message)
           })
-					leaveRoom()
 				}
 			} else {
 				if(confirm('화상회의를 종료하시겠습니까?')) {
