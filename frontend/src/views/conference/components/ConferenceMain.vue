@@ -70,9 +70,7 @@ export default {
 			participants: {},
 		})
 
-		const participantLen = function () {
-			return participants.length
-		}
+		console.log(participantLen())
 
 		const connect = function() {
 			state.ws = new WebSocket('wss://' + location.host + '/groupcall');
